@@ -1,0 +1,11 @@
+﻿<Window x:Class="ServiceOrder.OrderListView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Listagem de Ordens de Serviço" Height="450" Width="800">
+    <Grid>
+        <DataGrid x:Name="OrderDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  Margin="10,10,10,50" AutoGenerateColumns="True" CanUserAddRows="False" IsReadOnly="True"/>
+        <Button Content="Novo Cadastro" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                Width="100" Height="40" Margin="0,0,10,10" Click="OnNovoCadastroClick"/>
+    </Grid>
+</Window>

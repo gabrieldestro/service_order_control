@@ -1,0 +1,19 @@
+﻿<Window x:Class="ServiceOrder.OrderDetailView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Cadastro/Visualização de Ordem" Height="300" Width="400">
+    <Grid>
+        <StackPanel Margin="10">
+            <TextBlock Text="Cliente" />
+            <TextBox x:Name="ClienteTextBox" Margin="0,5" />
+
+            <TextBlock Text="Descrição" />
+            <TextBox x:Name="DescricaoTextBox" Margin="0,5" />
+
+            <TextBlock Text="Data de Criação" />
+            <TextBox x:Name="DataCriacaoTextBox" Margin="0,5" IsReadOnly="True" />
+
+            <Button Content="Salvar" Width="100" Height="40" Margin="0,10,0,0" Click="OnSaveClick" />
+        </StackPanel>
+    </Grid>
+</Window>
