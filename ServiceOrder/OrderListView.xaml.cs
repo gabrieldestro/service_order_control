@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using ControlzEx.Theming;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceOrder.Domain.Entities;
 using ServiceOrder.Domain.Interfaces;
@@ -18,7 +19,11 @@ namespace ServiceOrder
 
         public OrderListView(IOrderService orderService)
         {
-            InitializeComponent();
+            InitializeComponent(); 
+
+            ThemeManager.Current.ThemeSyncMode = ThemeSyncMode.SyncWithAppMode;
+            ThemeManager.Current.SyncTheme();
+
             _orderService = orderService;
             Orders = new ObservableCollection<Order>();
             LoadOrdersAsync();
@@ -66,7 +71,7 @@ namespace ServiceOrder
                 // Mostrar o indicador de carregamento
                 ChangeViewOnLoad(false);
 
-                await Task.Delay(3000); // Atraso de 1 segundos para simulação de carregamento
+                await Task.Delay(1000); // Atraso de 1 segundos para simulação de carregamento
 
                 // Carregar os dados em background
                 var orders = await Task.Run(() => _orderService.GetAllAsync());
