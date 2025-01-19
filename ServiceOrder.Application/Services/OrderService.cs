@@ -33,6 +33,20 @@ namespace ServiceOrder.Services.Services
             return true;
         }
 
+        public async Task<bool> DeleteOrder(Order order)
+        {
+            try
+            {
+                await _orderRepository.DeleteAsync(order.Id);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public async Task<List<Order>> GetAllAsync()
         {
             List<Order> list = new List<Order>();

@@ -3,9 +3,90 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Listagem de Ordens de Serviço" Height="450" Width="800">
     <Grid>
-        <DataGrid x:Name="OrderDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Margin="10,10,10,50" AutoGenerateColumns="True" CanUserAddRows="False" IsReadOnly="True"/>
-        <Button Content="Novo Cadastro" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                Width="100" Height="40" Margin="0,0,10,10" Click="OnNovoCadastroClick"/>
+        <!-- Definindo Linhas e Colunas -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Filtros -->
+            <RowDefinition Height="*"/>
+            <!-- Grade -->
+            <RowDefinition Height="Auto"/>
+            <!-- Botões -->
+        </Grid.RowDefinitions>
+
+        <!-- Filtros -->
+        <StackPanel Orientation="Vertical" Margin="10" Grid.Row="0" HorizontalAlignment="Stretch">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
+                <!-- Filtro por Nome -->
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <Label Content="Nome:"/>
+                    <TextBox x:Name="SearchTextBox" Width="150"/>
+                </StackPanel>
+
+                <!-- Filtro por ID -->
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <Label Content="ID:"/>
+                    <TextBox x:Name="SearchIdTextBox" Width="100"/>
+                </StackPanel>
+
+                <!-- Filtro por Status -->
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <Label Content="Status:"/>
+                    <ComboBox x:Name="StatusComboBox" Width="150">
+                        <ComboBoxItem Content="Todos" Tag="{x:Null}" IsSelected="True"/>
+                        <ComboBoxItem Content="Iniciado" Tag="STARTED"/>
+                        <ComboBoxItem Content="Pendente" Tag="PENDING"/>
+                        <ComboBoxItem Content="Finalizado" Tag="FINISHED"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Filtro por Data Inicial -->
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <Label Content="Data inicial:"/>
+                    <DatePicker x:Name="StartDatePicker" Width="150"/>
+                </StackPanel>
+
+                <!-- Filtro por Data Final -->
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <Label Content="Data final:"/>
+                    <DatePicker x:Name="EndDatePicker" Width="150"/>
+                </StackPanel>
+
+                <!-- Botões de Filtro -->
+                <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Bottom">
+                    <Button Content="Filtrar" Width="100" Margin="0,0,0,5" Click="OnFilterClick"/>
+                    <Button Content="Limpar" Width="100" Click="OnClearFiltersClick"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Grade de Dados -->
+        <DataGrid x:Name="OrderDataGrid" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <!-- Colunas da Entidade -->
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="100"/>
+                <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="200"/>
+                <DataGridTextColumn Header="Descrição" Binding="{Binding Description}" Width="300"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding status}" Width="150"/>
+                <DataGridTextColumn Header="Criado em" Binding="{Binding CreateDate, StringFormat=d}" Width="150"/>
+                <DataGridTextColumn Header="Última Atualização" Binding="{Binding LastUpdated, StringFormat=g}" Width="200"/>
+
+                <!-- Coluna de Ações -->
+                <DataGridTemplateColumn Header="Ações" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Content="Editar" Width="60" Margin="5" Click="OnEditClick"/>
+                                <Button Content="Excluir" Width="60" Margin="5" Click="OnDeleteClick"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Botão Novo Cadastro -->
+        <Button Content="Novo Cadastro" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"
+                Width="120" Height="40" Margin="10" Click="OnNovoCadastroClick"/>
     </Grid>
 </Window>

@@ -12,5 +12,6 @@ namespace ServiceOrder.Services.Interfaces
         Task<List<Order>> GetAllAsync();
         Task<bool> AddOrder(Order order);
         Task<bool> UpdateOrder(Order order);
+        Task<bool> DeleteOrder(Order order);
     }
 }
