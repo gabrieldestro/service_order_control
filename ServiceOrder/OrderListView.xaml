@@ -53,10 +53,14 @@
 
                 <!-- Botões de Filtro -->
                 <StackPanel Orientation="Vertical" Margin="5" VerticalAlignment="Bottom">
-                    <Button Content="Filtrar" Width="100" Margin="0,0,0,5" Click="OnFilterClick"/>
-                    <Button Content="Limpar" Width="100" Click="OnClearFiltersClick"/>
+                    <Button x:Name="FilterButton" Content="Filtrar" Width="100" Margin="0,0,0,5" Click="OnFilterClick"/>
+                    <Button x:Name="ClearButton" Content="Limpar" Width="100" Click="OnClearFiltersClick"/>
                 </StackPanel>
             </StackPanel>
+            
+            <!-- Indicador de Carregamento -->
+            <ProgressBar x:Name="LoadingProgressBar" IsIndeterminate="True" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                         Visibility="Collapsed" Width="200" Height="20" Margin="0, 0, 0, 50" />
         </StackPanel>
 
         <!-- Grade de Dados -->
@@ -86,7 +90,7 @@
         </DataGrid>
 
         <!-- Botão Novo Cadastro -->
-        <Button Content="Novo Cadastro" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"
-                Width="120" Height="40" Margin="10" Click="OnNovoCadastroClick"/>
+        <Button Content="Novo Cadastro" x:Name="NewRegistrationButton" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"
+                Width="120" Height="40" Margin="10" Click="OnNewRegistrationClick"/>
     </Grid>
 </Window>

@@ -21,14 +21,14 @@ namespace ServiceOrder
             InitializeComponent();
             _orderService = orderService;
             Orders = new ObservableCollection<Order>();
-            LoadOrders();
+            LoadOrdersAsync();
         }
 
-        private void OnNovoCadastroClick(object sender, RoutedEventArgs e)
+        private void OnNewRegistrationClick(object sender, RoutedEventArgs e)
         {
             var detailView = App.ServiceProvider.GetRequiredService<OrderDetailView>();
             detailView.SetOrder(null); // Nova ordem (criação)
-            detailView.Closed += (s, args) => LoadOrders();
+            detailView.Closed += (s, args) => LoadOrdersAsync();
             detailView.ShowDialog();
         }
 
@@ -38,7 +38,7 @@ namespace ServiceOrder
             {
                 var detailView = App.ServiceProvider.GetRequiredService<OrderDetailView>();
                 detailView.SetOrder(selectedOrder); // Ordem existente (edição)
-                detailView.Closed += (s, args) => LoadOrders();
+                detailView.Closed += (s, args) => LoadOrdersAsync();
                 detailView.ShowDialog();
             }
         }
@@ -51,23 +51,58 @@ namespace ServiceOrder
                 if (result == MessageBoxResult.Yes)
                 {
                     await _orderService.DeleteOrder(selectedOrder);
-                    LoadOrders();
+                    LoadOrdersAsync();
                 }
             }
         }
 
-        private async void LoadOrders(Func<Order, bool> filter = null)
+        private async void LoadOrdersAsync(Func<Order, bool> filter = null)
         {
-            Orders.Clear();
-
-            var orders = await _orderService.GetAllAsync();
-            foreach (var order in filter != null ? orders.Where(filter) : orders)
+            try
             {
-                Orders.Add(order);
+                // Limpar a coleção existente
+                Orders.Clear();
+
+                // Mostrar o indicador de carregamento
+                ChangeViewOnLoad(false);
+
+                await Task.Delay(3000); // Atraso de 1 segundos para simulação de carregamento
+
+                // Carregar os dados em background
+                var orders = await Task.Run(() => _orderService.GetAllAsync());
+
+                // Aplicar o filtro, se presente
+                var filteredOrders = filter != null ? orders.Where(filter) : orders;
+
+                // Adicionar as ordens filtradas à lista
+                foreach (var order in filteredOrders)
+                {
+                    Orders.Add(order);
+                }
+
+                // Atualizar a fonte de dados do DataGrid
+                OrderDataGrid.ItemsSource = Orders;
             }
-            OrderDataGrid.ItemsSource = Orders;
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao carregar ordens: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                ChangeViewOnLoad(true);
+            }
         }
-        
+
+        private void ChangeViewOnLoad(bool show)
+        {
+            FilterButton.IsEnabled = show;
+            ClearButton.IsEnabled = show;
+            NewRegistrationButton.IsEnabled = show;
+
+            if (!show) LoadingProgressBar.Visibility = Visibility.Visible;
+            else LoadingProgressBar.Visibility = Visibility.Collapsed;  
+        }
+
         private void OnFilterClick(object sender, RoutedEventArgs e)
         {
             // Obter valores dos filtros
@@ -77,7 +112,7 @@ namespace ServiceOrder
             DateTime? startDate = StartDatePicker.SelectedDate;
             DateTime? endDate = EndDatePicker.SelectedDate;
 
-            LoadOrders(order =>
+            LoadOrdersAsync(order =>
                 (string.IsNullOrEmpty(searchText) || order.Name.ToLower().Contains(searchText)) &&
                 (string.IsNullOrEmpty(searchIdText) || order.Id.ToString() == searchIdText) &&
                 (string.IsNullOrEmpty(status) || order.status.ToString() == status) &&
@@ -95,7 +130,7 @@ namespace ServiceOrder
             EndDatePicker.SelectedDate = null;
 
             // Recarregar todos os dados
-            LoadOrders();
+            LoadOrdersAsync();
         }
     }
 }
