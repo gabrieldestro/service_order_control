@@ -1,18 +1,36 @@
 ﻿<Window x:Class="ServiceOrder.OrderDetailView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Cadastro/Visualização de Ordem" Height="300" Width="400">
+        Title="Cadastro/Visualização de Ordem" Height="400" Width="400">
     <Grid>
         <StackPanel Margin="10">
-            <TextBlock Text="Cliente" />
-            <TextBox x:Name="ClienteTextBox" Margin="0,5" />
+            <!-- Campo Nome -->
+            <TextBlock Text="Nome" />
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
 
+            <!-- Campo Descrição -->
             <TextBlock Text="Descrição" />
-            <TextBox x:Name="DescricaoTextBox" Margin="0,5" />
+            <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
 
+            <!-- Campo Data de Criação -->
             <TextBlock Text="Data de Criação" />
-            <TextBox x:Name="DataCriacaoTextBox" Margin="0,5" IsReadOnly="True" />
+            <TextBox Text="{Binding CreateDate, StringFormat=\{0:g\}, UpdateSourceTrigger=PropertyChanged}" 
+                     IsReadOnly="True" Margin="0,5" />
 
+            <!-- Campo Última Atualização -->
+            <TextBlock Text="Última Atualização" />
+            <TextBox Text="{Binding LastUpdated, StringFormat=\{0:g\}, UpdateSourceTrigger=PropertyChanged}" 
+                     IsReadOnly="True" Margin="0,5" />
+
+            <!-- Campo Status -->
+            <TextBlock Text="Status" />
+            <ComboBox x:Name="StatusComboBox" Margin="0,5">
+                <ComboBoxItem Content="Iniciado" Tag="STARTED"/>
+                <ComboBoxItem Content="Pendente" Tag="PENDING"/>
+                <ComboBoxItem Content="Finalizado" Tag="FINISHED"/>
+            </ComboBox>
+
+            <!-- Botão Salvar -->
             <Button Content="Salvar" Width="100" Height="40" Margin="0,10,0,0" Click="OnSaveClick" />
         </StackPanel>
     </Grid>

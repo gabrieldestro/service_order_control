@@ -23,50 +23,99 @@ namespace ServiceOrder
     /// </summary>
     public partial class OrderDetailView : Window
     {
-        public Order Order { get; set; }
         private readonly IOrderService _orderService;
 
-        // Injeção de dependência do IOrderService
+        public Dictionary<Order.Status, string> statusWithCaptions { get; } =
+            new Dictionary<Order.Status, string>()
+            {
+                {Order.Status.STARTED, "Inciado"},
+                {Order.Status.PENDING, "Pendente"},
+                {Order.Status.FINISHED, "Finalizado"}
+            };
+
+
+        private Order.Status _orderStatus;
+        public Order.Status orderStatus
+        {
+            get { return _orderStatus; }
+            set {; }
+        }
+
         public OrderDetailView(IOrderService orderService)
         {
             InitializeComponent();
-
             _orderService = orderService;
 
-            // Caso tenha recebido uma ordem, inicialize os campos
-            if (Order != null)
+            // Define o DataContext para expor a lista de status
+            DataContext = this;
+        }
+
+        public void SetOrder(Order order)
+        {
+            if (order == null)
             {
-                ClienteTextBox.Text = Order.Name;
-                DescricaoTextBox.Text = Order.Description;
-                DataCriacaoTextBox.Text = Order.CreateDate.ToString("g");
+                order = new Order
+                {
+                    CreateDate = DateTime.Now,
+                    LastUpdated = DateTime.Now,
+                    status = Order.Status.STARTED
+                };
             }
-            else
+
+            foreach (ComboBoxItem item in StatusComboBox.Items)
             {
-                DataCriacaoTextBox.Text = DateTime.Now.ToString("g");
+                if (item.Tag.ToString() == order.status.ToString())
+                {
+                    StatusComboBox.SelectedItem = item;
+                    break;
+                }
             }
+
+            // Define o DataContext com a ordem atual ou nova
+            DataContext = order;
         }
 
         private async void OnSaveClick(object sender, RoutedEventArgs e)
         {
-            if (Order == null)
+            if (DataContext is not Order currentOrder)
             {
-                Order = new Order
-                {
-                    Name = ClienteTextBox.Text,
-                    Description = DescricaoTextBox.Text,
-                    CreateDate = DateTime.Now
-                };
-                await _orderService.AddOrder(Order); // Salva nova ordem no repositório
+                MessageBox.Show("Erro ao salvar a ordem. Tente novamente.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            else
+
+            // Validar os campos obrigatórios
+            if (string.IsNullOrWhiteSpace(currentOrder.Name) || string.IsNullOrWhiteSpace(currentOrder.Description))
             {
-                Order.Name = ClienteTextBox.Text;
-                Order.Description = DescricaoTextBox.Text;
-                await _orderService.UpdateOrder(Order); // Atualiza ordem existente
+                MessageBox.Show("Por favor, preencha todos os campos obrigatórios.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Atualizar a data de modificação
+            currentOrder.LastUpdated = DateTime.Now;
+            // Pega o status selecionado no ComboBox e faz o mapeamento
+            if (StatusComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                currentOrder.status = selectedItem.Tag.ToString() switch
+                {
+                    "STARTED" => Order.Status.STARTED,
+                    "PENDING" => Order.Status.PENDING,
+                    "FINISHED" => Order.Status.FINISHED,
+                    _ => Order.Status.STARTED, // Valor padrão
+                };
+            }
+
+            // Salvar no serviço
+            if (currentOrder.Id == 0) // Nova ordem
+            {
+                await _orderService.AddOrder(currentOrder);
+            }
+            else // Atualizar ordem existente
+            {
+                await _orderService.UpdateOrder(currentOrder);
             }
 
             MessageBox.Show("Ordem salva com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-            this.Close();
+            Close(); // Fechar a janela após salvar
         }
     }
 }

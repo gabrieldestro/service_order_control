@@ -27,6 +27,7 @@ namespace ServiceOrder
         private void OnNovoCadastroClick(object sender, RoutedEventArgs e)
         {
             var detailView = App.ServiceProvider.GetRequiredService<OrderDetailView>();
+            detailView.SetOrder(null); // Nova ordem (criação)
             detailView.Closed += (s, args) => LoadOrders();
             detailView.ShowDialog();
         }
@@ -36,7 +37,7 @@ namespace ServiceOrder
             if (sender is Button button && button.DataContext is Order selectedOrder)
             {
                 var detailView = App.ServiceProvider.GetRequiredService<OrderDetailView>();
-                detailView.DataContext = selectedOrder;
+                detailView.SetOrder(selectedOrder); // Ordem existente (edição)
                 detailView.Closed += (s, args) => LoadOrders();
                 detailView.ShowDialog();
             }
