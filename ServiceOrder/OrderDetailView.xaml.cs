@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ControlzEx.Theming;
 using ServiceOrder.Domain.Entities;
 using ServiceOrder.Domain.Interfaces;
 using ServiceOrder.Repository.Repositories;
@@ -43,7 +44,11 @@ namespace ServiceOrder
 
         public OrderDetailView(IOrderService orderService)
         {
-            InitializeComponent();
+            InitializeComponent(); 
+            
+            ThemeManager.Current.ThemeSyncMode = ThemeSyncMode.SyncWithAppMode;
+            ThemeManager.Current.SyncTheme();
+
             _orderService = orderService;
 
             // Define o DataContext para expor a lista de status

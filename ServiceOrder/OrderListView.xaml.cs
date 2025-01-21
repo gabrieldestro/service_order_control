@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using ControlzEx.Theming;
@@ -87,6 +88,9 @@ namespace ServiceOrder
 
                 // Atualizar a fonte de dados do DataGrid
                 OrderDataGrid.ItemsSource = Orders;
+                
+                // Atualizar o contador de registros exibidos
+                UpdateRecordCount(Orders.Count);
             }
             catch (Exception ex)
             {
@@ -136,6 +140,59 @@ namespace ServiceOrder
 
             // Recarregar todos os dados
             LoadOrdersAsync();
+        }
+        private void UpdateRecordCount(int count)
+        {
+            RecordCountLabel.Content = count == 1
+                ? $"{count} registro exibido."
+                : $"{count} registros exibidos.";
+        }
+
+        private async void OnBackupClick(object sender, RoutedEventArgs e)
+        {
+            // Exibir o diálogo para o usuário selecionar o local do backup
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                FileName = $"Backup_serviceorders_{DateTime.Now:yyyyMMddHHmmss}.db",
+                DefaultExt = ".db",
+                Filter = "Banco de Dados SQLite (*.db)|*.db"
+            };
+
+            bool? result = dialog.ShowDialog();
+
+            if (result == true)
+            {
+                string backupPath = dialog.FileName;
+
+                try
+                {
+                    // Mostrar indicador de carregamento
+                    ChangeViewOnLoad(false);
+
+                    // Simular atraso para salvar o banco
+                    await Task.Run(() =>
+                    {
+                        string sourcePath = "serviceorders.db"; // Caminho original
+                        File.Copy(sourcePath, backupPath, overwrite: true); // Realizar o backup
+                    });
+
+                    // Ocultar indicador de carregamento
+                    ChangeViewOnLoad(true);
+
+                    // Exibir mensagem de sucesso
+                    MessageBox.Show($"Backup realizado com sucesso! Arquivo salvo em: {backupPath}",
+                                    "Backup", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    // Ocultar indicador de carregamento
+                    ChangeViewOnLoad(true);
+
+                    // Exibir mensagem de erro
+                    MessageBox.Show($"Erro ao realizar o backup: {ex.Message}",
+                                    "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }

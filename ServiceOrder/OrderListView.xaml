@@ -10,6 +10,8 @@
             <RowDefinition Height="*"/>
             <!-- Grade -->
             <RowDefinition Height="Auto"/>
+            <!-- Label de Contagem -->
+            <RowDefinition Height="Auto"/>
             <!-- Botões -->
         </Grid.RowDefinitions>
 
@@ -88,9 +90,15 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-
+        
+        <Label x:Name="RecordCountLabel" Grid.Row="2" HorizontalAlignment="Right" Margin="10,5,10,5"
+                FontSize="14" FontWeight="Bold" Foreground="Gray"/>
+        
         <!-- Botão Novo Cadastro -->
-        <Button Content="Novo Cadastro" x:Name="NewRegistrationButton" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"
+        <Button Content="Novo Cadastro" x:Name="NewRegistrationButton" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center"
                 Width="120" Height="40" Margin="10" Click="OnNewRegistrationClick"/>
+        
+        <Button Content="Backup" x:Name="BackupButton" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center"
+                Width="120" Height="40" Margin="10" Click="OnBackupClick"/>
     </Grid>
 </Window>
