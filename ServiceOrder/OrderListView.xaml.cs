@@ -38,6 +38,31 @@ namespace ServiceOrder
             detailView.ShowDialog();
         }
 
+        private void OnNextClick(object sender, RoutedEventArgs e)
+        {
+            if (OrderDataGrid.Items.Count == 0)
+            {
+                MessageBox.Show("Nenhum registro disponível para edição.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            // Obtém a lista de itens e encontra o registro com a menor data de atualização
+            var items = OrderDataGrid.Items.Cast<Order>(); // Substitua 'Order' pelo tipo real do item.
+            var oldestItem = items.OrderByDescending(o => o.LastUpdated).FirstOrDefault();
+
+            if (oldestItem != null)
+            {
+                var detailView = App.ServiceProvider.GetRequiredService<OrderDetailView>();
+                detailView.SetOrder(oldestItem); // Ordem existente (edição)
+                detailView.Closed += (s, args) => LoadOrdersAsync();
+                detailView.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Nenhum registro encontrado.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void OnEditClick(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.DataContext is Order selectedOrder)
@@ -107,6 +132,8 @@ namespace ServiceOrder
             FilterButton.IsEnabled = show;
             ClearButton.IsEnabled = show;
             NewRegistrationButton.IsEnabled = show;
+            NextButton.IsEnabled = show;
+            BackupButton.IsEnabled = show;
 
             if (!show) LoadingProgressBar.Visibility = Visibility.Visible;
             else LoadingProgressBar.Visibility = Visibility.Collapsed;  
