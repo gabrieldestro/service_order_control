@@ -90,6 +90,10 @@
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0">
             <Button Content="Backup" x:Name="BackupButton" Width="120" Height="40" Margin="10,0,0,0"
                     Background="white" BorderThickness="1" Click="OnBackupClick"/>
+            <Button Content="Cadastro Cliente" Width="140" Height="40" Margin="10,0,0,0"
+                    Background="white" BorderThickness="1" Click="OnNewClientClick"/>
+            <Button Content="Cadastro Companhia" Width="160" Height="40" Margin="10,0,0,0"
+                    Background="white" BorderThickness="1" Click="OnNewCompanyClick"/>
             <Button Content="Próximo" x:Name="NextButton" Width="120" Height="40" Margin="10,0,0,0"
                     Background="white" BorderThickness="1" Click="OnNextClick"/>
             <Button Content="Novo Cadastro" x:Name="NewRegistrationButton" Width="120" Height="40" Margin="10,0,0,0"

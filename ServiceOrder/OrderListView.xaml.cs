@@ -2,10 +2,8 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using ControlzEx.Theming;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceOrder.Domain.Entities;
-using ServiceOrder.Domain.Interfaces;
 using ServiceOrder.Services.Interfaces;
 
 namespace ServiceOrder
@@ -148,6 +146,17 @@ namespace ServiceOrder
             RecordCountLabel.Content = count == 1
                 ? $"{count} registro exibido."
                 : $"{count} registros exibidos.";
+        }
+        private void OnNewClientClick(object sender, RoutedEventArgs e)
+        {
+            var detailView = App.ServiceProvider.GetRequiredService<ClientDetailView>();
+            detailView.ShowDialog();
+        }
+
+        private void OnNewCompanyClick(object sender, RoutedEventArgs e)
+        {
+            var detailView = App.ServiceProvider.GetRequiredService<ElectricCompanyDetailView>();
+            detailView.ShowDialog();
         }
 
         private async void OnBackupClick(object sender, RoutedEventArgs e)

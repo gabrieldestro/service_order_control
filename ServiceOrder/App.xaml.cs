@@ -28,8 +28,10 @@ namespace ServiceOrder
             DependencyInjection.ConfigureServices(services);
 
             // Registro das Views
-            services.AddSingleton<OrderListView>();     // Registro da OrderListView
-            services.AddTransient<OrderDetailView>();   // Registro da OrderDetailView
+            services.AddSingleton<OrderListView>();
+            services.AddTransient<OrderDetailView>();
+            services.AddTransient<ClientDetailView>();
+            services.AddTransient<ElectricCompanyDetailView>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

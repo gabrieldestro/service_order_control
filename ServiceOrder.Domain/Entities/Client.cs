@@ -9,7 +9,8 @@ namespace ServiceOrder.Domain.Entities
     public class Client
     {
         public int Id { get; set; }
-        public string? FinalCustomerName { get; set; }
-        public string? ResellerName { get; set; }
+        public string? Name { get; set; }
+        public string? Cnpj { get; set; }
+        public DateTime? LastUpdated { get; set; }
     }
 }
