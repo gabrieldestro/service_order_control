@@ -28,7 +28,13 @@ namespace ServiceOrder
             DependencyInjection.ConfigureServices(services);
 
             // Registro das Views
-            services.AddSingleton<OrderListView>();
+            services.AddSingleton<MainView>();
+
+            services.AddTransient<OptionsListView>();
+            services.AddTransient<OrderListView>();
+            services.AddTransient<ClientListView>();
+            services.AddTransient<ElectricCompanyListView>();
+
             services.AddTransient<OrderDetailView>();
             services.AddTransient<ClientDetailView>();
             services.AddTransient<ElectricCompanyDetailView>();
@@ -49,7 +55,7 @@ namespace ServiceOrder
                 Console.WriteLine($"Erro ao aplicar migrações: {ex.Message}.");
             }
 
-            var mainWindow = ServiceProvider.GetRequiredService<OrderListView>();
+            var mainWindow = ServiceProvider.GetRequiredService<MainView>();
             mainWindow.Show();
         }
     }

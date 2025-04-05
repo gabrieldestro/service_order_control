@@ -34,6 +34,19 @@ namespace ServiceOrder
             ThemeManager.Current.ThemeSyncMode = ThemeSyncMode.SyncWithAppMode;
             ThemeManager.Current.SyncTheme();
         }
+        public void SetELectricCompany(ElectricCompany client)
+        {
+            if (client == null)
+            {
+                client = new ElectricCompany
+                {
+                    CreatedDate = DateTime.Now,
+                    LastUpdated = DateTime.Now
+                };
+            }
+
+            DataContext = client;
+        }
 
         private void OnSaveClick(object sender, RoutedEventArgs e)
         {

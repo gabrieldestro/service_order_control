@@ -35,6 +35,20 @@ namespace ServiceOrder
             ThemeManager.Current.SyncTheme();
         }
 
+        public void SetClient(Client client)
+        {
+            if (client == null)
+            {
+                client = new Client
+                {
+                    CreatedDate = DateTime.Now,
+                    LastUpdated = DateTime.Now
+                };
+            }
+
+            DataContext = client;
+        }
+
         private void OnSaveClick(object sender, RoutedEventArgs e)
         {
             var name = ClientNameTextBox.Text.Trim();

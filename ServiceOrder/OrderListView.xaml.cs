@@ -11,7 +11,7 @@ namespace ServiceOrder
     /// <summary>
     /// Interação lógica para OrderListView.xam
     /// </summary>
-    public partial class OrderListView : Window
+    public partial class OrderListView : UserControl
     {
         private readonly IOrderService _orderService;
         public ObservableCollection<Order> Orders { get; set; }
@@ -113,7 +113,6 @@ namespace ServiceOrder
             ClearButton.IsEnabled = show;
             NewRegistrationButton.IsEnabled = show;
             NextButton.IsEnabled = show;
-            BackupButton.IsEnabled = show;
 
             LoadingProgressBar.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
         }
@@ -146,54 +145,6 @@ namespace ServiceOrder
             RecordCountLabel.Content = count == 1
                 ? $"{count} registro exibido."
                 : $"{count} registros exibidos.";
-        }
-        private void OnNewClientClick(object sender, RoutedEventArgs e)
-        {
-            var detailView = App.ServiceProvider.GetRequiredService<ClientDetailView>();
-            detailView.ShowDialog();
-        }
-
-        private void OnNewCompanyClick(object sender, RoutedEventArgs e)
-        {
-            var detailView = App.ServiceProvider.GetRequiredService<ElectricCompanyDetailView>();
-            detailView.ShowDialog();
-        }
-
-        private async void OnBackupClick(object sender, RoutedEventArgs e)
-        {
-            var dialog = new Microsoft.Win32.SaveFileDialog
-            {
-                FileName = $"Backup_serviceorders_{DateTime.Now:yyyyMMddHHmmss}.db",
-                DefaultExt = ".db",
-                Filter = "Banco de Dados SQLite (*.db)|*.db"
-            };
-
-            bool? result = dialog.ShowDialog();
-
-            if (result == true)
-            {
-                string backupPath = dialog.FileName;
-
-                try
-                {
-                    ChangeViewOnLoad(false);
-
-                    await Task.Run(() =>
-                    {
-                        string sourcePath = "serviceorders.db";
-                        File.Copy(sourcePath, backupPath, overwrite: true);
-                    });
-
-                    ChangeViewOnLoad(true);
-                    MessageBox.Show($"Backup realizado com sucesso! Arquivo salvo em: {backupPath}",
-                        "Backup", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                catch (Exception ex)
-                {
-                    ChangeViewOnLoad(true);
-                    MessageBox.Show($"Erro ao realizar o backup: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
         }
     }
 }

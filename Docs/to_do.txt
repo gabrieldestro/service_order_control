@@ -1,0 +1,4 @@
+1. Ajustar todas as views de Detalhe
+2. Ajustar todas as views de Listagem
+3. Criar os alarmes
+4. Criar a funcionalidade de Exportação para csv/excell

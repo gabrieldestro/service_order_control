@@ -9,6 +9,7 @@ namespace ServiceOrder.Domain.Entities
     public class Order
     {
         public int Id { get; set; }
+        public string? Description { get; set; }
 
         // Timeline Dates
         public DateTime? ReceivedDate { get; set; }
@@ -20,10 +21,13 @@ namespace ServiceOrder.Domain.Entities
         public DateTime? InspectionRequestDate { get; set; }
         public DateTime? FinalizationDate { get; set; }
         public DateTime? PaymentDate { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
         public DateTime? LastUpdated { get; set; }
 
         // Financial
         public decimal? ProjectValue { get; set; }
+        public bool Enabled { get; set; }
 
         // Navigation Properties
         public int ClientId { get; set; }

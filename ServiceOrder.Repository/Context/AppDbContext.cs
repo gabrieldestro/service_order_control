@@ -28,6 +28,14 @@ namespace ServiceOrder.Repository.Context
                 .Property(o => o.Id)
                 .ValueGeneratedOnAdd();
 
+            modelBuilder.Entity<Order>()
+                .Property(o => o.Enabled)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.CreatedDate)
+                .HasDefaultValue(DateTime.Now);
+
             // Configuração de Client
             modelBuilder.Entity<Client>()
                 .HasKey(c => c.Id);
@@ -36,6 +44,14 @@ namespace ServiceOrder.Repository.Context
                 .Property(c => c.Id)
                 .ValueGeneratedOnAdd();
 
+            modelBuilder.Entity<Client>()
+                .Property(o => o.Enabled)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<Client>()
+                .Property(o => o.CreatedDate)
+                .HasDefaultValue(DateTime.Now);
+
             // Configuração de ElectricCompany
             modelBuilder.Entity<ElectricCompany>()
                 .HasKey(e => e.Id);
@@ -43,6 +59,14 @@ namespace ServiceOrder.Repository.Context
             modelBuilder.Entity<ElectricCompany>()
                 .Property(e => e.Id)
                 .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<ElectricCompany>()
+                .Property(o => o.Enabled)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<ElectricCompany>()
+                .Property(o => o.CreatedDate)
+                .HasDefaultValue(DateTime.Now);
         }
     }
 }
