@@ -14,23 +14,23 @@ namespace ServiceOrder.Repository.Repositories
             _context = context;
         }
 
-        public async Task<List<Order>> GetAllAsync()
+        public async Task<List<Domain.Entities.Order>> GetAllAsync()
         {
             return await _context.Orders.ToListAsync();
         }
 
-        public async Task<Order> GetByIdAsync(int id)
+        public async Task<Domain.Entities.Order> GetByIdAsync(int id)
         {
             return await _context.Orders.FindAsync(id);
         }
 
-        public async Task AddAsync(Order order)
+        public async Task AddAsync(Domain.Entities.Order order)
         {
             await _context.Orders.AddAsync(order);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Order order)
+        public async Task UpdateAsync(Domain.Entities.Order order)
         {
             _context.Orders.Update(order);
             await _context.SaveChangesAsync();

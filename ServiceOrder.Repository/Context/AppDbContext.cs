@@ -10,7 +10,9 @@ namespace ServiceOrder.Repository.Context
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Order> Orders { get; set; }
+        public DbSet<Domain.Entities.Order> Orders { get; set; }
+        public DbSet<Domain.Entities.Client> Clients { get; set; }
+        public DbSet<Domain.Entities.ElectricCompany> ElectricCompanies { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -18,12 +20,29 @@ namespace ServiceOrder.Repository.Context
         {
             base.OnModelCreating(modelBuilder);
 
+            // Configuração de Order
             modelBuilder.Entity<Order>()
-                .HasKey(o => o.Id);  // Define a chave primária
+                .HasKey(o => o.Id);
 
             modelBuilder.Entity<Order>()
                 .Property(o => o.Id)
-                .ValueGeneratedOnAdd();  // Garante que o Id será autoincrementado no banco de dados
+                .ValueGeneratedOnAdd();
+
+            // Configuração de Client
+            modelBuilder.Entity<Client>()
+                .HasKey(c => c.Id);
+
+            modelBuilder.Entity<Client>()
+                .Property(c => c.Id)
+                .ValueGeneratedOnAdd();
+
+            // Configuração de ElectricCompany
+            modelBuilder.Entity<ElectricCompany>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<ElectricCompany>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
         }
     }
 }

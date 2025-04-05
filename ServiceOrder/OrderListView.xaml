@@ -5,57 +5,36 @@
         WindowStartupLocation="CenterScreen"
         Background="#F9F9F9">
     <Grid Margin="15">
-        <!-- Definindo Linhas e Colunas -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Filtros -->
             <RowDefinition Height="*"/>
-            <!-- Grade -->
             <RowDefinition Height="Auto"/>
-            <!-- Label de Contagem -->
             <RowDefinition Height="Auto"/>
-            <!-- Botões -->
         </Grid.RowDefinitions>
 
         <!-- Filtros -->
         <Border Grid.Row="0" Margin="0,0,0,10" Padding="10" Background="White" CornerRadius="5" BorderBrush="#D3D3D3" BorderThickness="1">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <!-- Filtro por Nome -->
                 <StackPanel Orientation="Vertical" Margin="5">
-                    <Label Content="Nome:" FontWeight="Bold" Foreground="#333"/>
-                    <TextBox x:Name="SearchTextBox" Width="150" Height="25" Margin="5" Padding="2"/>
+                    <Label Content="Cliente:" FontWeight="Bold" Foreground="#333"/>
+                    <TextBox x:Name="SearchTextBox" Width="150" Height="25" Margin="5"/>
                 </StackPanel>
 
-                <!-- Filtro por ID -->
                 <StackPanel Orientation="Vertical" Margin="5">
                     <Label Content="ID:" FontWeight="Bold" Foreground="#333"/>
-                    <TextBox x:Name="SearchIdTextBox" Width="100" Height="25" Margin="5" Padding="2"/>
+                    <TextBox x:Name="SearchIdTextBox" Width="100" Height="25" Margin="5"/>
                 </StackPanel>
 
-                <!-- Filtro por Status -->
-                <StackPanel Orientation="Vertical" Margin="5">
-                    <Label Content="Status:" FontWeight="Bold" Foreground="#333"/>
-                    <ComboBox x:Name="StatusComboBox" Background="white" Width="150" Height="30" Margin="2" Padding="5">
-                        <ComboBoxItem Content="Todos" Tag="{x:Null}" IsSelected="True"/>
-                        <ComboBoxItem Content="Iniciado" Tag="STARTED"/>
-                        <ComboBoxItem Content="Pendente" Tag="PENDING"/>
-                        <ComboBoxItem Content="Finalizado" Tag="FINISHED"/>
-                    </ComboBox>
-                </StackPanel>
-
-                <!-- Filtro por Data Inicial -->
                 <StackPanel Orientation="Vertical" Margin="5">
                     <Label Content="Data Inicial:" FontWeight="Bold" Foreground="#333"/>
                     <DatePicker x:Name="StartDatePicker" Width="150" Height="30" Margin="2"/>
                 </StackPanel>
 
-                <!-- Filtro por Data Final -->
                 <StackPanel Orientation="Vertical" Margin="5">
                     <Label Content="Data Final:" FontWeight="Bold" Foreground="#333"/>
                     <DatePicker x:Name="EndDatePicker" Width="150" Height="30" Margin="2"/>
                 </StackPanel>
 
-                <!-- Botões de Filtro -->
                 <StackPanel Orientation="Horizontal" Margin="10,5,0,0" VerticalAlignment="Bottom">
                     <Button x:Name="FilterButton" Content="Filtrar" Width="120" Height="35" Margin="5"
                             Background="white" BorderThickness="1" Click="OnFilterClick"/>
@@ -63,24 +42,31 @@
                             Background="white" BorderThickness="1" Click="OnClearFiltersClick"/>
                 </StackPanel>
 
-
-                <!-- Indicador de Carregamento -->
-                <ProgressBar x:Name="LoadingProgressBar" IsIndeterminate="True" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                         Visibility="Collapsed" Width="200" Height="20" Margin="0, 0, 0, 50" />
+                <ProgressBar x:Name="LoadingProgressBar" IsIndeterminate="True" HorizontalAlignment="Center"
+                             VerticalAlignment="Center" Visibility="Collapsed" Width="200" Height="20" Margin="10"/>
             </StackPanel>
         </Border>
 
         <!-- Grade de Dados -->
-        <DataGrid x:Name="OrderDataGrid" Grid.Row="1" Margin="0,0,0,10" Background="White" 
-                  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" 
+        <DataGrid x:Name="OrderDataGrid" Grid.Row="1" Margin="0,0,0,10" Background="White"
+                  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
                   BorderBrush="#D3D3D3" BorderThickness="1">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="100"/>
-                <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="200"/>
-                <DataGridTextColumn Header="Descrição" Binding="{Binding Description}" Width="300"/>
-                <DataGridTextColumn Header="Status" Binding="{Binding status}" Width="150"/>
-                <DataGridTextColumn Header="Criado em" Binding="{Binding CreateDate, StringFormat=d}" Width="150"/>
-                <DataGridTextColumn Header="Última Atualização" Binding="{Binding LastUpdated, StringFormat=g}" Width="200"/>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                <DataGridTextColumn Header="Valor do Projeto" Binding="{Binding ProjectValue, StringFormat=C}" Width="120"/>
+
+                <!-- Datas da Timeline -->
+                <DataGridTextColumn Header="Recebido em" Binding="{Binding ReceivedDate, StringFormat=dd/MM/yyyy}" Width="110"/>
+                <DataGridTextColumn Header="Documento Enviado" Binding="{Binding DocumentSentDate, StringFormat=dd/MM/yyyy}" Width="130"/>
+                <DataGridTextColumn Header="Documento Recebido" Binding="{Binding DocumentReceivedDate, StringFormat=dd/MM/yyyy}" Width="130"/>
+                <DataGridTextColumn Header="Cadastro do Projeto" Binding="{Binding ProjectRegistrationDate, StringFormat=dd/MM/yyyy}" Width="130"/>
+                <DataGridTextColumn Header="Envio do Projeto" Binding="{Binding ProjectSubmissionDate, StringFormat=dd/MM/yyyy}" Width="130"/>
+                <DataGridTextColumn Header="Aprovação do Projeto" Binding="{Binding ProjectApprovalDate, StringFormat=dd/MM/yyyy}" Width="140"/>
+                <DataGridTextColumn Header="Solicitação de Vistoria" Binding="{Binding InspectionRequestDate, StringFormat=dd/MM/yyyy}" Width="140"/>
+                <DataGridTextColumn Header="Finalização" Binding="{Binding FinalizationDate, StringFormat=dd/MM/yyyy}" Width="110"/>
+                <DataGridTextColumn Header="Pagamento" Binding="{Binding PaymentDate, StringFormat=dd/MM/yyyy}" Width="110"/>
+                <DataGridTextColumn Header="Última Atualização" Binding="{Binding LastUpdated, StringFormat=g}" Width="150"/>
+                
                 <DataGridTemplateColumn Header="Ações" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -100,7 +86,7 @@
         <Label x:Name="RecordCountLabel" Grid.Row="2" HorizontalAlignment="Right" Margin="0,5,0,5"
                FontSize="12" Foreground="#555"/>
 
-        <!-- Botões de Ação -->
+        <!-- Botões -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0">
             <Button Content="Backup" x:Name="BackupButton" Width="120" Height="40" Margin="10,0,0,0"
                     Background="white" BorderThickness="1" Click="OnBackupClick"/>

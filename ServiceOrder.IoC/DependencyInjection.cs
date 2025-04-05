@@ -18,9 +18,13 @@ namespace ServiceOrder.IoC
 
             // Registro do repositório
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IElectricCompanyRepository, ElectricCompanyRepository>();
 
              // Registro do Serviço
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IElectricCompanyService, ElectricCompanyService>();
+            services.AddScoped<IClientService, ClientService>();
         }
     }
 }

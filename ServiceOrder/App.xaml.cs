@@ -38,7 +38,14 @@ namespace ServiceOrder
 
             // Aplica as migrações para garantir que o banco de dados seja criado
             var dbContext = ServiceProvider.GetRequiredService<AppDbContext>();
-            dbContext.Database.Migrate(); // Aplica as migrações pendentes
+            try
+            {
+                dbContext.Database.Migrate(); // Aplica as migrações pendentes
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao aplicar migrações: {ex.Message}.");
+            }
 
             var mainWindow = ServiceProvider.GetRequiredService<OrderListView>();
             mainWindow.Show();

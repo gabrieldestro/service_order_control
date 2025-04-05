@@ -7,12 +7,12 @@ using ServiceOrder.Domain.Entities;
 
 namespace ServiceOrder.Domain.Interfaces
 {
-    public interface IOrderRepository
+    public interface IClientRepository
     {
-        Task<List<Entities.Order>> GetAllAsync();
-        Task<Entities.Order> GetByIdAsync(int id);
-        Task AddAsync(Entities.Order order);
-        Task UpdateAsync(Entities.Order order);
+        Task<List<Client>> GetAllAsync();
+        Task<Client?> GetByIdAsync(int id);
+        Task AddAsync(Client client);
+        Task UpdateAsync(Client client);
         Task DeleteAsync(int id);
-    }
+    }   
 }

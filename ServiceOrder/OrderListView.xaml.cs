@@ -20,10 +20,7 @@ namespace ServiceOrder
 
         public OrderListView(IOrderService orderService)
         {
-            InitializeComponent(); 
-
-            ThemeManager.Current.ThemeSyncMode = ThemeSyncMode.SyncWithAppMode;
-            ThemeManager.Current.SyncTheme();
+            InitializeComponent();
 
             _orderService = orderService;
             Orders = new ObservableCollection<Order>();
@@ -33,7 +30,7 @@ namespace ServiceOrder
         private void OnNewRegistrationClick(object sender, RoutedEventArgs e)
         {
             var detailView = App.ServiceProvider.GetRequiredService<OrderDetailView>();
-            detailView.SetOrder(null); // Nova ordem (criação)
+            detailView.SetOrder(null); // Nova ordem
             detailView.Closed += (s, args) => LoadOrdersAsync();
             detailView.ShowDialog();
         }
@@ -46,20 +43,15 @@ namespace ServiceOrder
                 return;
             }
 
-            // Obtém a lista de itens e encontra o registro com a menor data de atualização
-            var items = OrderDataGrid.Items.Cast<Order>(); // Substitua 'Order' pelo tipo real do item.
+            var items = OrderDataGrid.Items.Cast<Order>();
             var oldestItem = items.OrderByDescending(o => o.LastUpdated).FirstOrDefault();
 
             if (oldestItem != null)
             {
                 var detailView = App.ServiceProvider.GetRequiredService<OrderDetailView>();
-                detailView.SetOrder(oldestItem); // Ordem existente (edição)
+                detailView.SetOrder(oldestItem);
                 detailView.Closed += (s, args) => LoadOrdersAsync();
                 detailView.ShowDialog();
-            }
-            else
-            {
-                MessageBox.Show("Nenhum registro encontrado.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -68,7 +60,7 @@ namespace ServiceOrder
             if (sender is Button button && button.DataContext is Order selectedOrder)
             {
                 var detailView = App.ServiceProvider.GetRequiredService<OrderDetailView>();
-                detailView.SetOrder(selectedOrder); // Ordem existente (edição)
+                detailView.SetOrder(selectedOrder);
                 detailView.Closed += (s, args) => LoadOrdersAsync();
                 detailView.ShowDialog();
             }
@@ -91,30 +83,20 @@ namespace ServiceOrder
         {
             try
             {
-                // Limpar a coleção existente
                 Orders.Clear();
-
-                // Mostrar o indicador de carregamento
                 ChangeViewOnLoad(false);
 
-                await Task.Delay(1000); // Atraso de 1 segundos para simulação de carregamento
+                await Task.Delay(1000);
 
-                // Carregar os dados em background
                 var orders = await Task.Run(() => _orderService.GetAllAsync());
-
-                // Aplicar o filtro, se presente
                 var filteredOrders = filter != null ? orders.Where(filter) : orders;
 
-                // Adicionar as ordens filtradas à lista
                 foreach (var order in filteredOrders)
                 {
                     Orders.Add(order);
                 }
 
-                // Atualizar a fonte de dados do DataGrid
                 OrderDataGrid.ItemsSource = Orders;
-                
-                // Atualizar o contador de registros exibidos
                 UpdateRecordCount(Orders.Count);
             }
             catch (Exception ex)
@@ -135,39 +117,32 @@ namespace ServiceOrder
             NextButton.IsEnabled = show;
             BackupButton.IsEnabled = show;
 
-            if (!show) LoadingProgressBar.Visibility = Visibility.Visible;
-            else LoadingProgressBar.Visibility = Visibility.Collapsed;  
+            LoadingProgressBar.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void OnFilterClick(object sender, RoutedEventArgs e)
         {
-            // Obter valores dos filtros
             string searchText = SearchTextBox.Text.ToLower();
             string searchIdText = SearchIdTextBox.Text;
-            string status = (StatusComboBox.SelectedItem as ComboBoxItem)?.Tag?.ToString();
             DateTime? startDate = StartDatePicker.SelectedDate;
             DateTime? endDate = EndDatePicker.SelectedDate;
 
             LoadOrdersAsync(order =>
-                (string.IsNullOrEmpty(searchText) || order.Name.ToLower().Contains(searchText)) &&
                 (string.IsNullOrEmpty(searchIdText) || order.Id.ToString() == searchIdText) &&
-                (string.IsNullOrEmpty(status) || order.status.ToString() == status) &&
-                (!startDate.HasValue || order.CreateDate >= startDate.Value) &&
-                (!endDate.HasValue || order.CreateDate <= endDate.Value));
+                (string.IsNullOrEmpty(searchText) || order.Client?.FinalCustomerName?.ToLower().Contains(searchText) == true) &&
+                (!startDate.HasValue || order.ReceivedDate >= startDate.Value) &&
+                (!endDate.HasValue || order.ReceivedDate <= endDate.Value));
         }
 
         private void OnClearFiltersClick(object sender, RoutedEventArgs e)
         {
-            // Limpar campos de filtro
             SearchTextBox.Clear();
             SearchIdTextBox.Clear();
-            StatusComboBox.SelectedIndex = 0;
             StartDatePicker.SelectedDate = null;
             EndDatePicker.SelectedDate = null;
-
-            // Recarregar todos os dados
             LoadOrdersAsync();
         }
+
         private void UpdateRecordCount(int count)
         {
             RecordCountLabel.Content = count == 1
@@ -177,7 +152,6 @@ namespace ServiceOrder
 
         private async void OnBackupClick(object sender, RoutedEventArgs e)
         {
-            // Exibir o diálogo para o usuário selecionar o local do backup
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
                 FileName = $"Backup_serviceorders_{DateTime.Now:yyyyMMddHHmmss}.db",
@@ -193,31 +167,22 @@ namespace ServiceOrder
 
                 try
                 {
-                    // Mostrar indicador de carregamento
                     ChangeViewOnLoad(false);
 
-                    // Simular atraso para salvar o banco
                     await Task.Run(() =>
                     {
-                        string sourcePath = "serviceorders.db"; // Caminho original
-                        File.Copy(sourcePath, backupPath, overwrite: true); // Realizar o backup
+                        string sourcePath = "serviceorders.db";
+                        File.Copy(sourcePath, backupPath, overwrite: true);
                     });
 
-                    // Ocultar indicador de carregamento
                     ChangeViewOnLoad(true);
-
-                    // Exibir mensagem de sucesso
                     MessageBox.Show($"Backup realizado com sucesso! Arquivo salvo em: {backupPath}",
-                                    "Backup", MessageBoxButton.OK, MessageBoxImage.Information);
+                        "Backup", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
-                    // Ocultar indicador de carregamento
                     ChangeViewOnLoad(true);
-
-                    // Exibir mensagem de erro
-                    MessageBox.Show($"Erro ao realizar o backup: {ex.Message}",
-                                    "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Erro ao realizar o backup: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }

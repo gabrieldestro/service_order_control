@@ -9,9 +9,9 @@ namespace ServiceOrder.Services.Interfaces
 {
     public interface IOrderService
     {
-        Task<List<Order>> GetAllAsync();
-        Task<bool> AddOrder(Order order);
-        Task<bool> UpdateOrder(Order order);
-        Task<bool> DeleteOrder(Order order);
+        Task<List<Domain.Entities.Order>> GetAllAsync();
+        Task<bool> AddOrder(Domain.Entities.Order order);
+        Task<bool> UpdateOrder(Domain.Entities.Order order);
+        Task<bool> DeleteOrder(Domain.Entities.Order order);
     }
 }

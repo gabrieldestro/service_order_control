@@ -3,36 +3,62 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Cadastro/Visualização de Ordem" Height="400" Width="400">
     <Grid>
-        <StackPanel Margin="10">
-            <!-- Campo Nome -->
-            <TextBlock Text="Nome" />
-            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
+        <ScrollViewer Margin="10" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
 
-            <!-- Campo Descrição -->
-            <TextBlock Text="Descrição" />
-            <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Margin="0,5" />
+                <!-- Cliente -->
+                <TextBlock Text="Cliente" />
+                <ComboBox x:Name="ClientComboBox"
+                      SelectedValue="{Binding ClientId, Mode=TwoWay}"
+                      Margin="0,5"/>
 
-            <!-- Campo Data de Criação -->
-            <TextBlock Text="Data de Criação" />
-            <TextBox Text="{Binding CreateDate, StringFormat=\{0:g\}, UpdateSourceTrigger=PropertyChanged}" 
-                     IsReadOnly="True" Margin="0,5" />
+                <!-- Companhia Elétrica -->
+                <TextBlock Text="Companhia Elétrica" />
+                <ComboBox x:Name="ElectricCompanyComboBox"
+                      SelectedValue="{Binding ElectricCompanyId, Mode=TwoWay}"
+                      Margin="0,5"/>
 
-            <!-- Campo Última Atualização -->
-            <TextBlock Text="Última Atualização" />
-            <TextBox Text="{Binding LastUpdated, StringFormat=\{0:g\}, UpdateSourceTrigger=PropertyChanged}" 
-                     IsReadOnly="True" Margin="0,5" />
+                <!-- Datas -->
+                <TextBlock Text="Data de Recebimento" />
+                <DatePicker SelectedDate="{Binding ReceivedDate}" Margin="0,5"/>
 
-            <!-- Campo Status -->
-            <TextBlock Text="Status" />
-            <ComboBox x:Name="StatusComboBox" Margin="0,5">
-                <ComboBoxItem Content="Iniciado" Tag="STARTED"/>
-                <ComboBoxItem Content="Pendente" Tag="PENDING"/>
-                <ComboBoxItem Content="Finalizado" Tag="FINISHED"/>
-            </ComboBox>
+                <TextBlock Text="Documento Enviado" />
+                <DatePicker SelectedDate="{Binding DocumentSentDate}" Margin="0,5"/>
 
-            <!-- Botão Salvar -->
-            <Button Content="Salvar" Width="120" Height="35" Margin="5"
+                <TextBlock Text="Documento Recebido" />
+                <DatePicker SelectedDate="{Binding DocumentReceivedDate}" Margin="0,5"/>
+
+                <TextBlock Text="Cadastro Projeto" />
+                <DatePicker SelectedDate="{Binding ProjectRegistrationDate}" Margin="0,5"/>
+
+                <TextBlock Text="Envio Projeto" />
+                <DatePicker SelectedDate="{Binding ProjectSubmissionDate}" Margin="0,5"/>
+
+                <TextBlock Text="Aprovação Projeto" />
+                <DatePicker SelectedDate="{Binding ProjectApprovalDate}" Margin="0,5"/>
+
+                <TextBlock Text="Pedido de Vistoria" />
+                <DatePicker SelectedDate="{Binding InspectionRequestDate}" Margin="0,5"/>
+
+                <TextBlock Text="Finalização" />
+                <DatePicker SelectedDate="{Binding FinalizationDate}" Margin="0,5"/>
+
+                <TextBlock Text="Pagamento" />
+                <DatePicker SelectedDate="{Binding PaymentDate}" Margin="0,5"/>
+
+                <!-- Valor Projeto -->
+                <TextBlock Text="Valor do Projeto" />
+                <TextBox Text="{Binding ProjectValue, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
+
+                <!-- Última Atualização (Read-only) -->
+                <TextBlock Text="Última Atualização" />
+                <TextBox Text="{Binding LastUpdated, StringFormat={}{0:g}}" IsReadOnly="True" Margin="0,5"/>
+
+                <!-- Botão Salvar -->
+                <Button Content="Salvar" Width="120" Height="35" Margin="10"
                     Background="white" BorderThickness="1" Click="OnSaveClick" />
-        </StackPanel>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>

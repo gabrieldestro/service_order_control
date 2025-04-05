@@ -19,7 +19,7 @@ namespace ServiceOrder.Services.Services
             _orderRepository = orderRepository;
         }
 
-        public async Task<bool> AddOrder(Order order)
+        public async Task<bool> AddOrder(Domain.Entities.Order order)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace ServiceOrder.Services.Services
             return true;
         }
 
-        public async Task<bool> DeleteOrder(Order order)
+        public async Task<bool> DeleteOrder(Domain.Entities.Order order)
         {
             try
             {
@@ -47,9 +47,9 @@ namespace ServiceOrder.Services.Services
             return true;
         }
 
-        public async Task<List<Order>> GetAllAsync()
+        public async Task<List<Domain.Entities.Order>> GetAllAsync()
         {
-            List<Order> list = new List<Order>();
+            List<Domain.Entities.Order> list = new List<Domain.Entities.Order>();
 
             try
             {
@@ -62,7 +62,7 @@ namespace ServiceOrder.Services.Services
             return list;
         }
 
-        public async Task<bool> UpdateOrder(Order order)
+        public async Task<bool> UpdateOrder(Domain.Entities.Order order)
         {
             try
             {

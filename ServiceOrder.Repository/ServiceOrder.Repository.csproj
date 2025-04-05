@@ -23,4 +23,8 @@
     <ProjectReference Include="..\ServiceOrder.Domain\ServiceOrder.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

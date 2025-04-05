@@ -25,34 +25,40 @@ namespace ServiceOrder
     public partial class OrderDetailView : Window
     {
         private readonly IOrderService _orderService;
+        private readonly IClientService _clientService;
+        private readonly IElectricCompanyService _electricCompanyService;
 
-        public Dictionary<Order.Status, string> statusWithCaptions { get; } =
-            new Dictionary<Order.Status, string>()
-            {
-                {Order.Status.STARTED, "Inciado"},
-                {Order.Status.PENDING, "Pendente"},
-                {Order.Status.FINISHED, "Finalizado"}
-            };
+        private List<Client> _clients = [];
+        private List<ElectricCompany> _electricCompanies = [];
 
-
-        private Order.Status _orderStatus;
-        public Order.Status orderStatus
+        public OrderDetailView(
+            IOrderService orderService,
+            IClientService clientService,
+            IElectricCompanyService electricCompanyService)
         {
-            get { return _orderStatus; }
-            set {; }
-        }
+            InitializeComponent();
+            _orderService = orderService;
+            _clientService = clientService;
+            _electricCompanyService = electricCompanyService;
 
-        public OrderDetailView(IOrderService orderService)
-        {
-            InitializeComponent(); 
-            
             ThemeManager.Current.ThemeSyncMode = ThemeSyncMode.SyncWithAppMode;
             ThemeManager.Current.SyncTheme();
 
-            _orderService = orderService;
+            Loaded += OrderDetailView_Loaded;
+        }
 
-            // Define o DataContext para expor a lista de status
-            DataContext = this;
+        private async void OrderDetailView_Loaded(object sender, RoutedEventArgs e)
+        {
+            _clients = (await _clientService.GetAllAsync()).ToList();
+            _electricCompanies = (await _electricCompanyService.GetAllAsync()).ToList();
+
+            ClientComboBox.ItemsSource = _clients;
+            ClientComboBox.DisplayMemberPath = "Name";
+            ClientComboBox.SelectedValuePath = "Id";
+
+            ElectricCompanyComboBox.ItemsSource = _electricCompanies;
+            ElectricCompanyComboBox.DisplayMemberPath = "Name";
+            ElectricCompanyComboBox.SelectedValuePath = "Id";
         }
 
         public void SetOrder(Order order)
@@ -61,22 +67,11 @@ namespace ServiceOrder
             {
                 order = new Order
                 {
-                    CreateDate = DateTime.Now,
-                    LastUpdated = DateTime.Now,
-                    status = Order.Status.STARTED
+                    ReceivedDate = DateTime.Now,
+                    LastUpdated = DateTime.Now
                 };
             }
 
-            foreach (ComboBoxItem item in StatusComboBox.Items)
-            {
-                if (item.Tag.ToString() == order.status.ToString())
-                {
-                    StatusComboBox.SelectedItem = item;
-                    break;
-                }
-            }
-
-            // Define o DataContext com a ordem atual ou nova
             DataContext = order;
         }
 
@@ -84,43 +79,25 @@ namespace ServiceOrder
         {
             if (DataContext is not Order currentOrder)
             {
-                MessageBox.Show("Erro ao salvar a ordem. Tente novamente.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Erro ao salvar a ordem.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            // Validar os campos obrigatórios
-            if (string.IsNullOrWhiteSpace(currentOrder.Name) || string.IsNullOrWhiteSpace(currentOrder.Description))
-            {
-                MessageBox.Show("Por favor, preencha todos os campos obrigatórios.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+            if (ClientComboBox.SelectedValue is int clientId)
+                currentOrder.ClientId = clientId;
 
-            // Atualizar a data de modificação
+            if (ElectricCompanyComboBox.SelectedValue is int companyId)
+                currentOrder.ElectricCompanyId = companyId;
+
             currentOrder.LastUpdated = DateTime.Now;
-            // Pega o status selecionado no ComboBox e faz o mapeamento
-            if (StatusComboBox.SelectedItem is ComboBoxItem selectedItem)
-            {
-                currentOrder.status = selectedItem.Tag.ToString() switch
-                {
-                    "STARTED" => Order.Status.STARTED,
-                    "PENDING" => Order.Status.PENDING,
-                    "FINISHED" => Order.Status.FINISHED,
-                    _ => Order.Status.STARTED, // Valor padrão
-                };
-            }
 
-            // Salvar no serviço
-            if (currentOrder.Id == 0) // Nova ordem
-            {
+            if (currentOrder.Id == 0)
                 await _orderService.AddOrder(currentOrder);
-            }
-            else // Atualizar ordem existente
-            {
+            else
                 await _orderService.UpdateOrder(currentOrder);
-            }
 
-            MessageBox.Show("Ordem salva com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-            Close(); // Fechar a janela após salvar
+            MessageBox.Show("Ordem de serviço salva com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+            Close();
         }
     }
 }
