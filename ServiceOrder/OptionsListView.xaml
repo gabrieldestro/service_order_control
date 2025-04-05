@@ -7,8 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0">
-            <Button Content="Backup" x:Name="BackupButton" Width="120" Height="40" Margin="10,0,0,0"
+        <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15">
+            <TextBlock Text="Opções" FontSize="20" Margin="0,0,0,5"/>
+
+            <Button Content="Backup" x:Name="BackupButton" Width="120" Height="40" Margin="10,10,0,0"
             Background="white" BorderThickness="1" Click="OnBackupClick"/>
         </StackPanel>
     </Grid>

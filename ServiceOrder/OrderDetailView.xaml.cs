@@ -28,6 +28,7 @@ namespace ServiceOrder
         private readonly IClientService _clientService;
         private readonly IElectricCompanyService _electricCompanyService;
 
+        private Order _order = new Order();
         private List<Client> _clients = [];
         private List<ElectricCompany> _electricCompanies = [];
 
@@ -56,9 +57,22 @@ namespace ServiceOrder
             ClientComboBox.DisplayMemberPath = "Name";
             ClientComboBox.SelectedValuePath = "Id";
 
+            ClientFinalComboBox.ItemsSource = _clients;
+            ClientFinalComboBox.DisplayMemberPath = "Name";
+            ClientFinalComboBox.SelectedValuePath = "Id";
+
             ElectricCompanyComboBox.ItemsSource = _electricCompanies;
             ElectricCompanyComboBox.DisplayMemberPath = "Name";
             ElectricCompanyComboBox.SelectedValuePath = "Id";
+
+            if (_order.ClientId != 0)
+                ClientComboBox.SelectedValue = _order.ClientId;
+
+            if (_order.FinalClientId != 0)
+                ClientFinalComboBox.SelectedValue = _order.FinalClient;
+
+            if (_order.ElectricCompanyId != 0)
+                ElectricCompanyComboBox.SelectedValue = _order.ElectricCompanyId;
         }
 
         public void SetOrder(Order order)
@@ -71,7 +85,12 @@ namespace ServiceOrder
                     LastUpdated = DateTime.Now
                 };
             }
+            else
+            {
+                ServiceOrderName.IsEnabled = false;
+            }
 
+            _order = order;
             DataContext = order;
         }
 
@@ -83,11 +102,35 @@ namespace ServiceOrder
                 return;
             }
 
-            if (ClientComboBox.SelectedValue is int clientId)
-                currentOrder.ClientId = clientId;
+            if (String.IsNullOrEmpty(currentOrder.OrderName))
+            {
+                MessageBox.Show("Insira um código para a ordem de serviço!.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-            if (ElectricCompanyComboBox.SelectedValue is int companyId)
-                currentOrder.ElectricCompanyId = companyId;
+            if (ClientComboBox.SelectedValue != null && (int)ClientComboBox.SelectedValue != 0)
+                currentOrder.ClientId = (int)ClientComboBox.SelectedValue;
+            else
+            {
+                MessageBox.Show("Selecione um cliente!.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (ClientFinalComboBox.SelectedValue != null && (int)ClientFinalComboBox.SelectedValue != 0)
+                currentOrder.ClientId = (int)ClientFinalComboBox.SelectedValue;
+            else
+            {
+                MessageBox.Show("Selecione um cliente final!.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (ElectricCompanyComboBox.SelectedValue != null && (int)ElectricCompanyComboBox.SelectedValue != 0)
+                currentOrder.ElectricCompanyId = (int)ElectricCompanyComboBox.SelectedValue;
+            else
+            {
+                MessageBox.Show("Selecione uma companhia elétrica!.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             currentOrder.LastUpdated = DateTime.Now;
 

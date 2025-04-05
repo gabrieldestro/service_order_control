@@ -14,8 +14,19 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="Nome da Companhia:" Margin="0,0,0,5"/>
+            <TextBlock Text="Cadastro de Companhia Elétrica" FontSize="20" Margin="0,0,0,15"/>
+
+            <TextBlock Text="Nome da companhia:" Margin="0,0,0,5"/>
             <TextBox x:Name="CompanyNameTextBox" Height="30"/>
+
+            <TextBlock Text="Cnpj:" Margin="0,0,0,5"/>
+            <TextBox x:Name="CnpjTextBox" Height="30"
+             PreviewTextInput="CnpjTextBox_PreviewTextInput"
+             TextChanged="CnpjTextBox_TextChanged"
+             MaxLength="18"/>
+
+            <TextBlock Text="Descrição:" Margin="0,0,0,5"/>
+            <TextBox x:Name="DescriptionTextBox" Height="100"/>
         </StackPanel>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0">

@@ -14,8 +14,44 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock Text="Cadastro de Cliente" FontSize="20" Margin="0,0,0,15"/>
+
             <TextBlock Text="Nome do Cliente:" Margin="0,0,0,5"/>
             <TextBox x:Name="ClientNameTextBox" Height="30"/>
+            
+            <!-- Tipo de Pessoa -->
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Tipo de Pessoa:" Margin="0,0,0,5"/>
+                <ComboBox x:Name="PersonTypeComboBox" HorizontalAlignment="Left" Height="30" Width="150" SelectionChanged="PersonTypeComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Pessoa Jurídica" IsSelected="True"/>
+                    <ComboBoxItem Content="Pessoa Física"/>
+                </ComboBox>
+            </StackPanel>
+
+            <!-- CPF -->
+            <StackPanel x:Name="CpfPanel" Visibility="Visible" Margin="5">
+                <TextBlock Text="CPF:" Margin="0,0,0,5"/>
+                <TextBox x:Name="CpfTextBox" Height="30"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                PreviewTextInput="CpfTextBox_PreviewTextInput"
+                TextChanged="CpfTextBox_TextChanged"
+                MaxLength="14"/>
+            </StackPanel>
+
+            <!-- CNPJ -->
+            <StackPanel x:Name="CnpjPanel" Visibility="Visible" Margin="5">
+                <TextBlock Text="CNPJ:" Margin="0,0,0,5"/>
+                <TextBox x:Name="CnpjTextBox" Height="30"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                PreviewTextInput="CnpjTextBox_PreviewTextInput"
+                TextChanged="CnpjTextBox_TextChanged"
+                MaxLength="18"/>
+            </StackPanel>
+
+            <TextBlock Text="Descrição:" Margin="0,0,0,5"/>
+            <TextBox x:Name="DescriptionTextBox" Height="100"/>
         </StackPanel>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0">

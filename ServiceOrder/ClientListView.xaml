@@ -10,21 +10,29 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Filtros -->
         <Border Grid.Row="0" Margin="0,0,0,10" Padding="10" Background="White" CornerRadius="5" BorderBrush="#D3D3D3" BorderThickness="1">
-            <StackPanel Orientation="Horizontal">
-                <StackPanel Orientation="Vertical" Margin="5">
-                    <Label Content="Nome:" FontWeight="Bold"/>
-                    <TextBox x:Name="SearchNameTextBox" Width="200" Height="25" Margin="5"/>
+            <StackPanel Orientation="Vertical" Margin="5">
+                <TextBlock Text="Clientes" FontSize="20" Margin="0,0,0,5"/>
+
+                <ProgressBar x:Name="LoadingProgressBar" IsIndeterminate="True" HorizontalAlignment="Center"
+                             VerticalAlignment="Center" Visibility="Collapsed" Width="200" Height="20" Margin="10"/>
+                
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="Nome:" FontWeight="Bold"/>
+                        <TextBox x:Name="SearchNameTextBox" Width="200" Height="25" Margin="5"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="CNPJ:" FontWeight="Bold"/>
+                        <TextBox x:Name="SearchCnpjTextBox" Width="150" Height="25" Margin="5"/>
+                    </StackPanel>
+                    <Button Content="Filtrar" x:Name="FilterButton" Width="100" Height="30" Margin="10" Click="OnFilterClick"/>
+                    <Button Content="Limpar" x:Name="ClearButton"  Width="100" Height="30" Margin="10" Click="OnClearFiltersClick"/>
                 </StackPanel>
-                <StackPanel Orientation="Vertical" Margin="5">
-                    <Label Content="CNPJ:" FontWeight="Bold"/>
-                    <TextBox x:Name="SearchCnpjTextBox" Width="150" Height="25" Margin="5"/>
-                </StackPanel>
-                <Button Content="Filtrar" Width="100" Height="30" Margin="10" Click="OnFilterClick"/>
-                <Button Content="Limpar" Width="100" Height="30" Margin="10" Click="OnClearFiltersClick"/>
             </StackPanel>
         </Border>
 
@@ -41,7 +49,6 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
                 <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="200"/>
                 <DataGridTextColumn Header="CNPJ" Binding="{Binding Cnpj}" Width="150"/>
                 <DataGridTextColumn Header="Criado em" Binding="{Binding CreatedDate, StringFormat=dd/MM/yyyy}" Width="120"/>
@@ -50,11 +57,12 @@
         </DataGrid>
 
         <!-- Contagem de Registros -->
-        <Label x:Name="ClientRecordCountLabel" Grid.Row="2" HorizontalAlignment="Right" Margin="0,5,0,5" FontSize="12" Foreground="#555"/>
-
+        <Label x:Name="ClientRecordCountLabel" Grid.Row="2" HorizontalAlignment="Right" Margin="0,5,0,5"
+               FontSize="12" Foreground="#555"/>
+        
         <!-- Botões -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0">
-            <Button Content="Cadastro Cliente" Width="140" Height="40" Margin="10,0,0,0"
+            <Button Content="Novo Cliente" Name="NewRegistrationButton" Width="140" Height="40" Margin="10,0,0,0"
             Background="white" BorderThickness="1" Click="OnNewClientClick"/>
         </StackPanel>
     </Grid>

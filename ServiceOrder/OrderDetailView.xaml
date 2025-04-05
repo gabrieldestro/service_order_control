@@ -1,58 +1,69 @@
 ﻿<Window x:Class="ServiceOrder.OrderDetailView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Cadastro/Visualização de Ordem" Height="400" Width="400">
+        Title="Cadastro/Visualização de Ordem" Height="450" Width="800">
     <Grid>
         <ScrollViewer Margin="10" VerticalScrollBarVisibility="Auto">
             <StackPanel>
+                <TextBlock Text="Cadastro de Ordem de Serviço" FontSize="20" Margin="0,0,0,15"/>
+
+                <!-- Descrição -->
+                <TextBlock Text="Número da Ordem de Serviço:" />
+                <TextBox x:Name="ServiceOrderName" Text="{Binding OrderName, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
 
                 <!-- Cliente -->
-                <TextBlock Text="Cliente" />
+                <TextBlock Text="Cliente:" />
                 <ComboBox x:Name="ClientComboBox"
                       SelectedValue="{Binding ClientId, Mode=TwoWay}"
                       Margin="0,5"/>
 
+                <!-- Cliente Final -->
+                <TextBlock Text="Cliente Final:" />
+                <ComboBox x:Name="ClientFinalComboBox"
+                      SelectedValue="{Binding FinalClientid, Mode=TwoWay}"
+                      Margin="0,5"/>
+
                 <!-- Companhia Elétrica -->
-                <TextBlock Text="Companhia Elétrica" />
+                <TextBlock Text="Companhia Elétrica:" />
                 <ComboBox x:Name="ElectricCompanyComboBox"
                       SelectedValue="{Binding ElectricCompanyId, Mode=TwoWay}"
                       Margin="0,5"/>
 
+                <!-- Valor Projeto -->
+                <TextBlock Text="Valor do Projeto:" />
+                <TextBox Text="{Binding ProjectValue, StringFormat=C, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
+
+                <!-- Descrição -->
+                <TextBlock Text="Descrição:" />
+                <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Height="100" Margin="0,5"/>
+
                 <!-- Datas -->
-                <TextBlock Text="Data de Recebimento" />
+                <TextBlock Text="Data de Recebimento:" />
                 <DatePicker SelectedDate="{Binding ReceivedDate}" Margin="0,5"/>
 
-                <TextBlock Text="Documento Enviado" />
+                <TextBlock Text="Documento Enviado:" />
                 <DatePicker SelectedDate="{Binding DocumentSentDate}" Margin="0,5"/>
 
-                <TextBlock Text="Documento Recebido" />
+                <TextBlock Text="Documento Recebido:" />
                 <DatePicker SelectedDate="{Binding DocumentReceivedDate}" Margin="0,5"/>
 
-                <TextBlock Text="Cadastro Projeto" />
+                <TextBlock Text="Cadastro Projeto:" />
                 <DatePicker SelectedDate="{Binding ProjectRegistrationDate}" Margin="0,5"/>
 
-                <TextBlock Text="Envio Projeto" />
+                <TextBlock Text="Envio Projeto:" />
                 <DatePicker SelectedDate="{Binding ProjectSubmissionDate}" Margin="0,5"/>
 
-                <TextBlock Text="Aprovação Projeto" />
+                <TextBlock Text="Aprovação Projeto:" />
                 <DatePicker SelectedDate="{Binding ProjectApprovalDate}" Margin="0,5"/>
 
-                <TextBlock Text="Pedido de Vistoria" />
+                <TextBlock Text="Pedido de Vistoria:" />
                 <DatePicker SelectedDate="{Binding InspectionRequestDate}" Margin="0,5"/>
 
-                <TextBlock Text="Finalização" />
+                <TextBlock Text="Finalização:" />
                 <DatePicker SelectedDate="{Binding FinalizationDate}" Margin="0,5"/>
 
-                <TextBlock Text="Pagamento" />
+                <TextBlock Text="Pagamento:" />
                 <DatePicker SelectedDate="{Binding PaymentDate}" Margin="0,5"/>
-
-                <!-- Valor Projeto -->
-                <TextBlock Text="Valor do Projeto" />
-                <TextBox Text="{Binding ProjectValue, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
-
-                <!-- Última Atualização (Read-only) -->
-                <TextBlock Text="Última Atualização" />
-                <TextBox Text="{Binding LastUpdated, StringFormat={}{0:g}}" IsReadOnly="True" Margin="0,5"/>
 
                 <!-- Botão Salvar -->
                 <Button Content="Salvar" Width="120" Height="35" Margin="10"

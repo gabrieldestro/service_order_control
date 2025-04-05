@@ -9,6 +9,7 @@ namespace ServiceOrder.Domain.Entities
     public class Order
     {
         public int Id { get; set; }
+        public string OrderName { get; set; }
         public string? Description { get; set; }
 
         // Timeline Dates
@@ -32,6 +33,9 @@ namespace ServiceOrder.Domain.Entities
         // Navigation Properties
         public int ClientId { get; set; }
         public Client? Client { get; set; }
+
+        public int FinalClientId { get; set; }
+        public Client? FinalClient { get; set; }
 
         public int ElectricCompanyId { get; set; }
         public ElectricCompany? ElectricCompany { get; set; }

@@ -39,6 +39,8 @@ namespace ServiceOrder
         {
             try
             {
+                ChangeViewOnLoad(false);
+
                 Clients.Clear();
                 await Task.Delay(500); // Simulação de carregamento
 
@@ -55,6 +57,18 @@ namespace ServiceOrder
             {
                 MessageBox.Show($"Erro ao carregar clientes: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            finally
+            {
+                ChangeViewOnLoad(true);
+            }
+        }
+        private void ChangeViewOnLoad(bool show)
+        {
+            FilterButton.IsEnabled = show;
+            ClearButton.IsEnabled = show;
+            NewRegistrationButton.IsEnabled = show;
+
+            LoadingProgressBar.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void OnFilterClick(object sender, RoutedEventArgs e)
@@ -63,8 +77,8 @@ namespace ServiceOrder
             string searchCnpjText = SearchCnpjTextBox.Text;
 
             LoadClientsAsync(client =>
-                (string.IsNullOrEmpty(searchCnpjText) || client.Cnpj.ToLower().Contains(searchText) == true) &&
-                (string.IsNullOrEmpty(searchText) || client.Name.ToLower().Contains(searchText) == true));
+                (string.IsNullOrEmpty(searchCnpjText) || client?.Cnpj?.ToLower().Contains(searchText) == true) &&
+                (string.IsNullOrEmpty(searchText) || client?.Name?.ToLower().Contains(searchText) == true));
         }
 
         private void OnClearFiltersClick(object sender, RoutedEventArgs e)

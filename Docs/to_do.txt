@@ -2,3 +2,6 @@
 2. Ajustar todas as views de Listagem
 3. Criar os alarmes
 4. Criar a funcionalidade de Exportação para csv/excell
+5. definir tipagem e tamanho dos campos do EF
+6. ajustar o css
+7. dar uma limpada no código
