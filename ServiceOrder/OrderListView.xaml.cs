@@ -127,7 +127,7 @@ namespace ServiceOrder
 
             LoadOrdersAsync(order =>
                 (string.IsNullOrEmpty(searchIdText) || order.Id.ToString() == searchIdText) &&
-                (string.IsNullOrEmpty(searchText) || order.Client?.FinalCustomerName?.ToLower().Contains(searchText) == true) &&
+                (string.IsNullOrEmpty(searchText) || order.Client?.Name?.ToLower().Contains(searchText) == true) &&
                 (!startDate.HasValue || order.ReceivedDate >= startDate.Value) &&
                 (!endDate.HasValue || order.ReceivedDate <= endDate.Value));
         }
