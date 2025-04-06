@@ -68,6 +68,8 @@ namespace ServiceOrder
             }
 
             var cnpj = CnpjTextBox.Text.Trim();
+            // dont know if should be required
+            /*
             if (string.IsNullOrEmpty(cnpj))
             {
                 MessageBox.Show("Informe o CNPJ da companhia elétrica.");
@@ -77,7 +79,7 @@ namespace ServiceOrder
             {
                 MessageBox.Show("CNPJ inválido.");
                 return;
-            }
+            } */
 
             _company.Name = name;
             _company.Cnpj = cnpj;
@@ -101,6 +103,7 @@ namespace ServiceOrder
         {
             this.Close();
         }
+
         private void CnpjTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !char.IsDigit(e.Text, 0);

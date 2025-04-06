@@ -32,10 +32,12 @@ namespace ServiceOrder
 
             services.AddTransient<OptionsListView>();
             services.AddTransient<OrderListView>();
+            services.AddTransient<OrderDeadlineListView>();
             services.AddTransient<ClientListView>();
             services.AddTransient<ElectricCompanyListView>();
 
             services.AddTransient<OrderDetailView>();
+            services.AddTransient<OrderDeadlineDetailView>();
             services.AddTransient<ClientDetailView>();
             services.AddTransient<ElectricCompanyDetailView>();
         }

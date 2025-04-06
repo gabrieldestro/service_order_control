@@ -13,7 +13,7 @@
         <!-- Filtros -->
         <Border Grid.Row="0" Margin="0,0,0,10" Padding="10" Background="White" CornerRadius="5" BorderBrush="#D3D3D3" BorderThickness="1">
             <StackPanel Orientation="Vertical" Margin="5">
-                <TextBlock Text="Ordens de Serviço" FontSize="20" Margin="0,0,0,5"/>
+                <TextBlock Text="Projetos" FontSize="20" Margin="0,0,0,5"/>
 
                 <ProgressBar x:Name="LoadingProgressBar" IsIndeterminate="True" HorizontalAlignment="Center"
                  VerticalAlignment="Center" Visibility="Collapsed" Width="200" Height="20" Margin="10"/>
@@ -68,7 +68,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Ordem" Binding="{Binding OrderName}" Width="50"/>
+                <DataGridTextColumn Header="Projeto" Binding="{Binding OrderName}" Width="50"/>
                 <DataGridTextColumn Header="Valor do Projeto" Binding="{Binding ProjectValue, StringFormat=C}" Width="120"/>
 
                 <!-- Datas da Timeline -->

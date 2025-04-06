@@ -83,10 +83,13 @@ namespace ServiceOrder
                 MessageBox.Show("Informe o nome do cliente.");
                 return;
             }
+            var cpf = CpfTextBox.Text.Trim();
+            var cnpj = CnpjTextBox.Text.Trim();
 
+            // dont know if should be required
+            /* 
             if (CnpjPanel.Visibility == Visibility.Visible)
             {
-                var cnpj = CnpjTextBox.Text.Trim();
                 if (string.IsNullOrEmpty(cnpj))
                 {
                     MessageBox.Show("Informe o CNPJ do cliente.");
@@ -98,12 +101,10 @@ namespace ServiceOrder
                     return;
                 }
 
-                _client.Cnpj = cnpj;
             }
 
             if (CpfPanel.Visibility == Visibility.Visible)
             {
-                var cpf = CpfTextBox.Text.Trim();
 
                 if (string.IsNullOrEmpty(cpf))
                 {
@@ -115,9 +116,10 @@ namespace ServiceOrder
                     MessageBox.Show("CPF inválido.");
                     return;
                 }
-                _client.Cpf = cpf;
-            }
+            } */
 
+            _client.Cnpj = cnpj;
+            _client.Cpf = cpf;
             _client.Name = name;
             _client.Description = DescriptionTextBox.Text.Trim();
             _client.LastUpdated = DateTime.Now;
@@ -139,17 +141,21 @@ namespace ServiceOrder
         {
             this.Close();
         }
+
         private void PersonTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (PersonTypeComboBox.SelectedIndex == 0) // Jurídica
+            if (CnpjPanel != null && CpfPanel != null)
             {
-                CnpjPanel.Visibility = Visibility.Visible;
-                CpfPanel.Visibility = Visibility.Collapsed;
-            }
-            else // Física
-            {
-                CnpjPanel.Visibility = Visibility.Collapsed;
-                CpfPanel.Visibility = Visibility.Visible;
+                if (PersonTypeComboBox.SelectedIndex == 0) // Jurídica
+                {
+                    CnpjPanel.Visibility = Visibility.Visible;
+                    CpfPanel.Visibility = Visibility.Collapsed;
+                }
+                else // Física
+                {
+                    CnpjPanel.Visibility = Visibility.Collapsed;
+                    CpfPanel.Visibility = Visibility.Visible;
+                }
             }
         }
 

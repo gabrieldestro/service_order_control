@@ -1,0 +1,99 @@
+﻿<Window x:Class="ServiceOrder.OrderDeadlineDetailView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ServiceOrder"
+        mc:Ignorable="d"
+        Title="Cadastro de Prazo" Height="450" Width="800">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                <TextBlock Text="Cadastro de Prazo" FontSize="20" Margin="0,0,0,15"/>
+
+                <!-- Projeto -->
+                <TextBlock Text="Projeto:" />
+                <ComboBox x:Name="OrderComboBox"
+           SelectedValue="{Binding ElectricCompanyId, Mode=TwoWay}"
+           Margin="0,5"/>
+
+                <TextBlock Text="Descrição:" Margin="0,0,0,5"/>
+                <TextBox x:Name="DescriptionTextBox" Height="100"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Margin="0,0,0,10">
+                <!-- Dias / Prazos -->
+                <TextBlock Text="Prazos por Etapa:" FontWeight="Bold" Margin="0,15,0,5"/>
+                <Grid Margin="0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Coluna Esquerda -->
+                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                        <TextBlock Text="Recebimento (dias):"/>
+                        <TextBox Text="{Binding ReceivedDays}"
+                                 PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"
+                                 TextChanged="OnlyPositiveNumbers_TextChanged"
+                                 Margin="0,5"/>
+
+                        <TextBlock Text="Documento Enviado (dias):"/>
+                        <TextBox Text="{Binding DocumentSentDays}" 
+                                 PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"
+                                 TextChanged="OnlyPositiveNumbers_TextChanged" Margin="0,5"/>
+
+                        <TextBlock Text="Documento Recebido (dias):"/>
+                        <TextBox Text="{Binding DocumentReceivedDays}" 
+                                 PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"
+                                 TextChanged="OnlyPositiveNumbers_TextChanged" Margin="0,5"/>
+
+                        <TextBlock Text="Cadastro Projeto (dias):"/>
+                        <TextBox Text="{Binding ProjectRegistrationDays}" 
+                                 PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"
+                                 TextChanged="OnlyPositiveNumbers_TextChanged" Margin="0,5"/>
+
+                        <TextBlock Text="Envio Projeto (dias):"/>
+                        <TextBox Text="{Binding ProjectSubmissionDays}" 
+                                 PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"
+                                 TextChanged="OnlyPositiveNumbers_TextChanged" Margin="0,5"/>
+                    </StackPanel>
+
+                    <!-- Coluna Direita -->
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Aprovação Projeto (dias):"/>
+                        <TextBox Text="{Binding ProjectApprovalDays}" 
+                                 PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"
+                                 TextChanged="OnlyPositiveNumbers_TextChanged" Margin="0,5"/>
+
+                        <TextBlock Text="Pedido Vistoria (dias):"/>
+                        <TextBox Text="{Binding InspectionRequestDays}" 
+                                 PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"
+                                 TextChanged="OnlyPositiveNumbers_TextChanged" Margin="0,5"/>
+
+                        <TextBlock Text="Finalização (dias):"/>
+                        <TextBox Text="{Binding FinalizationDays}" 
+                                 PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"
+                                 TextChanged="OnlyPositiveNumbers_TextChanged" Margin="0,5"/>
+
+                        <TextBlock Text="Pagamento (dias):"/>
+                        <TextBox Text="{Binding PaymentDays}" 
+                                 PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"
+                                 TextChanged="OnlyPositiveNumbers_TextChanged" Margin="0,5"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0">
+                <Button Content="Salvar" Width="100" Margin="5" Click="OnSaveClick"/>
+                <Button Content="Cancelar" Width="100" Margin="5" Click="OnCancelClick"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Window>

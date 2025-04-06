@@ -29,7 +29,7 @@
             </StackPanel>
 
             <!-- CPF -->
-            <StackPanel x:Name="CpfPanel" Visibility="Visible" Margin="5">
+            <StackPanel x:Name="CpfPanel" Visibility="Collapsed" Margin="5">
                 <TextBlock Text="CPF:" Margin="0,0,0,5"/>
                 <TextBox x:Name="CpfTextBox" Height="30"
                 HorizontalAlignment="Stretch"

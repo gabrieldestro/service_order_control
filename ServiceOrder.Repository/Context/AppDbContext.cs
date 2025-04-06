@@ -13,6 +13,7 @@ namespace ServiceOrder.Repository.Context
         public DbSet<Domain.Entities.Order> Orders { get; set; }
         public DbSet<Domain.Entities.Client> Clients { get; set; }
         public DbSet<Domain.Entities.ElectricCompany> ElectricCompanies { get; set; }
+        public DbSet<Domain.Entities.OrderDeadline> OrderDeadlines { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -65,6 +66,22 @@ namespace ServiceOrder.Repository.Context
                 .HasDefaultValue(true);
 
             modelBuilder.Entity<ElectricCompany>()
+                .Property(o => o.CreatedDate)
+                .HasDefaultValue(DateTime.Now);
+
+            // Configuração de OrderDeadline
+            modelBuilder.Entity<OrderDeadline>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<OrderDeadline>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<OrderDeadline>()
+                .Property(o => o.Enabled)
+                .HasDefaultValue(true);
+
+            modelBuilder.Entity<OrderDeadline>()
                 .Property(o => o.CreatedDate)
                 .HasDefaultValue(DateTime.Now);
         }

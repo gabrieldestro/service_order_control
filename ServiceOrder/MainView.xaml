@@ -5,7 +5,8 @@
     <DockPanel>
         <!-- Barra de navegação -->
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="LightGray" Height="40">
-            <Button Content="Ordens" Click="ShowOrders" Margin="5"/>
+            <Button Content="Projetos" Click="ShowOrders" Margin="5"/>
+            <Button Content="Prazos" Click="ShowDeadlines" Margin="5"/>
             <Button Content="Clientes" Click="ShowClients" Margin="5"/>
             <Button Content="Companhias Elétricas" Click="ShowElectricCompanies" Margin="5"/>
             <Button Content="Opções" Click="ShowOptions" Margin="5"/>

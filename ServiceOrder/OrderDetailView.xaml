@@ -5,29 +5,38 @@
     <Grid>
         <ScrollViewer Margin="10" VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <TextBlock Text="Cadastro de Ordem de Serviço" FontSize="20" Margin="0,0,0,15"/>
+                <TextBlock Text="Cadastro de Projeto" FontSize="20" Margin="0,0,0,15"/>
 
                 <!-- Descrição -->
-                <TextBlock Text="Número da Ordem de Serviço:" />
+                <TextBlock Text="Número do Projeto:" />
                 <TextBox x:Name="ServiceOrderName" Text="{Binding OrderName, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
 
                 <!-- Cliente -->
-                <TextBlock Text="Cliente:" />
-                <ComboBox x:Name="ClientComboBox"
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Cliente:" />
+                    <ComboBox x:Name="ClientComboBox"
                       SelectedValue="{Binding ClientId, Mode=TwoWay}"
                       Margin="0,5"/>
+                    <Button Content="Novo Cliente" Width="100" Margin="5,0,0,0" Click="OnNewClientClick"/>
+                </StackPanel>
 
-                <!-- Cliente Final -->
-                <TextBlock Text="Cliente Final:" />
-                <ComboBox x:Name="ClientFinalComboBox"
+                <StackPanel Orientation="Horizontal">
+                    <!-- Cliente Final -->
+                    <TextBlock Text="Cliente Final:" />
+                    <ComboBox x:Name="ClientFinalComboBox"
                       SelectedValue="{Binding FinalClientid, Mode=TwoWay}"
                       Margin="0,5"/>
+                    <Button Content="Novo Cliente Final" Width="100" Margin="5,0,0,0" Click="OnNewFinalClientClick"/>
+                </StackPanel>
 
-                <!-- Companhia Elétrica -->
-                <TextBlock Text="Companhia Elétrica:" />
-                <ComboBox x:Name="ElectricCompanyComboBox"
+                <StackPanel Orientation="Horizontal">
+                    <!-- Companhia Elétrica -->
+                    <TextBlock Text="Companhia Elétrica:" />
+                    <ComboBox x:Name="ElectricCompanyComboBox"
                       SelectedValue="{Binding ElectricCompanyId, Mode=TwoWay}"
                       Margin="0,5"/>
+                    <Button Content="Nova Companhia" Width="100" Margin="5,0,0,0" Click="OnNewElectricCompanyClick"/>
+                </StackPanel>
 
                 <!-- Valor Projeto -->
                 <TextBlock Text="Valor do Projeto:" />
@@ -38,37 +47,40 @@
                 <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Height="100" Margin="0,5"/>
 
                 <!-- Datas -->
-                <TextBlock Text="Data de Recebimento:" />
-                <DatePicker SelectedDate="{Binding ReceivedDate}" Margin="0,5"/>
+                <TextBlock Text="1. Data de Recebimento:" />
+                <DatePicker Name="_1_ReceiptDtPicker" SelectedDate="{Binding ReceivedDate}" SelectedDateChanged="AnyDateChanged" Margin="0,5"/>
 
-                <TextBlock Text="Documento Enviado:" />
-                <DatePicker SelectedDate="{Binding DocumentSentDate}" Margin="0,5"/>
+                <TextBlock Text="2. Documento Enviado:" />
+                <DatePicker Name="_2_DocSentDtPicker" SelectedDate="{Binding DocumentSentDate}" SelectedDateChanged="AnyDateChanged" Margin="0,5"/>
 
-                <TextBlock Text="Documento Recebido:" />
-                <DatePicker SelectedDate="{Binding DocumentReceivedDate}" Margin="0,5"/>
+                <TextBlock Text="3. Documento Recebido:" />
+                <DatePicker Name="_3_DocRecivedDtPicker" SelectedDate="{Binding DocumentReceivedDate}" SelectedDateChanged="AnyDateChanged" Margin="0,5"/>
 
-                <TextBlock Text="Cadastro Projeto:" />
-                <DatePicker SelectedDate="{Binding ProjectRegistrationDate}" Margin="0,5"/>
+                <TextBlock Text="4. Cadastro Projeto:" />
+                <DatePicker Name="_4_ProjRegisteredDtPicker" SelectedDate="{Binding ProjectRegistrationDate}" SelectedDateChanged="AnyDateChanged" Margin="0,5"/>
 
-                <TextBlock Text="Envio Projeto:" />
-                <DatePicker SelectedDate="{Binding ProjectSubmissionDate}" Margin="0,5"/>
+                <TextBlock Text="5. Envio Projeto:" />
+                <DatePicker Name="_5_ProjectSentDtPicker" SelectedDate="{Binding ProjectSubmissionDate}" SelectedDateChanged="AnyDateChanged" Margin="0,5"/>
 
-                <TextBlock Text="Aprovação Projeto:" />
-                <DatePicker SelectedDate="{Binding ProjectApprovalDate}" Margin="0,5"/>
+                <TextBlock Text="6. Aprovação Projeto:" />
+                <DatePicker Name="_6_ProjApprovedDtPicker" SelectedDate="{Binding ProjectApprovalDate}" SelectedDateChanged="AnyDateChanged" Margin="0,5"/>
 
-                <TextBlock Text="Pedido de Vistoria:" />
-                <DatePicker SelectedDate="{Binding InspectionRequestDate}" Margin="0,5"/>
+                <TextBlock Text="7. Pedido de Vistoria:" />
+                <DatePicker Name="_7_RequestInspDtPicker" SelectedDate="{Binding InspectionRequestDate}" SelectedDateChanged="AnyDateChanged" Margin="0,5"/>
 
-                <TextBlock Text="Finalização:" />
-                <DatePicker SelectedDate="{Binding FinalizationDate}" Margin="0,5"/>
+                <TextBlock Text="8. Finalização:" />
+                <DatePicker Name="_8_FinalizationDtPicker" SelectedDate="{Binding FinalizationDate}" SelectedDateChanged="AnyDateChanged" Margin="0,5"/>
 
-                <TextBlock Text="Pagamento:" />
-                <DatePicker SelectedDate="{Binding PaymentDate}" Margin="0,5"/>
+                <TextBlock Text="9. Pagamento:" />
+                <DatePicker Name="_9_PaymentDtPicker" SelectedDate="{Binding PaymentDate}" SelectedDateChanged="AnyDateChanged" Margin="0,5"/>
 
                 <!-- Botão Salvar -->
                 <Button Content="Salvar" Width="120" Height="35" Margin="10"
                     Background="white" BorderThickness="1" Click="OnSaveClick" />
 
+                <!-- Botão Cancel -->
+                <Button Content="Cancelar" Width="120" Height="35" Margin="10"
+                    Background="white" BorderThickness="1" Click="OnCancelClick" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

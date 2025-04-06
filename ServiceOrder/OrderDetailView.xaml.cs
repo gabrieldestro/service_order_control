@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ControlzEx.Theming;
+using Microsoft.Extensions.DependencyInjection;
 using ServiceOrder.Domain.Entities;
 using ServiceOrder.Domain.Interfaces;
 using ServiceOrder.Repository.Repositories;
@@ -50,8 +51,13 @@ namespace ServiceOrder
 
         private async void OrderDetailView_Loaded(object sender, RoutedEventArgs e)
         {
-            _clients = (await _clientService.GetAllAsync()).ToList();
-            _electricCompanies = (await _electricCompanyService.GetAllAsync()).ToList();
+            await LoadClientsAsync();
+            await LoadElectricCompaniesAsync();
+        }
+
+        private async Task LoadClientsAsync()
+        {
+            _clients = (await _clientService.GetAllAsync()).OrderBy(c => c.Name).ToList();
 
             ClientComboBox.ItemsSource = _clients;
             ClientComboBox.DisplayMemberPath = "Name";
@@ -61,15 +67,21 @@ namespace ServiceOrder
             ClientFinalComboBox.DisplayMemberPath = "Name";
             ClientFinalComboBox.SelectedValuePath = "Id";
 
-            ElectricCompanyComboBox.ItemsSource = _electricCompanies;
-            ElectricCompanyComboBox.DisplayMemberPath = "Name";
-            ElectricCompanyComboBox.SelectedValuePath = "Id";
-
             if (_order.ClientId != 0)
                 ClientComboBox.SelectedValue = _order.ClientId;
 
             if (_order.FinalClientId != 0)
                 ClientFinalComboBox.SelectedValue = _order.FinalClient;
+        }
+
+        private async Task LoadElectricCompaniesAsync()
+        {
+            _electricCompanies = (await _electricCompanyService.GetAllAsync()).OrderBy(c => c.Name).ToList();
+
+            ElectricCompanyComboBox.ItemsSource = _electricCompanies;
+            ElectricCompanyComboBox.DisplayMemberPath = "Name";
+            ElectricCompanyComboBox.SelectedValuePath = "Id";
+
 
             if (_order.ElectricCompanyId != 0)
                 ElectricCompanyComboBox.SelectedValue = _order.ElectricCompanyId;
@@ -92,6 +104,81 @@ namespace ServiceOrder
 
             _order = order;
             DataContext = order;
+        }
+
+        private void AnyDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ValidateDates();
+        }
+
+        private void ValidateDates()
+        {
+            /*
+            if (_8_FinalizationDtPicker.SelectedDate != null)
+                _9_PaymentDtPicker.IsEnabled = true;
+            else
+                _9_PaymentDtPicker.IsEnabled = false;
+            */
+            if (_7_RequestInspDtPicker.SelectedDate != null)
+                _8_FinalizationDtPicker.IsEnabled = true;
+            else
+                _8_FinalizationDtPicker.IsEnabled = false;
+
+            if (_6_ProjApprovedDtPicker.SelectedDate != null)
+                _7_RequestInspDtPicker.IsEnabled = true;
+            else
+                _7_RequestInspDtPicker.IsEnabled = false;
+
+            if (_5_ProjectSentDtPicker.SelectedDate != null)
+                _6_ProjApprovedDtPicker.IsEnabled = true;
+            else
+                _6_ProjApprovedDtPicker.IsEnabled = false;
+
+            if (_4_ProjRegisteredDtPicker.SelectedDate != null)
+                _5_ProjectSentDtPicker.IsEnabled = true;
+            else
+                _5_ProjectSentDtPicker.IsEnabled = false;
+
+            if (_3_DocRecivedDtPicker.SelectedDate != null)
+                _4_ProjRegisteredDtPicker.IsEnabled = true;
+            else
+                _4_ProjRegisteredDtPicker.IsEnabled = false;
+
+            if (_2_DocSentDtPicker.SelectedDate != null)
+                _3_DocRecivedDtPicker.IsEnabled = true;
+            else
+                _3_DocRecivedDtPicker.IsEnabled = false;
+
+            if (_1_ReceiptDtPicker.SelectedDate != null)
+                _2_DocSentDtPicker.IsEnabled = true;
+            else
+                _2_DocSentDtPicker.IsEnabled = false;
+        }
+
+        private void OnNewClientClick(object sender, RoutedEventArgs e)
+        {
+            var detailView = App.ServiceProvider.GetRequiredService<ClientDetailView>();
+            detailView.Closed += async (s, args) => await LoadClientsAsync();
+            detailView.ShowDialog();
+        }
+
+        private void OnNewFinalClientClick(object sender, RoutedEventArgs e)
+        {
+            var detailView = App.ServiceProvider.GetRequiredService<ClientDetailView>();
+            detailView.Closed += async (s, args) => await LoadClientsAsync();
+            detailView.ShowDialog();
+        }
+
+        private void OnNewElectricCompanyClick(object sender, RoutedEventArgs e)
+        {
+            var detailView = App.ServiceProvider.GetRequiredService<ElectricCompanyDetailView>();
+            detailView.Closed += async (s, args) => await LoadElectricCompaniesAsync();
+            detailView.ShowDialog();
+        }
+
+        private void OnCancelClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         private async void OnSaveClick(object sender, RoutedEventArgs e)

@@ -35,6 +35,11 @@ namespace ServiceOrder
             MainContent.Content = _serviceProvider.GetRequiredService<OrderListView>();
         }
 
+        private void ShowDeadlines(object sender, RoutedEventArgs e)
+        {
+            MainContent.Content = _serviceProvider.GetRequiredService<OrderDeadlineListView>();
+        }
+
         private void ShowClients(object sender, RoutedEventArgs e)
         {
             MainContent.Content = _serviceProvider.GetRequiredService<ClientListView>();
