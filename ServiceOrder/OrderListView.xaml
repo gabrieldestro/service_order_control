@@ -178,6 +178,8 @@
 
         <!-- Botões -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0">
+            <Button Content="Exportar" x:Name="ExportButton" Width="120" Height="40" Margin="10,0,0,0"
+                    Background="white" BorderThickness="1" Click="OnExportClick"/>
             <Button Content="Próximo" x:Name="NextButton" Width="120" Height="40" Margin="10,0,0,0"
                     Background="white" BorderThickness="1" Click="OnNextClick"/>
             <Button Content="Nova Ordem" x:Name="NewRegistrationButton" Width="120" Height="40" Margin="10,0,0,0"
