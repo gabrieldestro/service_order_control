@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,10 +10,14 @@ namespace ServiceOrder.Domain.Entities
     public class Order
     {
         public int Id { get; set; }
+
+        [MaxLength(30)]
         public string OrderName { get; set; }
+
+        [MaxLength(300)]
         public string? Description { get; set; }
 
-        // Timeline Dates
+        // Datas
         public DateTime? ReceivedDate { get; set; }
         public DateTime? DocumentSentDate { get; set; }
         public DateTime? DocumentReceivedDate { get; set; }
@@ -26,11 +31,9 @@ namespace ServiceOrder.Domain.Entities
         public DateTime? CreatedDate { get; set; }
         public DateTime? LastUpdated { get; set; }
 
-        // Financial
         public decimal? ProjectValue { get; set; }
         public bool Enabled { get; set; }
 
-        // Navigation Properties
         public int ClientId { get; set; }
         public Client? Client { get; set; }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 using ServiceOrder.Domain.Entities;
 using ServiceOrder.Domain.Interfaces;
 using ServiceOrder.Services.Interfaces;
@@ -11,6 +12,7 @@ namespace ServiceOrder.Services.Services
 {
     public class ElectricCompanyService : IElectricCompanyService
     {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(ElectricCompanyService));
         private readonly IElectricCompanyRepository _repository;
 
         public ElectricCompanyService(IElectricCompanyRepository repository)
@@ -18,9 +20,15 @@ namespace ServiceOrder.Services.Services
             _repository = repository;
         }
 
-        public async Task<List<ElectricCompany>> GetAllAsync() => await _repository.GetAllAsync();
+        public async Task<List<ElectricCompany>> GetAllAsync()
+        {
+            return await _repository.GetAllAsync();
+        }
 
-        public async Task<ElectricCompany?> GetByIdAsync(int id) => await _repository.GetByIdAsync(id);
+        public async Task<ElectricCompany?> GetByIdAsync(int id)
+        {
+            return await _repository.GetByIdAsync(id);
+        }
 
         public async Task<bool> AddAsync(ElectricCompany company)
         {
@@ -29,7 +37,11 @@ namespace ServiceOrder.Services.Services
                 await _repository.AddAsync(company);
                 return true;
             }
-            catch { return false; }
+            catch (Exception ex)
+            {
+                _log.Error($"Erro ao adicionar companhia elétrica '{company?.Name}': {ex.Message}", ex);
+                return false;
+            }
         }
 
         public async Task<bool> UpdateAsync(ElectricCompany company)
@@ -39,7 +51,11 @@ namespace ServiceOrder.Services.Services
                 await _repository.UpdateAsync(company);
                 return true;
             }
-            catch { return false; }
+            catch (Exception ex)
+            {
+                _log.Error($"Erro ao atualizar companhia elétrica ID {company?.Id}: {ex.Message}", ex);
+                return false;
+            }
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -49,7 +65,11 @@ namespace ServiceOrder.Services.Services
                 await _repository.DeleteAsync(id);
                 return true;
             }
-            catch { return false; }
+            catch (Exception ex)
+            {
+                _log.Error($"Erro ao remover companhia elétrica ID {id}: {ex.Message}", ex);
+                return false;
+            }
         }
     }
 }

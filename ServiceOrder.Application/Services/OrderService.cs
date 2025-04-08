@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
 using ServiceOrder.Domain.Entities;
 using ServiceOrder.Domain.Interfaces;
 using ServiceOrder.Repository.Repositories;
@@ -12,6 +13,7 @@ namespace ServiceOrder.Services.Services
 {
     public class OrderService : IOrderService
     {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(OrderService));
         private readonly IOrderRepository _orderRepository;
 
         public OrderService(IOrderRepository orderRepository)
@@ -24,13 +26,13 @@ namespace ServiceOrder.Services.Services
             try
             {
                 await _orderRepository.AddAsync(order);
+                return true;
             }
             catch (Exception ex)
             {
+                _log.Error($"Erro ao adicionar ordem '{order?.OrderName}' (ID={order?.Id}): {ex.Message}", ex);
                 return false;
             }
-
-            return true;
         }
 
         public async Task<bool> DeleteOrder(Domain.Entities.Order order)
@@ -38,28 +40,26 @@ namespace ServiceOrder.Services.Services
             try
             {
                 await _orderRepository.DeleteAsync(order.Id);
+                return true;
             }
             catch (Exception ex)
             {
+                _log.Error($"Erro ao deletar ordem ID {order?.Id}: {ex.Message}", ex);
                 return false;
             }
-
-            return true;
         }
 
         public async Task<List<Domain.Entities.Order>> GetAllAsync()
         {
-            List<Domain.Entities.Order> list = new List<Domain.Entities.Order>();
-
             try
             {
-                list = await _orderRepository.GetAllAsync();
+                return await _orderRepository.GetAllAsync();
             }
             catch (Exception ex)
             {
+                _log.Error("Erro ao obter todas as ordens: " + ex.Message, ex);
+                return new List<Domain.Entities.Order>();
             }
-
-            return list;
         }
 
         public async Task<bool> UpdateOrder(Domain.Entities.Order order)
@@ -67,13 +67,13 @@ namespace ServiceOrder.Services.Services
             try
             {
                 await _orderRepository.UpdateAsync(order);
+                return true;
             }
             catch (Exception ex)
             {
+                _log.Error($"Erro ao atualizar ordem '{order?.OrderName}' (ID={order?.Id}): {ex.Message}", ex);
                 return false;
             }
-
-            return true;
         }
     }
 }

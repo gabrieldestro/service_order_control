@@ -56,17 +56,21 @@ namespace ServiceOrder
             {
                 Filter = "Excel Files|*.xlsx",
                 Title = "Salvar como Excel",
-                FileName = $"Projetos_{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}_{DateTime.Now.Hour}{DateTime.Now.Minute}{DateTime.Now.Second}.xlsx"
+                FileName = $"Projetos_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx"
             };
 
             if (saveFileDialog.ShowDialog() != true)
                 return;
+
+            ChangeViewOnLoad(false);
 
             var memoryStream = _spreadsheetService.ExportOrdersToExcel(Orders.ToList());
             using (var fileStream = File.Create(saveFileDialog.FileName))
             {
                 memoryStream.CopyTo(fileStream);
             }
+
+            ChangeViewOnLoad(true);
 
             MessageBox.Show("Arquivo salvo com sucesso!", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -125,14 +129,37 @@ namespace ServiceOrder
                 await Task.Delay(1000);
 
                 var orders = await Task.Run(() => _orderService.GetAllAsync());
+                if (orders == null)
+                {
+                    MessageBox.Show("Erro ao carregar ordens: serviço retornou nulo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
                 var filteredOrders = filter != null ? orders.Where(filter) : orders;
 
                 var clients = await Task.Run(() => _clientService.GetAllAsync());
+                if (clients == null)
+                {
+                    MessageBox.Show("Erro ao carregar clientes: serviço retornou nulo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
                 var electricCompanies = await Task.Run(() => _electricCompanyService.GetAllAsync());
+                if (electricCompanies == null)
+                {
+                    MessageBox.Show("Erro ao carregar companhias elétricas: serviço retornou nulo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
 
                 var deadlines = await Task.Run(() => _orderDeadlineService.GetAllAsync());
+                if (deadlines == null)
+                {
+                    MessageBox.Show("Erro ao carregar prazos: serviço retornou nulo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
                 var generalDeadline = deadlines.FirstOrDefault(d => String.IsNullOrEmpty(d.OrderId));
-                
+
                 foreach (var order in filteredOrders)
                 {
                     var specificDeadline = deadlines.FirstOrDefault(d => d.OrderId == order.OrderName.ToString());

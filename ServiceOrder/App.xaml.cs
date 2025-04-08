@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Configuration;
 using System.Data;
+using System.IO;
+using System.Reflection;
 using System.Windows;
+using log4net.Config;
+using log4net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceOrder.IoC;
@@ -45,6 +49,12 @@ namespace ServiceOrder
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+
+            ILog log = LogManager.GetLogger(typeof(App));
+            log.Info("Aplicação iniciada.");
 
             // Aplica as migrações para garantir que o banco de dados seja criado
             var dbContext = ServiceProvider.GetRequiredService<AppDbContext>();

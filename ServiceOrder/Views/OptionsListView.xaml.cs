@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using log4net;
 
 namespace ServiceOrder
 {
@@ -21,6 +22,8 @@ namespace ServiceOrder
     /// </summary>
     public partial class OptionsListView : UserControl
     {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(OptionsListView));
+
         public OptionsListView()
         {
             InitializeComponent();
@@ -46,15 +49,33 @@ namespace ServiceOrder
                     await Task.Run(() =>
                     {
                         string sourcePath = "serviceorders.db";
+
+                        if (!File.Exists(sourcePath))
+                            throw new FileNotFoundException("Arquivo de banco de dados original não encontrado.", sourcePath);
+
                         File.Copy(sourcePath, backupPath, overwrite: true);
                     });
 
-                    MessageBox.Show($"Backup realizado com sucesso! Arquivo salvo em: {backupPath}",
+                    MessageBox.Show($"Backup realizado com sucesso!\nArquivo salvo em:\n{backupPath}",
                         "Backup", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (FileNotFoundException ex)
+                {
+                    _log.Error("Arquivo de banco de dados não encontrado para backup.", ex);
+                    MessageBox.Show("O arquivo original do banco de dados não foi encontrado. Verifique se ele existe.",
+                        "Arquivo não encontrado", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    _log.Error("Erro de permissão ao tentar salvar backup.", ex);
+                    MessageBox.Show("Permissão negada para salvar o arquivo no local selecionado.",
+                        "Permissão negada", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Erro ao realizar o backup: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    _log.Error("Erro inesperado ao realizar o backup.", ex);
+                    MessageBox.Show("Ocorreu um erro inesperado ao realizar o backup.\n\n" + ex.Message,
+                        "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }

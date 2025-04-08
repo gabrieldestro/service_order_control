@@ -27,6 +27,8 @@ namespace ServiceOrder.IoC
             services.AddScoped<IOrderDeadlineRepository, OrderDeadlineRepository>();
             services.AddScoped<IElectricCompanyService, ElectricCompanyService>();
             services.AddScoped<IClientService, ClientService>();
+
+            services.AddScoped<ISpreadsheetService, SpreadsheetService>();
         }
     }
 }

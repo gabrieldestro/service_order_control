@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ControlzEx.Theming;
+using log4net;
 using ServiceOrder.Domain.Entities;
 using ServiceOrder.Services.Interfaces;
 using ServiceOrder.Services.Services;
@@ -24,6 +25,7 @@ namespace ServiceOrder
     /// </summary>
     public partial class OrderDeadlineDetailView : Window
     {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(OrderDeadlineDetailView));
 
         private readonly IOrderDeadlineService _orderDeadlineService;
         private readonly IOrderService _orderService;
@@ -48,20 +50,29 @@ namespace ServiceOrder
 
         private async void OrderDeadlineDetailView_Loaded(object sender, RoutedEventArgs e)
         {
-            await LoadOrdersAsync();
+            try
+            {
+                await LoadOrdersAsync();
+            }
+            catch (Exception ex)
+            {
+                _log.Error("Erro ao carregar ordens finalizadas para os prazos.", ex);
+                MessageBox.Show("Erro ao carregar a lista de ordens finalizadas.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private async Task LoadOrdersAsync()
         {
-            // TODO: apply where in the query
             var orders = await _orderService.GetAllAsync();
-            _orders = orders.Where(o => o.FinalizationDate != null).OrderBy(o => o.OrderName).ToList();
+            _orders = orders.Where(o => o.FinalizationDate != null)
+                            .OrderBy(o => o.OrderName)
+                            .ToList();
 
             OrderComboBox.ItemsSource = _orders;
             OrderComboBox.DisplayMemberPath = "OrderName";
             OrderComboBox.SelectedValuePath = "OrderName";
 
-            if (!String.IsNullOrEmpty(_orderDeadline.OrderId))
+            if (!string.IsNullOrEmpty(_orderDeadline.OrderId))
                 OrderComboBox.SelectedValue = _orderDeadline.OrderId;
         }
 
@@ -74,7 +85,6 @@ namespace ServiceOrder
             else
             {
                 _orderDeadline = deadline;
-
                 OrderComboBox.IsEnabled = false;
             }
 
@@ -99,36 +109,46 @@ namespace ServiceOrder
             textBox.CaretIndex = onlyDigits.Length;
         }
 
-        private void OnSaveClick(object sender, RoutedEventArgs e)
+        private async void OnSaveClick(object sender, RoutedEventArgs e)
         {
-            if (DataContext is not OrderDeadline currentDeadline)
+            try
             {
-                MessageBox.Show("Erro ao salvar o prazo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                if (DataContext is not OrderDeadline currentDeadline)
+                    throw new InvalidOperationException("Objeto de prazo inválido.");
+
+                if (OrderComboBox.SelectedItem is not Order selectedOrder)
+                {
+                    MessageBox.Show("Selecione uma ordem válida para associar ao prazo.", "Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                _orderDeadline = currentDeadline;
+                _orderDeadline.OrderId = selectedOrder.OrderName;
+                _orderDeadline.Description = DescriptionTextBox.Text.Trim();
+                _orderDeadline.LastUpdated = DateTime.Now;
+
+                if (_orderDeadline.Id > 0)
+                {
+                    await _orderDeadlineService.UpdateAsync(_orderDeadline);
+                }
+                else
+                {
+                    await _orderDeadlineService.AddAsync(_orderDeadline);
+                }
+
+                MessageBox.Show("Prazo salvo com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                Close();
             }
-
-            _orderDeadline = currentDeadline;
-
-            _orderDeadline.OrderId = OrderComboBox.Text.Trim();
-            _orderDeadline.Description = DescriptionTextBox.Text.Trim();
-            _orderDeadline.LastUpdated = DateTime.Now;
-
-            if (_orderDeadline.Id > 0)
+            catch (Exception ex)
             {
-                _orderDeadlineService.UpdateAsync(_orderDeadline);
+                _log.Error("Erro ao salvar prazo.", ex);
+                MessageBox.Show("Erro ao salvar o prazo: " + ex.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else
-            {
-                _orderDeadlineService.AddAsync(_orderDeadline);
-            }
-
-            MessageBox.Show("Prazo salvo com sucesso!");
-            this.Close();
         }
 
         private void OnCancelClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }
