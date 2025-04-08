@@ -48,14 +48,14 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTextColumn Header="ID do Projeto" Binding="{Binding OrderId}" Width="100"/>
-                <DataGridTextColumn Header="Doc. Enviado" Binding="{Binding DocumentSentDays}" Width="100"/>
-                <DataGridTextColumn Header="Doc. Recebido" Binding="{Binding DocumentReceivedDays}" Width="100"/>
-                <DataGridTextColumn Header="Proj. Registrado" Binding="{Binding ProjectRegistrationDays}" Width="100"/>
-                <DataGridTextColumn Header="Proj. Enviado" Binding="{Binding ProjectSubmissionDays}" Width="100"/>
-                <DataGridTextColumn Header="Proj. Aprovado" Binding="{Binding ProjectApprovalDays}" Width="100"/>
-                <DataGridTextColumn Header="Pedido de Vistoria" Binding="{Binding InspectionRequestDays}" Width="100"/>
-                <DataGridTextColumn Header="Proj. Finalizado" Binding="{Binding FinalizationDays}" Width="100"/>
-                <DataGridTextColumn Header="Pagamento" Binding="{Binding PaymentDays}" Width="100"/>
+                <DataGridTextColumn Header="Doc. Enviado" Binding="{Binding DocumentSentDays, StringFormat={}{0} dia(s)}" Width="100"/>
+                <DataGridTextColumn Header="Doc. Recebido" Binding="{Binding DocumentReceivedDays, StringFormat={}{0} dia(s)}" Width="100"/>
+                <DataGridTextColumn Header="Proj. Registrado" Binding="{Binding ProjectRegistrationDays, StringFormat={}{0} dia(s)}" Width="100"/>
+                <DataGridTextColumn Header="Proj. Enviado" Binding="{Binding ProjectSubmissionDays, StringFormat={}{0} dia(s)}" Width="100"/>
+                <DataGridTextColumn Header="Proj. Aprovado" Binding="{Binding ProjectApprovalDays, StringFormat={}{0} dia(s)}" Width="100"/>
+                <DataGridTextColumn Header="Pedido de Vistoria" Binding="{Binding InspectionRequestDays, StringFormat={}{0} dia(s)}" Width="100"/>
+                <DataGridTextColumn Header="Proj. Finalizado" Binding="{Binding FinalizationDays, StringFormat={}{0} dia(s)}" Width="100"/>
+                <DataGridTextColumn Header="Pagamento" Binding="{Binding PaymentDays, StringFormat={}{0} dia(s)}" Width="100"/>
 
             </DataGrid.Columns>
         </DataGrid>

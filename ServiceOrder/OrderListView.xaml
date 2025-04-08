@@ -68,20 +68,107 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Projeto" Binding="{Binding OrderName}" Width="50"/>
+                <DataGridTextColumn Header="Projeto" Binding="{Binding Order.OrderName}" Width="50"/>
                 <DataGridTextColumn Header="Valor do Projeto" Binding="{Binding ProjectValue, StringFormat=C}" Width="120"/>
 
                 <!-- Datas da Timeline -->
-                <DataGridTextColumn Header="Recebido em" Binding="{Binding ReceivedDate, StringFormat=dd/MM/yyyy}" Width="110"/>
-                <DataGridTextColumn Header="Documento Enviado" Binding="{Binding DocumentSentDate, StringFormat=dd/MM/yyyy}" Width="130"/>
-                <DataGridTextColumn Header="Documento Recebido" Binding="{Binding DocumentReceivedDate, StringFormat=dd/MM/yyyy}" Width="130"/>
-                <DataGridTextColumn Header="Cadastro do Projeto" Binding="{Binding ProjectRegistrationDate, StringFormat=dd/MM/yyyy}" Width="130"/>
-                <DataGridTextColumn Header="Envio do Projeto" Binding="{Binding ProjectSubmissionDate, StringFormat=dd/MM/yyyy}" Width="130"/>
-                <DataGridTextColumn Header="Aprovação do Projeto" Binding="{Binding ProjectApprovalDate, StringFormat=dd/MM/yyyy}" Width="140"/>
-                <DataGridTextColumn Header="Solicitação de Vistoria" Binding="{Binding InspectionRequestDate, StringFormat=dd/MM/yyyy}" Width="140"/>
-                <DataGridTextColumn Header="Finalização" Binding="{Binding FinalizationDate, StringFormat=dd/MM/yyyy}" Width="110"/>
-                <DataGridTextColumn Header="Pagamento" Binding="{Binding PaymentDate, StringFormat=dd/MM/yyyy}" Width="110"/>
-                <DataGridTextColumn Header="Última Atualização" Binding="{Binding LastUpdated, StringFormat=g}" Width="150"/>
+                <!-- Datas da Timeline com ícones e tooltips -->
+                <DataGridTemplateColumn Header="Recebido em" Width="110">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Order.ReceivedDate, StringFormat=dd/MM/yyyy}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Documento Enviado" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" ToolTip="{Binding DocumentSentTooltip}">
+                                <TextBlock Text="{Binding Order.DocumentSentDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding DocumentSentStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Documento Recebido" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" ToolTip="{Binding DocumentReceivedTooltip}">
+                                <TextBlock Text="{Binding Order.DocumentReceivedDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding DocumentReceivedStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Cadastro do Projeto" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" ToolTip="{Binding ProjectRegistrationTooltip}">
+                                <TextBlock Text="{Binding Order.ProjectRegistrationDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding ProjectRegistrationStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Envio do Projeto" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" ToolTip="{Binding ProjectSubmissionTooltip}">
+                                <TextBlock Text="{Binding Order.ProjectSubmissionDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding ProjectSubmissionStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Aprovação do Projeto" Width="160">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" ToolTip="{Binding ProjectApprovalTooltip}">
+                                <TextBlock Text="{Binding Order.ProjectApprovalDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding ProjectApprovalStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Solicitação de Vistoria" Width="160">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" ToolTip="{Binding InspectionRequestTooltip}">
+                                <TextBlock Text="{Binding Order.InspectionRequestDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding InspectionRequestStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Finalização" Width="130">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" ToolTip="{Binding FinalizationTooltip}">
+                                <TextBlock Text="{Binding Order.FinalizationDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding FinalizationStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Pagamento" Width="130">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" ToolTip="{Binding PaymentTooltip}">
+                                <TextBlock Text="{Binding Order.PaymentDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding PaymentStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Última Atualização" Binding="{Binding Order.LastUpdated, StringFormat=g}" Width="150"/>
             </DataGrid.Columns>
         </DataGrid>
 

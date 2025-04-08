@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceOrder.Domain.Entities;
+using ServiceOrder.DTOs;
 using ServiceOrder.Services.Interfaces;
 
 namespace ServiceOrder
@@ -14,14 +14,18 @@ namespace ServiceOrder
     public partial class OrderListView : UserControl
     {
         private readonly IOrderService _orderService;
-        public ObservableCollection<Order> Orders { get; set; }
+        private readonly IOrderDeadlineService _orderDeadlineService;
+        public ObservableCollection<OrderDTO> Orders { get; set; }
 
-        public OrderListView(IOrderService orderService)
+        public OrderListView(
+            IOrderService orderService,
+            IOrderDeadlineService orderDeadlineService)
         {
             InitializeComponent();
 
             _orderService = orderService;
-            Orders = new ObservableCollection<Order>();
+            _orderDeadlineService = orderDeadlineService;
+            Orders = new ObservableCollection<OrderDTO>();
             LoadOrdersAsync();
         }
 
@@ -41,13 +45,13 @@ namespace ServiceOrder
                 return;
             }
 
-            var items = OrderDataGrid.Items.Cast<Order>();
-            var oldestItem = items.OrderByDescending(o => o.LastUpdated).FirstOrDefault();
+            var items = OrderDataGrid.Items.Cast<OrderDTO>();
+            var oldestItem = items.OrderByDescending(o => o.Order.LastUpdated).FirstOrDefault();
 
             if (oldestItem != null)
             {
                 var detailView = App.ServiceProvider.GetRequiredService<OrderDetailView>();
-                detailView.SetOrder(oldestItem);
+                detailView.SetOrder(oldestItem.Order);
                 detailView.Closed += (s, args) => LoadOrdersAsync();
                 detailView.ShowDialog();
             }
@@ -55,10 +59,10 @@ namespace ServiceOrder
 
         private void OnEditClick(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && button.DataContext is Order selectedOrder)
+            if (sender is Button button && button.DataContext is OrderDTO selectedOrder)
             {
                 var detailView = App.ServiceProvider.GetRequiredService<OrderDetailView>();
-                detailView.SetOrder(selectedOrder);
+                detailView.SetOrder(selectedOrder.Order);
                 detailView.Closed += (s, args) => LoadOrdersAsync();
                 detailView.ShowDialog();
             }
@@ -66,12 +70,12 @@ namespace ServiceOrder
 
         private async void OnDeleteClick(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && button.DataContext is Order selectedOrder)
+            if (sender is Button button && button.DataContext is OrderDTO selectedOrder)
             {
-                var result = MessageBox.Show($"Deseja excluir a ordem {selectedOrder.Id}?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                var result = MessageBox.Show($"Deseja excluir a ordem {selectedOrder?.Order?.Id}?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
-                    await _orderService.DeleteOrder(selectedOrder);
+                    await _orderService.DeleteOrder(selectedOrder?.Order);
                     LoadOrdersAsync();
                 }
             }
@@ -89,9 +93,20 @@ namespace ServiceOrder
                 var orders = await Task.Run(() => _orderService.GetAllAsync());
                 var filteredOrders = filter != null ? orders.Where(filter) : orders;
 
+                var deadlines = await Task.Run(() => _orderDeadlineService.GetAllAsync());
+                var generalDeadline = deadlines.FirstOrDefault(d => String.IsNullOrEmpty(d.OrderId));
+                
                 foreach (var order in filteredOrders)
                 {
-                    Orders.Add(order);
+                    var specificDeadline = deadlines.FirstOrDefault(d => d.OrderId == order.OrderName.ToString());
+                    var deadline = specificDeadline ?? generalDeadline;
+
+                    var dto = new OrderDTO
+                    {
+                        Order = order,
+                        Deadline = deadline
+                    };
+                    Orders.Add(dto);
                 }
 
                 OrderDataGrid.ItemsSource = Orders;

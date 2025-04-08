@@ -71,7 +71,7 @@ namespace ServiceOrder
                 ClientComboBox.SelectedValue = _order.ClientId;
 
             if (_order.FinalClientId != 0)
-                ClientFinalComboBox.SelectedValue = _order.FinalClient;
+                ClientFinalComboBox.SelectedValue = _order.FinalClientId;
         }
 
         private async Task LoadElectricCompaniesAsync()
@@ -204,7 +204,7 @@ namespace ServiceOrder
             }
 
             if (ClientFinalComboBox.SelectedValue != null && (int)ClientFinalComboBox.SelectedValue != 0)
-                currentOrder.ClientId = (int)ClientFinalComboBox.SelectedValue;
+                currentOrder.FinalClientId = (int)ClientFinalComboBox.SelectedValue;
             else
             {
                 MessageBox.Show("Selecione um cliente final!.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
