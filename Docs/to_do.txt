@@ -3,9 +3,11 @@
 3. Criar os prazos (ok)
 4. Implementar lógica de visualização dos prazos (ok) [preciso entender melhor a logica da planilha]
 5. Criar a funcionalidade de Exportação para csv/excel (ok)
-6. implementar melhor filtros
 6. definir tipagem e tamanho dos campos do EF (ok)
-7. melhorar o tratamento de erros e incluir log 
-8. ajustar o css
-9. dar uma limpada no código
-10. fazer funcionalidade de importar dados a partir da planilha fornecida base
+7. melhorar o tratamento de erros e incluir log (ok)
+8. implementar melhor filtros (ok)
+9. fazer funcionalidade de importar dados a partir da planilha fornecida base (ok, mas precisa testar)
+10. ajustar o css
+11. dar uma limpada no código
+
+12. Executar testes em todas as telas e funcionalidades.

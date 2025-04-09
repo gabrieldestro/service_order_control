@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ClosedXML.Excel;
 using log4net;
 using ServiceOrder.Domain.DTOs;
+using ServiceOrder.Domain.Utils;
 using ServiceOrder.Services.Interfaces;
 
 namespace ServiceOrder.Services.Services
@@ -103,6 +104,66 @@ namespace ServiceOrder.Services.Services
             }
 
             return stream;
+        }
+
+        public List<OrderDTO> MassiveImportFromSpreadsheet(string filePath)
+        {
+            var orders = new List<OrderDTO>();
+            int line = 1;
+
+            try
+            {
+                using var workbook = new XLWorkbook(filePath);
+                var worksheet = workbook.Worksheet(1); // Usa a primeira planilha
+                var rows = worksheet.RowsUsed().Skip(5); // Skip 5 linhas
+
+                foreach (var row in rows) // pula linha de título
+                {
+                    // Verifica se a célula obrigatória está vazia, ignora linhas em branco
+                    if (string.IsNullOrWhiteSpace(row.Cell(10).GetString()))
+                        continue;
+
+                    var data = new OrderDTO
+                    {
+                        Order = new Domain.Entities.Order
+                        {
+                            OrderName = row.Cell(0).GetString(),
+                            ReceivedDate = ParseUtils.TryParseDate(row.Cell(10).ToString()),//.GetDateTime(),
+                            DocumentSentDate = ParseUtils.TryParseDate(row.Cell(14).ToString()),
+                            DocumentReceivedDate = ParseUtils.TryParseDate(row.Cell(15).ToString()),
+                            ProjectRegistrationDate = ParseUtils.TryParseDate(row.Cell(16).ToString()),
+                            ProjectSubmissionDate = ParseUtils.TryParseDate(row.Cell(17).ToString()),
+                            ProjectApprovalDate = ParseUtils.TryParseDate(row.Cell(18).ToString()),
+                            InspectionRequestDate = ParseUtils.TryParseDate(row.Cell(19).ToString()),
+                            FinalizationDate = ParseUtils.TryParseDate(row.Cell(20).ToString()),
+                            PaymentDate = ParseUtils.TryParseDate(row.Cell(21).ToString()),
+                            ProjectValue = ParseUtils.TryParseDecimal(row.Cell(22).ToString()),
+                            FinalClient = new Domain.Entities.Client
+                            {
+                                Name = row.Cell(11).GetString()
+                            },
+                            Client = new Domain.Entities.Client
+                            {
+                                Name = row.Cell(12).GetString()
+                            },
+                            ElectricCompany = new Domain.Entities.ElectricCompany
+                            {
+                                Name = row.Cell(13).GetString()
+                            }
+                        }
+                    };
+
+                    orders.Add(data);
+                    line++;
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Erro ao importar planilha: {ex.Message}", ex);
+                throw new Exception($"Erro na linha {line}."); // você pode lançar novamente ou retornar null, conforme sua estratégia
+            }
+
+            return orders;
         }
     }
 }

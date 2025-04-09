@@ -11,5 +11,6 @@ namespace ServiceOrder.Services.Interfaces
     public interface ISpreadsheetService
     {
         public MemoryStream ExportOrdersToExcel(List<OrderDTO> orders);
+        public List<OrderDTO> MassiveImportFromSpreadsheet(string filePath);
     }
 }

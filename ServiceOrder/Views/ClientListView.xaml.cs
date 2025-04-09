@@ -59,7 +59,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao carregar lista de clientes.", ex);
-                MessageBox.Show($"Erro ao carregar clientes: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erro ao carregar clientes!", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {

@@ -2,7 +2,6 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using ServiceOrder.Domain.DTOs;
@@ -110,7 +109,7 @@ namespace ServiceOrder
         {
             if (sender is Button button && button.DataContext is OrderDTO selectedOrder)
             {
-                var result = MessageBox.Show($"Deseja excluir a ordem {selectedOrder?.Order?.Id}?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                var result = MessageBox.Show($"Deseja excluir o projeto {selectedOrder?.Order?.Id}?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
                     await _orderService.DeleteOrder(selectedOrder?.Order);
@@ -129,45 +128,25 @@ namespace ServiceOrder
                 await Task.Delay(1000);
 
                 var orders = await Task.Run(() => _orderService.GetAllAsync());
-                if (orders == null)
-                {
-                    MessageBox.Show("Erro ao carregar ordens: serviço retornou nulo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                var filteredOrders = filter != null ? orders.Where(filter) : orders;
-
                 var clients = await Task.Run(() => _clientService.GetAllAsync());
-                if (clients == null)
-                {
-                    MessageBox.Show("Erro ao carregar clientes: serviço retornou nulo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
                 var electricCompanies = await Task.Run(() => _electricCompanyService.GetAllAsync());
-                if (electricCompanies == null)
+
+                foreach (var order in orders)
                 {
-                    MessageBox.Show("Erro ao carregar companhias elétricas: serviço retornou nulo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    order.Client = clients.FirstOrDefault(c => c.Id == order.ClientId);
+                    order.FinalClient = clients.FirstOrDefault(c => c.Id == order.FinalClientId);
+                    order.ElectricCompany = electricCompanies.FirstOrDefault(c => c.Id == order.ElectricCompanyId);
                 }
 
                 var deadlines = await Task.Run(() => _orderDeadlineService.GetAllAsync());
-                if (deadlines == null)
-                {
-                    MessageBox.Show("Erro ao carregar prazos: serviço retornou nulo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
                 var generalDeadline = deadlines.FirstOrDefault(d => String.IsNullOrEmpty(d.OrderId));
+                
+                var filteredOrders = filter != null ? orders.Where(filter) : orders;
 
                 foreach (var order in filteredOrders)
                 {
                     var specificDeadline = deadlines.FirstOrDefault(d => d.OrderId == order.OrderName.ToString());
                     var deadline = specificDeadline ?? generalDeadline;
-
-                    order.Client = clients.FirstOrDefault(c => c.Id == order.ClientId);
-                    order.FinalClient = clients.FirstOrDefault(c => c.Id == order.FinalClientId);
-                    order.ElectricCompany = electricCompanies.FirstOrDefault(c => c.Id == order.ElectricCompanyId);
 
                     var dto = new OrderDTO
                     {
@@ -177,12 +156,17 @@ namespace ServiceOrder
                     Orders.Add(dto);
                 }
 
+                if (Orders != null)
+                    Orders
+                        .Where(order => (ExpiredCheckBox.IsChecked == false) || order.IsAnyExpired())
+                        .ToList();
+
                 OrderDataGrid.ItemsSource = Orders;
                 UpdateRecordCount(Orders.Count);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao carregar ordens: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erro ao carregar projetos.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
@@ -204,23 +188,20 @@ namespace ServiceOrder
         private void OnFilterClick(object sender, RoutedEventArgs e)
         {
             string searchText = SearchTextBox.Text.ToLower();
-            string searchIdText = SearchIdTextBox.Text;
-            DateTime? startDate = StartDatePicker.SelectedDate;
-            DateTime? endDate = EndDatePicker.SelectedDate;
 
             LoadOrdersAsync(order =>
-                (string.IsNullOrEmpty(searchIdText) || order.Id.ToString() == searchIdText) &&
+                (string.IsNullOrEmpty(searchText) || order.OrderName.ToLower().Contains(searchText)) &&
+                (string.IsNullOrEmpty(searchText) || order.FinalClient?.Name?.ToLower().Contains(searchText) == true) &&
                 (string.IsNullOrEmpty(searchText) || order.Client?.Name?.ToLower().Contains(searchText) == true) &&
-                (!startDate.HasValue || order.ReceivedDate >= startDate.Value) &&
-                (!endDate.HasValue || order.ReceivedDate <= endDate.Value));
+                (PayedCheckBox.IsChecked == false) || (order.PaymentDate != null && order.PaymentDate != DateTime.MinValue));
         }
 
         private void OnClearFiltersClick(object sender, RoutedEventArgs e)
         {
             SearchTextBox.Clear();
-            SearchIdTextBox.Clear();
-            StartDatePicker.SelectedDate = null;
-            EndDatePicker.SelectedDate = null;
+            PayedCheckBox.IsChecked = false;
+            ExpiredCheckBox.IsChecked = false;
+
             LoadOrdersAsync();
         }
 

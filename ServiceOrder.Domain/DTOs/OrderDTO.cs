@@ -79,5 +79,50 @@ namespace ServiceOrder.Domain.DTOs
                 ? "Concluído no prazo."
                 : $"Concluído com atraso de {(current.Value - expected).Days} dias.";
         }
+
+        public bool IsAnyExpired()
+        {
+            if (Deadline == null)
+                return false;
+
+            if (IsExpired(Order.DocumentSentDate, Order.ReceivedDate, Deadline?.DocumentSentDays))
+                return true; 
+            
+            if (IsExpired(Order.DocumentReceivedDate, Order.DocumentSentDate, Deadline?.DocumentReceivedDays))
+                return true;
+
+            if (IsExpired(Order.ProjectRegistrationDate, Order.DocumentReceivedDate, Deadline?.ProjectRegistrationDays))
+                return true;
+
+            if (IsExpired(Order.ProjectSubmissionDate, Order.ProjectRegistrationDate, Deadline?.ProjectSubmissionDays))
+                return true;
+
+            if (IsExpired(Order.ProjectApprovalDate, Order.ProjectSubmissionDate, Deadline?.ProjectApprovalDays))
+                return true;
+
+            if (IsExpired(Order.InspectionRequestDate, Order.ProjectApprovalDate, Deadline?.InspectionRequestDays))
+                return true;
+
+            if (IsExpired(Order.FinalizationDate, Order.InspectionRequestDate, Deadline?.FinalizationDays))
+                return true;
+
+            if (IsExpired(Order.PaymentDate, Order.FinalizationDate, Deadline?.PaymentDays))
+                return true;
+
+            return false;
+        }
+
+        private bool IsExpired(DateTime? current, DateTime? previous, int? days)
+        {
+            var expected = previous.Value.AddDays(days.Value);
+
+            if (!current.HasValue)
+            {
+                var diff = (expected - DateTime.Today).Days;
+                return diff < 0;
+            }
+
+            return current.Value > expected;
+        }
     }
 }

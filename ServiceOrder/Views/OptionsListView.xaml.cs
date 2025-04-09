@@ -13,7 +13,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DocumentFormat.OpenXml.Spreadsheet;
 using log4net;
+using Microsoft.Win32;
+using ServiceOrder.Domain.Entities;
+using ServiceOrder.Services.Interfaces;
+using ServiceOrder.Services.Services;
 
 namespace ServiceOrder
 {
@@ -24,9 +29,121 @@ namespace ServiceOrder
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(OptionsListView));
 
-        public OptionsListView()
+        private readonly ISpreadsheetService _spreadsheetService;
+        private readonly IClientService _clientService;
+        private readonly IElectricCompanyService _electricCompanyService;
+        private readonly IOrderService _orderService;
+
+        public OptionsListView(
+            ISpreadsheetService spreadsheetService, 
+            IClientService clientService, 
+            IElectricCompanyService electricCompanyService, 
+            IOrderService orderService)
         {
-            InitializeComponent();
+            _spreadsheetService = spreadsheetService;
+            _clientService = clientService;
+            _electricCompanyService = electricCompanyService;
+            _orderService = orderService;
+
+            InitializeComponent();  
+        }
+
+        // TODO: preciso adicionar um loading, need to imporve performance and organize the code
+        private async void OnSeedClick(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show($"Deseja realmente fazer uma carga massiva? Atenção, isso pode gerar duplicidades.", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                var openFileDialog = new OpenFileDialog
+                {
+                    Filter = "Planilhas Excel (*.xlsx)|*.xlsx",
+                    Title = "Selecione a planilha para importação"
+                };
+
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    string filePath = openFileDialog.FileName;
+
+                    try
+                    {
+                        var spreadsheetRows = _spreadsheetService.MassiveImportFromSpreadsheet(filePath);
+                        if (spreadsheetRows.Any())
+                        {
+                            var orders = await _orderService.GetAllAsync();
+                            var clients = await _clientService.GetAllAsync();
+                            var electricCompanies = await _electricCompanyService.GetAllAsync();
+
+                            List<Client> clientsToInsert = new List<Client>(); 
+                            List<ElectricCompany> companiesToInsert = new List<ElectricCompany>(); 
+
+                            foreach (var row in spreadsheetRows)
+                            {
+                                string name = row.Order.Client.Name;
+                                var client = clients.FirstOrDefault(c => c.Name == name);
+                                if (!String.IsNullOrEmpty(name) && client == null && !clientsToInsert.Any(c => c.Name == name))
+                                {
+                                    client = new Domain.Entities.Client { Name = name };
+                                    clientsToInsert.Add(client);
+                                }
+
+                                name = row.Order.FinalClient.Name;
+                                client = clients.FirstOrDefault(c => c.Name == name);
+                                if (!String.IsNullOrEmpty(name) && client == null && !clientsToInsert.Any(c => c.Name == name))
+                                {
+                                    client = new Domain.Entities.Client { Name = name };
+                                    clientsToInsert.Add(client);
+                                }
+
+                                name = row.Order.ElectricCompany.Name;
+                                var electricCompany = electricCompanies.FirstOrDefault(c => c.Name == name);
+                                if (!String.IsNullOrEmpty(name) && electricCompany == null && !companiesToInsert.Any(c => c.Name == name))
+                                {
+                                    electricCompany = new Domain.Entities.ElectricCompany { Name = name };
+                                    companiesToInsert.Add(electricCompany);
+                                }
+                            }
+
+                            foreach (var client in clientsToInsert)
+                                await _clientService.AddAsync(client);
+
+                            foreach (var company in companiesToInsert)
+                                await _electricCompanyService.AddAsync(company);
+
+                            // reload entities
+                            clients = await _clientService.GetAllAsync();
+                            electricCompanies = await _electricCompanyService.GetAllAsync();
+
+                            foreach (var row in spreadsheetRows)
+                            {
+                                row.Order.ClientId = (int)(clients.FirstOrDefault(c => c.Name == row.Order.Client.Name)?.Id);
+                                row.Order.FinalClientId = (int)(clients.FirstOrDefault(c => c.Name == row.Order.FinalClient.Name)?.Id);
+                                row.Order.ElectricCompanyId = (int)(electricCompanies.FirstOrDefault(c => c.Name == row.Order.ElectricCompany.Name)?.Id);
+                            
+                                if (orders.Any(o => o.OrderName == row.Order.OrderName))
+                                {
+                                    _log.Warn($"A ordem {row.Order.OrderName} já existe. Ignorando a importação.");
+                                    continue;
+                                }
+
+                                await _orderService.AddOrder(row.Order);
+                            }
+
+                            // Aqui você pode inserir no banco ou atualizar a tela
+                            MessageBox.Show($"{spreadsheetRows.Count} projetos importados com sucesso!", "Importação Concluída", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Não foram indentificados registros para importar!", "Importação Concluída", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error("Erro ao importar a planilha.", ex);
+                        MessageBox.Show($"Ocorreu um erro ao importar a planilha. Verifique o arquivo e tente novamente: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                }
+            }
         }
 
         private async void OnBackupClick(object sender, RoutedEventArgs e)

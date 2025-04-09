@@ -19,31 +19,27 @@
                  VerticalAlignment="Center" Visibility="Collapsed" Width="200" Height="20" Margin="10"/>
                 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                    
                     <StackPanel Orientation="Vertical">
-                        <Label Content="Cliente:" FontWeight="Bold" Foreground="#333"/>
-                        <TextBox x:Name="SearchTextBox" Width="150" Height="25" Margin="5"/>
+                        <Label Content="Busca:" Style="{StaticResource FormLabelStyle}"/>
+                        <TextBox x:Name="SearchTextBox" Width="100" Height="25" Margin="5"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
-                        <Label Content="ID:" FontWeight="Bold" Foreground="#333"/>
-                        <TextBox x:Name="SearchIdTextBox" Width="100" Height="25" Margin="5"/>
-                    </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Somemente Pago(s):" Style="{StaticResource FormLabelStyle}"/>
+                            <CheckBox x:Name="PayedCheckBox" Width="150" Height="30" Margin="2"/>
+                        </StackPanel>
 
-                    <StackPanel Orientation="Vertical">
-                        <Label Content="Data Inicial:" FontWeight="Bold" Foreground="#333"/>
-                        <DatePicker x:Name="StartDatePicker" Width="150" Height="30" Margin="2"/>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Vertical">
-                        <Label Content="Data Final:" FontWeight="Bold" Foreground="#333"/>
-                        <DatePicker x:Name="EndDatePicker" Width="150" Height="30" Margin="2"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Somemente Atrasado(s):" Style="{StaticResource FormLabelStyle}"/>
+                            <CheckBox x:Name="ExpiredCheckBox" Width="150" Height="30" Margin="2"/>
+                        </StackPanel>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="10,0,0,0" VerticalAlignment="Bottom">
-                        <Button x:Name="FilterButton" Content="Filtrar" Width="120" Height="35" Margin="5"
-                Background="white" BorderThickness="1" Click="OnFilterClick"/>
-                        <Button x:Name="ClearButton" Content="Limpar" Width="120" Height="35" Margin="5"
-                Background="white" BorderThickness="1" Click="OnClearFiltersClick"/>
+                        <Button x:Name="FilterButton" Content="Filtrar" Style="{StaticResource StandardButtonStyle}" Click="OnFilterClick"/>
+                        <Button x:Name="ClearButton" Content="Limpar" Style="{StaticResource StandardButtonStyle}" Click="OnClearFiltersClick"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -51,9 +47,8 @@
         </Border>
 
         <!-- Grade de Dados -->
-        <DataGrid x:Name="OrderDataGrid" Grid.Row="1" Margin="0,0,0,10" Background="White"
-                  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
-                  BorderBrush="#D3D3D3" BorderThickness="1">
+        <DataGrid x:Name="OrderDataGrid" Grid.Row="1" CellStyle="{StaticResource CenterCellStyle}"
+                  AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Ações" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
@@ -70,6 +65,9 @@
 
                 <DataGridTextColumn Header="Projeto" Binding="{Binding Order.OrderName}" Width="50"/>
                 <DataGridTextColumn Header="Valor do Projeto" Binding="{Binding ProjectValue, StringFormat=C}" Width="120"/>
+                <DataGridTextColumn Header="Cliente Revendedor" Binding="{Binding Order.Client.Name, StringFormat=C}" Width="120"/>
+                <DataGridTextColumn Header="Cliente Final" Binding="{Binding Order.FinalClient.Name, StringFormat=C}" Width="120"/>
+                <DataGridTextColumn Header="Cia. Elétrica" Binding="{Binding Order.ElectricCompany.Name, StringFormat=C}" Width="120"/>
 
                 <!-- Datas da Timeline -->
                 <!-- Datas da Timeline com ícones e tooltips -->
@@ -178,12 +176,9 @@
 
         <!-- Botões -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0">
-            <Button Content="Exportar" x:Name="ExportButton" Width="120" Height="40" Margin="10,0,0,0"
-                    Background="white" BorderThickness="1" Click="OnExportClick"/>
-            <Button Content="Próximo" x:Name="NextButton" Width="120" Height="40" Margin="10,0,0,0"
-                    Background="white" BorderThickness="1" Click="OnNextClick"/>
-            <Button Content="Nova Ordem" x:Name="NewRegistrationButton" Width="120" Height="40" Margin="10,0,0,0"
-                    Background="white" BorderThickness="1" Click="OnNewRegistrationClick"/>
+            <Button Content="Exportar" x:Name="ExportButton" Style="{StaticResource StandardButtonStyle}" Click="OnExportClick"/>
+            <Button Content="Próximo" x:Name="NextButton" Style="{StaticResource StandardButtonStyle}" Click="OnNextClick"/>
+            <Button Content="Nova Ordem" x:Name="NewRegistrationButton" Style="{StaticResource StandardButtonStyle}" Click="OnNewRegistrationClick"/>
         </StackPanel>
     </Grid>
 </UserControl>

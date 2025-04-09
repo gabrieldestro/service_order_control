@@ -142,7 +142,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao salvar prazo.", ex);
-                MessageBox.Show("Erro ao salvar o prazo: " + ex.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Erro ao salvar o prazo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

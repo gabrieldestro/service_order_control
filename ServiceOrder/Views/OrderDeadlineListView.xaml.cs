@@ -57,7 +57,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao carregar prazos.", ex);
-                MessageBox.Show($"Erro ao carregar prazos: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erro ao carregar prazos.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
