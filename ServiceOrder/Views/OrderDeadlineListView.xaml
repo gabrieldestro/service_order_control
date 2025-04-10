@@ -27,8 +27,8 @@
                         <Label Content="ID do Projeto:" FontWeight="Bold"/>
                         <TextBox x:Name="SearchNameTextBox" Width="200" Height="25" Margin="5"/>
                     </StackPanel>
-                    <Button Content="Filtrar" Width="100" Height="30" Margin="10" Click="OnFilterClick"/>
-                    <Button Content="Limpar" Width="100" Height="30" Margin="10" Click="OnClearFiltersClick"/>
+                    <Button Content="Filtrar" Name="FilterButton" Width="100" Height="30" Margin="10" Click="OnFilterClick"/>
+                    <Button Content="Limpar" Name="ClearButton" Width="100" Height="30" Margin="10" Click="OnClearFiltersClick"/>
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -64,7 +64,7 @@
         <Label x:Name="RecordCountLabel" Grid.Row="2" HorizontalAlignment="Right" Margin="0,5,0,5" FontSize="12" Foreground="#555"/>
         <!-- Botões -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0">
-            <Button Content="Novo Prazo" Width="140" Height="40" Margin="10,0,0,0"
+            <Button Content="Novo Prazo" Name="NewRegistrationButton" Width="140" Height="40" Margin="10,0,0,0"
             Background="white" BorderThickness="1" Click="OnNewDeadlineClick"/>
         </StackPanel>
     </Grid>

@@ -38,14 +38,14 @@ namespace ServiceOrder
             _spreadsheetService = spreadsheetService;
 
             Orders = new ObservableCollection<OrderDTO>();
-            LoadOrdersAsync();
+            LoadOrdersWithFiltersAsync();
         }
 
         private void OnNewRegistrationClick(object sender, RoutedEventArgs e)
         {
             var detailView = App.ServiceProvider.GetRequiredService<OrderDetailView>();
             detailView.SetOrder(null); // Nova ordem
-            detailView.Closed += (s, args) => LoadOrdersAsync();
+            detailView.Closed += (s, args) => LoadOrdersWithFiltersAsync();
             detailView.ShowDialog();
         }
 
@@ -89,7 +89,7 @@ namespace ServiceOrder
             {
                 var detailView = App.ServiceProvider.GetRequiredService<OrderDetailView>();
                 detailView.SetOrder(oldestItem.Order);
-                detailView.Closed += (s, args) => LoadOrdersAsync();
+                detailView.Closed += (s, args) => LoadOrdersWithFiltersAsync();
                 detailView.ShowDialog();
             }
         }
@@ -100,7 +100,7 @@ namespace ServiceOrder
             {
                 var detailView = App.ServiceProvider.GetRequiredService<OrderDetailView>();
                 detailView.SetOrder(selectedOrder.Order);
-                detailView.Closed += (s, args) => LoadOrdersAsync();
+                detailView.Closed += (s, args) => LoadOrdersWithFiltersAsync();
                 detailView.ShowDialog();
             }
         }
@@ -113,7 +113,7 @@ namespace ServiceOrder
                 if (result == MessageBoxResult.Yes)
                 {
                     await _orderService.DeleteOrder(selectedOrder?.Order);
-                    LoadOrdersAsync();
+                    LoadOrdersWithFiltersAsync();
                 }
             }
         }
@@ -127,7 +127,16 @@ namespace ServiceOrder
 
                 await Task.Delay(1000);
 
-                var orders = await Task.Run(() => _orderService.GetAllAsync());
+                var startDate = DateTime.Today.AddDays(-90);
+                var endDate = DateTime.Today;
+
+                if (StartDatePicker.SelectedDate != null && EndDatePicker.SelectedDate != null)
+                {
+                    startDate = StartDatePicker.SelectedDate.Value;
+                    endDate = EndDatePicker.SelectedDate.Value;
+                }
+
+                var orders = await Task.Run(() => _orderService.GetOrdersAsync(startDate, endDate));
                 var clients = await Task.Run(() => _clientService.GetAllAsync());
                 var electricCompanies = await Task.Run(() => _electricCompanyService.GetAllAsync());
 
@@ -181,11 +190,18 @@ namespace ServiceOrder
             NewRegistrationButton.IsEnabled = show;
             NextButton.IsEnabled = show;
             ExportButton.IsEnabled = show;
+            StartDatePicker.IsEnabled = show;
+            EndDatePicker.IsEnabled = show;
 
             LoadingProgressBar.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void OnFilterClick(object sender, RoutedEventArgs e)
+        {
+            LoadOrdersWithFiltersAsync();
+        }
+
+        private void LoadOrdersWithFiltersAsync()
         {
             string searchText = SearchTextBox.Text.ToLower();
 
@@ -193,7 +209,7 @@ namespace ServiceOrder
                 (string.IsNullOrEmpty(searchText) || order.OrderName.ToLower().Contains(searchText)) &&
                 (string.IsNullOrEmpty(searchText) || order.FinalClient?.Name?.ToLower().Contains(searchText) == true) &&
                 (string.IsNullOrEmpty(searchText) || order.Client?.Name?.ToLower().Contains(searchText) == true) &&
-                (PayedCheckBox.IsChecked == false) || (order.PaymentDate != null && order.PaymentDate != DateTime.MinValue));
+                (PayedCheckBox.IsChecked == false) || (order.PaymentDate == null));
         }
 
         private void OnClearFiltersClick(object sender, RoutedEventArgs e)
@@ -201,8 +217,10 @@ namespace ServiceOrder
             SearchTextBox.Clear();
             PayedCheckBox.IsChecked = false;
             ExpiredCheckBox.IsChecked = false;
+            StartDatePicker.SelectedDate = null;
+            EndDatePicker.SelectedDate = null;
 
-            LoadOrdersAsync();
+            LoadOrdersWithFiltersAsync();
         }
 
         private void UpdateRecordCount(int count)

@@ -35,7 +35,7 @@ namespace ServiceOrder
             InitializeComponent();
             _clientService = clientService;
             Clients = new ObservableCollection<Client>();
-            LoadClientsAsync();
+            LoadClientsFilteredAsync();
         }
 
         private async void LoadClientsAsync(Func<Client, bool> filter = null)
@@ -80,12 +80,7 @@ namespace ServiceOrder
         {
             try
             {
-                string searchText = SearchNameTextBox.Text.ToLower();
-                string searchCnpjText = SearchCnpjTextBox.Text;
-
-                LoadClientsAsync(client =>
-                    (string.IsNullOrEmpty(searchCnpjText) || client?.Cnpj?.ToLower().Contains(searchCnpjText) == true) &&
-                    (string.IsNullOrEmpty(searchText) || client?.Name?.ToLower().Contains(searchText) == true));
+                LoadClientsFilteredAsync();
             }
             catch (Exception ex)
             {
@@ -94,13 +89,23 @@ namespace ServiceOrder
             }
         }
 
+        private void LoadClientsFilteredAsync()
+        {
+            string searchText = SearchNameTextBox.Text.ToLower();
+            string searchCnpjText = SearchCnpjTextBox.Text;
+
+            LoadClientsAsync(client =>
+                (string.IsNullOrEmpty(searchCnpjText) || client?.Cnpj?.ToLower().Contains(searchCnpjText) == true) &&
+                (string.IsNullOrEmpty(searchText) || client?.Name?.ToLower().Contains(searchText) == true));
+        }
+
         private void OnClearFiltersClick(object sender, RoutedEventArgs e)
         {
             try
             {
                 SearchNameTextBox.Clear();
                 SearchCnpjTextBox.Clear();
-                LoadClientsAsync();
+                LoadClientsFilteredAsync();
             }
             catch (Exception ex)
             {
@@ -114,7 +119,7 @@ namespace ServiceOrder
             try
             {
                 var detailView = App.ServiceProvider.GetRequiredService<ClientDetailView>();
-                detailView.Closed += (s, args) => LoadClientsAsync();
+                detailView.Closed += (s, args) => LoadClientsFilteredAsync();
                 detailView.ShowDialog();
             }
             catch (Exception ex)
@@ -132,7 +137,7 @@ namespace ServiceOrder
                 {
                     var detailView = App.ServiceProvider.GetRequiredService<ClientDetailView>();
                     detailView.SetClient(selected);
-                    detailView.Closed += (s, args) => LoadClientsAsync();
+                    detailView.Closed += (s, args) => LoadClientsFilteredAsync();
                     detailView.ShowDialog();
                 }
             }
@@ -159,7 +164,7 @@ namespace ServiceOrder
                             return;
                         }
 
-                        LoadClientsAsync();
+                        LoadClientsFilteredAsync();
                     }
                 }
             }

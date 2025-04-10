@@ -19,27 +19,39 @@
                  VerticalAlignment="Center" Visibility="Collapsed" Width="200" Height="20" Margin="10"/>
                 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                    
-                    <StackPanel Orientation="Vertical">
+
+                    <StackPanel Orientation="Vertical" Margin="10">
                         <Label Content="Busca:" Style="{StaticResource FormLabelStyle}"/>
-                        <TextBox x:Name="SearchTextBox" Width="100" Height="25" Margin="5"/>
+                        <TextBox x:Name="SearchTextBox" Width="200" Height="25" Margin="5"/>
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Vertical" Width="150" Margin="10">
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="Somemente Pago(s):" Style="{StaticResource FormLabelStyle}"/>
-                            <CheckBox x:Name="PayedCheckBox" Width="150" Height="30" Margin="2"/>
+                            <CheckBox x:Name="PayedCheckBox" VerticalAlignment="Bottom" Width="20" Height="20" Margin="2"/>
+                            <Label Content="Pendente pagamento" VerticalAlignment="Top" Style="{StaticResource FormLabelStyle}"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="Somemente Atrasado(s):" Style="{StaticResource FormLabelStyle}"/>
-                            <CheckBox x:Name="ExpiredCheckBox" Width="150" Height="30" Margin="2"/>
+                            <CheckBox x:Name="ExpiredCheckBox" VerticalAlignment="Bottom" Width="20" Height="20" Margin="2"/>
+                            <Label Content="Atrasado(s)" VerticalAlignment="Top" Style="{StaticResource FormLabelStyle}"/>
                         </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" Margin="10,0,0,0" VerticalAlignment="Bottom">
-                        <Button x:Name="FilterButton" Content="Filtrar" Style="{StaticResource StandardButtonStyle}" Click="OnFilterClick"/>
-                        <Button x:Name="ClearButton" Content="Limpar" Style="{StaticResource StandardButtonStyle}" Click="OnClearFiltersClick"/>
+                    <StackPanel Orientation="Vertical" Width="250" Margin="10">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Data Inicial: " Width="100" Style="{StaticResource FormLabelStyle}"/>
+                            <DatePicker x:Name="StartDatePicker" Width="140" Height="30" Margin="2"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Data Final:" Width="100" Style="{StaticResource FormLabelStyle}"/>
+                            <DatePicker x:Name="EndDatePicker" Width="140" Height="30" Margin="2"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="10">
+                        <Button x:Name="FilterButton" Height="50" Content="Filtrar" Style="{StaticResource StandardButtonStyle}" Click="OnFilterClick"/>
+                        <Button x:Name="ClearButton" Height="50" Content="Limpar" Style="{StaticResource StandardButtonStyle}" Click="OnClearFiltersClick"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -47,31 +59,29 @@
         </Border>
 
         <!-- Grade de Dados -->
-        <DataGrid x:Name="OrderDataGrid" Grid.Row="1" CellStyle="{StaticResource CenterCellStyle}"
+        <DataGrid x:Name="OrderDataGrid" CellStyle="{StaticResource LeftAlignedCellStyle}" Grid.Row="1" 
                   AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Ações" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Content="Editar" Width="60" Margin="5" Click="OnEditClick"
-                                        Background="white" BorderThickness="1"/>
-                                <Button Content="Excluir" Width="60" Margin="5" Click="OnDeleteClick"
-                                        Background="white" BorderThickness="1"/>
+                                <Button Content="Editar" Style="{StaticResource StandardButtonStyle}" Width="60" Height="20" Margin="5" Click="OnEditClick"/>
+                                <Button Content="Excluir" Style="{StaticResource StandardButtonStyle}" Width="60" Height="20" Margin="5" Click="OnDeleteClick"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Projeto" Binding="{Binding Order.OrderName}" Width="50"/>
-                <DataGridTextColumn Header="Valor do Projeto" Binding="{Binding ProjectValue, StringFormat=C}" Width="120"/>
-                <DataGridTextColumn Header="Cliente Revendedor" Binding="{Binding Order.Client.Name, StringFormat=C}" Width="120"/>
-                <DataGridTextColumn Header="Cliente Final" Binding="{Binding Order.FinalClient.Name, StringFormat=C}" Width="120"/>
-                <DataGridTextColumn Header="Cia. Elétrica" Binding="{Binding Order.ElectricCompany.Name, StringFormat=C}" Width="120"/>
+                <DataGridTextColumn Header="Projeto" Binding="{Binding Order.OrderName}" Width="140"/>
+                <DataGridTextColumn Header="Valor do Projeto" Binding="{Binding ProjectValue, StringFormat=C}" Width="140"/>
+                <DataGridTextColumn Header="Cliente Revendedor" Binding="{Binding Order.Client.Name, StringFormat=C}" Width="140"/>
+                <DataGridTextColumn Header="Cliente Final" Binding="{Binding Order.FinalClient.Name, StringFormat=C}" Width="140"/>
+                <DataGridTextColumn Header="Cia. Elétrica" Binding="{Binding Order.ElectricCompany.Name, StringFormat=C}" Width="140"/>
 
                 <!-- Datas da Timeline -->
                 <!-- Datas da Timeline com ícones e tooltips -->
-                <DataGridTemplateColumn Header="Recebido em" Width="110">
+                <DataGridTemplateColumn Header="Recebido em" Width="140">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Order.ReceivedDate, StringFormat=dd/MM/yyyy}" />
@@ -79,99 +89,99 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Documento Enviado" Width="150">
+                <DataGridTemplateColumn Header="Documento Enviado" Width="140">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding DocumentSentTooltip}">
+                                <TextBlock Text="{Binding DocumentSentStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.DocumentSentDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
-                                <TextBlock Text="{Binding DocumentSentStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Documento Recebido" Width="150">
+                <DataGridTemplateColumn Header="Documento Recebido" Width="140">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding DocumentReceivedTooltip}">
+                                <TextBlock Text="{Binding DocumentReceivedStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.DocumentReceivedDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
-                                <TextBlock Text="{Binding DocumentReceivedStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Cadastro do Projeto" Width="150">
+                <DataGridTemplateColumn Header="Cadastro do Projeto" Width="140">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding ProjectRegistrationTooltip}">
+                                <TextBlock Text="{Binding ProjectRegistrationStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.ProjectRegistrationDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
-                                <TextBlock Text="{Binding ProjectRegistrationStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Envio do Projeto" Width="150">
+                <DataGridTemplateColumn Header="Envio do Projeto" Width="140">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding ProjectSubmissionTooltip}">
+                                <TextBlock Text="{Binding ProjectSubmissionStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.ProjectSubmissionDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
-                                <TextBlock Text="{Binding ProjectSubmissionStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Aprovação do Projeto" Width="160">
+                <DataGridTemplateColumn Header="Aprovação do Projeto" Width="140">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding ProjectApprovalTooltip}">
+                                <TextBlock Text="{Binding ProjectApprovalStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.ProjectApprovalDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
-                                <TextBlock Text="{Binding ProjectApprovalStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Solicitação de Vistoria" Width="160">
+                <DataGridTemplateColumn Header="Solicitação de Vistoria" Width="140">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding InspectionRequestTooltip}">
+                                <TextBlock Text="{Binding InspectionRequestStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.InspectionRequestDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
-                                <TextBlock Text="{Binding InspectionRequestStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Finalização" Width="130">
+                <DataGridTemplateColumn Header="Finalização" Width="140">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding FinalizationTooltip}">
+                                <TextBlock Text="{Binding FinalizationStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.FinalizationDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
-                                <TextBlock Text="{Binding FinalizationStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Pagamento" Width="130">
+                <DataGridTemplateColumn Header="Pagamento" Width="140">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding PaymentTooltip}">
+                                <TextBlock Text="{Binding PaymentStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.PaymentDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
-                                <TextBlock Text="{Binding PaymentStatusIcon}" FontSize="16" VerticalAlignment="Center"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Última Atualização" Binding="{Binding Order.LastUpdated, StringFormat=g}" Width="150"/>
+                <DataGridTextColumn Header="Última Atualização" Binding="{Binding Order.LastUpdated, StringFormat=dd/MM/yyyy}" Width="120"/>
             </DataGrid.Columns>
         </DataGrid>
 
         <!-- Contagem de Registros -->
-        <Label x:Name="RecordCountLabel" Grid.Row="2" HorizontalAlignment="Right" Margin="0,5,0,5"
+        <Label x:Name="RecordCountLabel" Grid.Row="2" HorizontalAlignment="Right"
                FontSize="12" Foreground="#555"/>
 
         <!-- Botões -->

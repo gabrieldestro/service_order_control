@@ -35,13 +35,15 @@ namespace ServiceOrder
             InitializeComponent();
             _companyService = companyService;
             Companies = new ObservableCollection<ElectricCompany>();
-            LoadCompaniesAsync();
+            LoadCompaniesFilteredAsync();
         }
 
         private async void LoadCompaniesAsync(Func<ElectricCompany, bool> filter = null)
         {
             try
             {
+                ChangeViewOnLoad(false);
+
                 Companies.Clear();
                 await Task.Delay(500); // Simulação de carregamento
 
@@ -59,18 +61,36 @@ namespace ServiceOrder
                 _log.Error("Erro ao carregar companhias elétricas.", ex);
                 MessageBox.Show("Erro ao carregar companhias elétricas.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            finally
+            {
+                ChangeViewOnLoad(true);
+            }
+        }
+
+        private void ChangeViewOnLoad(bool show)
+        {
+            FilterButton.IsEnabled = show;
+            ClearButton.IsEnabled = show;
+            NewRegistrationButton.IsEnabled = show;
+
+            LoadingProgressBar.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private void LoadCompaniesFilteredAsync()
+        {
+            string searchText = SearchNameTextBox.Text.ToLower();
+            string searchCnpjText = SearchCnpjTextBox.Text;
+
+            LoadCompaniesAsync(company =>
+                (string.IsNullOrEmpty(searchCnpjText) || company?.Cnpj?.ToLower().Contains(searchCnpjText) == true) &&
+                (string.IsNullOrEmpty(searchText) || company?.Name?.ToLower().Contains(searchText) == true));
         }
 
         private void OnFilterClick(object sender, RoutedEventArgs e)
         {
             try
             {
-                string searchText = SearchNameTextBox.Text.ToLower();
-                string searchCnpjText = SearchCnpjTextBox.Text;
-
-                LoadCompaniesAsync(company =>
-                    (string.IsNullOrEmpty(searchCnpjText) || company?.Cnpj?.ToLower().Contains(searchCnpjText) == true) &&
-                    (string.IsNullOrEmpty(searchText) || company?.Name?.ToLower().Contains(searchText) == true));
+                LoadCompaniesFilteredAsync();
             }
             catch (Exception ex)
             {
@@ -85,7 +105,7 @@ namespace ServiceOrder
             {
                 SearchNameTextBox.Clear();
                 SearchCnpjTextBox.Clear();
-                LoadCompaniesAsync();
+                LoadCompaniesFilteredAsync();
             }
             catch (Exception ex)
             {
@@ -98,7 +118,7 @@ namespace ServiceOrder
             try
             {
                 var detailView = App.ServiceProvider.GetRequiredService<ElectricCompanyDetailView>();
-                detailView.Closed += (s, args) => LoadCompaniesAsync();
+                detailView.Closed += (s, args) => LoadCompaniesFilteredAsync();
                 detailView.ShowDialog();
             }
             catch (Exception ex)
@@ -116,7 +136,7 @@ namespace ServiceOrder
                 {
                     var detailView = App.ServiceProvider.GetRequiredService<ElectricCompanyDetailView>();
                     detailView.SetELectricCompany(selected);
-                    detailView.Closed += (s, args) => LoadCompaniesAsync();
+                    detailView.Closed += (s, args) => LoadCompaniesFilteredAsync();
                     detailView.ShowDialog();
                 }
             }
@@ -137,7 +157,7 @@ namespace ServiceOrder
                     if (result == MessageBoxResult.Yes)
                     {
                         await _companyService.DeleteAsync(selected.Id);
-                        LoadCompaniesAsync();
+                        LoadCompaniesFilteredAsync();
                     }
                 }
             }

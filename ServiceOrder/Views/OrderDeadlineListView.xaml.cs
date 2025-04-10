@@ -35,13 +35,15 @@ namespace ServiceOrder
             InitializeComponent();
             _service = service;
             Deadlines = new ObservableCollection<OrderDeadline>();
-            LoadDeadlinesAsync();
+            LoadDeadlinesWithFiltersAsync();
         }
 
         private async void LoadDeadlinesAsync(Func<OrderDeadline, bool> filter = null)
         {
             try
             {
+                ChangeViewOnLoad(false);
+
                 Deadlines.Clear();
                 await Task.Delay(500);
 
@@ -59,20 +61,40 @@ namespace ServiceOrder
                 _log.Error("Erro ao carregar prazos.", ex);
                 MessageBox.Show($"Erro ao carregar prazos.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            finally
+            {
+                ChangeViewOnLoad(true);
+            }
         }
+
+        private void ChangeViewOnLoad(bool show)
+        {
+            FilterButton.IsEnabled = show;
+            ClearButton.IsEnabled = show;
+            NewRegistrationButton.IsEnabled = show;
+
+            LoadingProgressBar.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
+        }
+
 
         private void OnFilterClick(object sender, RoutedEventArgs e)
         {
             string searchText = SearchNameTextBox.Text.ToLower();
 
+            LoadDeadlinesWithFiltersAsync();
+        }
+
+        private void LoadDeadlinesWithFiltersAsync()
+        {
+            string searchText = SearchNameTextBox.Text.ToLower();
             LoadDeadlinesAsync(deadline =>
                 string.IsNullOrEmpty(searchText) || (deadline.OrderId?.ToLower().Contains(searchText) ?? false));
-        }
+        }   
 
         private void OnClearFiltersClick(object sender, RoutedEventArgs e)
         {
             SearchNameTextBox.Clear();
-            LoadDeadlinesAsync();
+            LoadDeadlinesWithFiltersAsync();
         }
 
         private void OnNewDeadlineClick(object sender, RoutedEventArgs e)
@@ -81,7 +103,7 @@ namespace ServiceOrder
             {
                 var detailView = App.ServiceProvider.GetRequiredService<OrderDeadlineDetailView>();
                 detailView.SetDeadline(null); // Novo prazo
-                detailView.Closed += (s, args) => LoadDeadlinesAsync();
+                detailView.Closed += (s, args) => LoadDeadlinesWithFiltersAsync();
                 detailView.ShowDialog();
             }
             catch (Exception ex)
@@ -99,7 +121,7 @@ namespace ServiceOrder
                 {
                     var detailView = App.ServiceProvider.GetRequiredService<OrderDeadlineDetailView>();
                     detailView.SetDeadline(selected);
-                    detailView.Closed += (s, args) => LoadDeadlinesAsync();
+                    detailView.Closed += (s, args) => LoadDeadlinesWithFiltersAsync();
                     detailView.ShowDialog();
                 }
                 catch (Exception ex)
@@ -122,7 +144,7 @@ namespace ServiceOrder
                     try
                     {
                         await _service.DeleteAsync(selected.Id);
-                        LoadDeadlinesAsync();
+                        LoadDeadlinesWithFiltersAsync();
                     }
                     catch (Exception ex)
                     {

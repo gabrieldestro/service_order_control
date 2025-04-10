@@ -63,9 +63,8 @@ namespace ServiceOrder
 
         private async Task LoadOrdersAsync()
         {
-            var orders = await _orderService.GetAllAsync();
-            _orders = orders.Where(o => o.FinalizationDate != null)
-                            .OrderBy(o => o.OrderName)
+            var orders = await _orderService.GetPendingOrdersAsync();
+            _orders = orders.OrderBy(o => o.OrderName)
                             .ToList();
 
             OrderComboBox.ItemsSource = _orders;
@@ -116,14 +115,12 @@ namespace ServiceOrder
                 if (DataContext is not OrderDeadline currentDeadline)
                     throw new InvalidOperationException("Objeto de prazo inválido.");
 
-                if (OrderComboBox.SelectedItem is not Order selectedOrder)
+                if (OrderComboBox.SelectedItem is Order selectedOrder)
                 {
-                    MessageBox.Show("Selecione uma ordem válida para associar ao prazo.", "Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
+                    _orderDeadline.OrderId = selectedOrder.OrderName;
                 }
 
                 _orderDeadline = currentDeadline;
-                _orderDeadline.OrderId = selectedOrder.OrderName;
                 _orderDeadline.Description = DescriptionTextBox.Text.Trim();
                 _orderDeadline.LastUpdated = DateTime.Now;
 
