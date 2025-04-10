@@ -125,8 +125,6 @@ namespace ServiceOrder
                 Orders.Clear();
                 ChangeViewOnLoad(false);
 
-                await Task.Delay(1000);
-
                 var startDate = DateTime.Today.AddDays(-90);
                 var endDate = DateTime.Today;
 

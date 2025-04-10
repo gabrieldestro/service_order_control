@@ -45,7 +45,6 @@ namespace ServiceOrder
                 ChangeViewOnLoad(false);
 
                 Companies.Clear();
-                await Task.Delay(500); // Simulação de carregamento
 
                 var companies = await Task.Run(() => _companyService.GetAllAsync());
                 var filteredCompanies = filter != null ? companies.Where(filter) : companies;

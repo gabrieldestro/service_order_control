@@ -9,6 +9,8 @@ namespace ServiceOrder.Services.Interfaces
 {
     public interface IOrderService
     {
+        Task<List<Domain.Entities.Order>> GetOrdersAsync(DateTime startdate, DateTime EndDate);
+        Task<List<Domain.Entities.Order>> GetPendingOrdersAsync();
         Task<List<Domain.Entities.Order>> GetAllAsync();
         Task<bool> AddOrder(Domain.Entities.Order order);
         Task<bool> UpdateOrder(Domain.Entities.Order order);

@@ -45,7 +45,6 @@ namespace ServiceOrder
                 ChangeViewOnLoad(false);
 
                 Deadlines.Clear();
-                await Task.Delay(500);
 
                 var deadlines = await Task.Run(() => _service.GetAllAsync());
                 var filtered = filter != null ? deadlines.Where(filter) : deadlines;

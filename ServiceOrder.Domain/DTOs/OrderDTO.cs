@@ -56,7 +56,7 @@ namespace ServiceOrder.Domain.DTOs
             if (!current.HasValue)
                 return DateTime.Today <= expected ? "⚙" : "❌";
 
-            return current.Value <= expected ? "✅" : "⚠";
+            return current.Value <= expected ? "✔" : "⚠";
         }
 
         // Utilitário para tooltip
@@ -71,13 +71,13 @@ namespace ServiceOrder.Domain.DTOs
             {
                 var diff = (expected - DateTime.Today).Days;
                 return diff >= 0
-                    ? $"Faltam {diff} dias para o prazo."
-                    : $"Prazo expirado há {-diff} dias.";
+                    ? $"Falta(m) {diff} dia(s) para o prazo."
+                    : $"Prazo expirado há {-diff} dia(s).";
             }
 
             return current.Value <= expected
                 ? "Concluído no prazo."
-                : $"Concluído com atraso de {(current.Value - expected).Days} dias.";
+                : $"Concluído com atraso de {(current.Value - expected).Days} dia(s).";
         }
 
         public bool IsAnyExpired()

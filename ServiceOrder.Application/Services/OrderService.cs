@@ -44,8 +44,33 @@ namespace ServiceOrder.Services.Services
             }
             catch (Exception ex)
             {
-                _log.Error($"Erro ao deletar ordem ID {order?.Id}: {ex.Message}", ex);
+                _log.Error($"Erro ao deletar ID {order?.Id}: {ex.Message}", ex);
                 return false;
+            }
+        }
+        public async Task<List<Domain.Entities.Order>> GetOrdersAsync(DateTime startDate, DateTime endDate)
+        {
+            try
+            {
+                return await _orderRepository.GetOrdersAsync(startDate, endDate);
+            }
+            catch (Exception ex)
+            {
+                _log.Error("Erro ao obter os projetos no range de data: " + ex.Message, ex);
+                return new List<Domain.Entities.Order>();
+            }
+        }
+
+        public async Task<List<Domain.Entities.Order>> GetPendingOrdersAsync()
+        {
+            try
+            {
+                return await _orderRepository.GetPendingOrdersAsync();
+            }
+            catch (Exception ex)
+            {
+                _log.Error("Erro ao obter todas os projetos pendentes: " + ex.Message, ex);
+                return new List<Domain.Entities.Order>();
             }
         }
 
@@ -57,7 +82,7 @@ namespace ServiceOrder.Services.Services
             }
             catch (Exception ex)
             {
-                _log.Error("Erro ao obter todas as ordens: " + ex.Message, ex);
+                _log.Error("Erro ao obter todas os projetos: " + ex.Message, ex);
                 return new List<Domain.Entities.Order>();
             }
         }
@@ -71,7 +96,7 @@ namespace ServiceOrder.Services.Services
             }
             catch (Exception ex)
             {
-                _log.Error($"Erro ao atualizar ordem '{order?.OrderName}' (ID={order?.Id}): {ex.Message}", ex);
+                _log.Error($"Erro ao atualizar projeto '{order?.OrderName}' (ID={order?.Id}): {ex.Message}", ex);
                 return false;
             }
         }

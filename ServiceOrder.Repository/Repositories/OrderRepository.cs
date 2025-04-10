@@ -13,6 +13,15 @@ namespace ServiceOrder.Repository.Repositories
         {
             _context = context;
         }
+        public async Task<List<Domain.Entities.Order>> GetOrdersAsync(DateTime startDate, DateTime endDate)
+        {
+            return await _context.Orders.Where(o => o.CreatedDate >= startDate && o.CreatedDate <= endDate).ToListAsync();
+        }
+
+        public async Task<List<Domain.Entities.Order>> GetPendingOrdersAsync()
+        {
+            return await _context.Orders.Where(o => o.FinalizationDate == null || o.PaymentDate == null).ToListAsync();
+        }
 
         public async Task<List<Domain.Entities.Order>> GetAllAsync()
         {

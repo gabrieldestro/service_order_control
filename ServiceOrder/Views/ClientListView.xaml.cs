@@ -45,7 +45,6 @@ namespace ServiceOrder
                 ChangeViewOnLoad(false);
 
                 Clients.Clear();
-                await Task.Delay(500); // Simulação de carregamento
 
                 var clients = await Task.Run(() => _clientService.GetAllAsync());
                 var filteredClients = filter != null ? clients.Where(filter) : clients;
