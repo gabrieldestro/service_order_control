@@ -18,6 +18,7 @@ using ServiceOrder.Domain.Entities;
 using ServiceOrder.Domain.Interfaces;
 using ServiceOrder.Repository.Repositories;
 using ServiceOrder.Services.Interfaces;
+using ServiceOrder.Utils;
 
 namespace ServiceOrder
 {
@@ -63,7 +64,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao carregar dados na tela de ordem.", ex);
-                MessageBox.Show("Erro ao carregar dados da ordem de serviço.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao carregar dados da ordem de serviço.");
             }
         }
 
@@ -90,7 +91,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao carregar clientes.", ex);
-                MessageBox.Show("Erro ao carregar lista de clientes.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao carregar lista de clientes.");
             }
         }
 
@@ -110,7 +111,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao carregar companhias elétricas.", ex);
-                MessageBox.Show("Erro ao carregar companhias elétricas.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao carregar companhias elétricas.");
             }
         }
 
@@ -199,7 +200,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao abrir tela de novo cliente.", ex);
-                MessageBox.Show("Erro ao abrir a tela de cliente.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao abrir a tela de cliente.");
             }
         }
 
@@ -214,7 +215,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao abrir tela de cliente final.", ex);
-                MessageBox.Show("Erro ao abrir a tela de cliente final.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao abrir a tela de cliente final.");
             }
         }
 
@@ -229,7 +230,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao abrir tela de companhia elétrica.", ex);
-                MessageBox.Show("Erro ao abrir a tela de companhia elétrica.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao abrir a tela de companhia elétrica.");
             }
         }
 
@@ -244,13 +245,13 @@ namespace ServiceOrder
             {
                 if (DataContext is not Order currentOrder)
                 {
-                    MessageBox.Show("Erro ao salvar a ordem.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    DialogUtils.ShowInfo("Erro", "Erro ao salvar a ordem.");
                     return;
                 }
 
                 if (string.IsNullOrWhiteSpace(currentOrder.OrderName))
                 {
-                    MessageBox.Show("Insira um código para a ordem de serviço!", "Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    DialogUtils.ShowInfo("Erro", "Insira um código para a ordem de serviço!");
                     return;
                 }
 
@@ -258,7 +259,7 @@ namespace ServiceOrder
                     currentOrder.ClientId = clientId;
                 else
                 {
-                    MessageBox.Show("Selecione um cliente!", "Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    DialogUtils.ShowInfo("Erro", "Selecione um cliente!");
                     return;
                 }
 
@@ -266,7 +267,7 @@ namespace ServiceOrder
                     currentOrder.FinalClientId = finalClientId;
                 else
                 {
-                    MessageBox.Show("Selecione um cliente final!", "Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    DialogUtils.ShowInfo("Erro", "Selecione um cliente final!");
                     return;
                 }
 
@@ -274,7 +275,7 @@ namespace ServiceOrder
                     currentOrder.ElectricCompanyId = companyId;
                 else
                 {
-                    MessageBox.Show("Selecione uma companhia elétrica!", "Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    DialogUtils.ShowInfo("Erro", "Selecione uma companhia elétrica!");
                     return;
                 }
 
@@ -285,13 +286,13 @@ namespace ServiceOrder
                 else
                     await _orderService.UpdateOrder(currentOrder);
 
-                MessageBox.Show("Ordem de serviço salva com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                DialogUtils.ShowInfo("Sucesso", "Ordem de serviço salva com sucesso!");
                 Close();
             }
             catch (Exception ex)
             {
                 _log.Error("Erro ao salvar a ordem de serviço.", ex);
-                MessageBox.Show("Erro ao salvar a ordem de serviço.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao salvar a ordem de serviço.");
             }
         }
     }

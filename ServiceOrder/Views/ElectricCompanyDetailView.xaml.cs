@@ -65,7 +65,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao carregar dados da companhia elétrica.", ex);
-                MessageBox.Show("Erro ao carregar dados da companhia elétrica.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao carregar dados da companhia elétrica.");
             }
         }
 
@@ -76,7 +76,7 @@ namespace ServiceOrder
                 var name = CompanyNameTextBox.Text.Trim();
                 if (string.IsNullOrEmpty(name))
                 {
-                    MessageBox.Show("Informe o nome da companhia elétrica.");
+                    DialogUtils.ShowInfo("Erro", "Informe o nome da companhia elétrica.");
                     return;
                 }
 
@@ -108,13 +108,13 @@ namespace ServiceOrder
                     await _electricCompanyService.AddAsync(_company);
                 }
 
-                MessageBox.Show("Companhia elétrica salva com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                DialogUtils.ShowInfo("Sucesso", "Companhia elétrica salva com sucesso!");
                 this.Close();
             }
             catch (Exception ex)
             {
                 _log.Error("Erro ao salvar companhia elétrica.", ex);
-                MessageBox.Show("Erro ao salvar companhia elétrica.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao salvar companhia elétrica.");
             }
         }
 

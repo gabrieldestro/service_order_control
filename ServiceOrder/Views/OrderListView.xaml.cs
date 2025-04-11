@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,6 +8,7 @@ using Microsoft.Win32;
 using ServiceOrder.Domain.DTOs;
 using ServiceOrder.Domain.Entities;
 using ServiceOrder.Services.Interfaces;
+using ServiceOrder.Utils;
 
 namespace ServiceOrder
 {
@@ -71,14 +73,14 @@ namespace ServiceOrder
 
             ChangeViewOnLoad(true);
 
-            MessageBox.Show("Arquivo salvo com sucesso!", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+            DialogUtils.ShowInfo("Sucesso", "Arquivo salvo com sucesso!");
         }
 
         private void OnNextClick(object sender, RoutedEventArgs e)
         {
             if (OrderDataGrid.Items.Count == 0)
             {
-                MessageBox.Show("Nenhum registro disponível para edição.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                DialogUtils.ShowInfo("Erro", "Nenhum registro disponível para edição.");
                 return;
             }
 
@@ -109,8 +111,8 @@ namespace ServiceOrder
         {
             if (sender is Button button && button.DataContext is OrderDTO selectedOrder)
             {
-                var result = MessageBox.Show($"Deseja excluir o projeto {selectedOrder?.Order?.Id}?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Yes)
+                var result = DialogUtils.ShowConfirmation("Confirmação", $"Deseja excluir o projeto {selectedOrder?.Order?.Id}?");
+                if (result)
                 {
                     await _orderService.DeleteOrder(selectedOrder?.Order);
                     LoadOrdersWithFiltersAsync();
@@ -173,7 +175,7 @@ namespace ServiceOrder
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao carregar projetos.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", $"Erro ao carregar projetos.");
             }
             finally
             {

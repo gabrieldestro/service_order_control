@@ -17,6 +17,7 @@ using log4net;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceOrder.Domain.Entities;
 using ServiceOrder.Services.Interfaces;
+using ServiceOrder.Utils;
 
 namespace ServiceOrder
 {
@@ -58,7 +59,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao carregar companhias elétricas.", ex);
-                MessageBox.Show("Erro ao carregar companhias elétricas.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao carregar companhias elétricas.");
             }
             finally
             {
@@ -94,7 +95,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Warn("Erro ao aplicar filtro de companhias elétricas.", ex);
-                MessageBox.Show("Erro ao aplicar o filtro.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                DialogUtils.ShowInfo("Erro", "Erro ao aplicar o filtro.");
             }
         }
 
@@ -123,7 +124,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao abrir tela de nova companhia elétrica.", ex);
-                MessageBox.Show("Erro ao abrir tela de nova companhia elétrica.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao abrir tela de nova companhia elétrica.");
             }
         }
 
@@ -142,7 +143,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao abrir tela de edição da companhia elétrica.", ex);
-                MessageBox.Show("Erro ao abrir tela de edição da companhia elétrica.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao abrir tela de edição da companhia elétrica.");
             }
         }
 
@@ -163,7 +164,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao excluir companhia elétrica.", ex);
-                MessageBox.Show("Erro ao excluir companhia elétrica.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao excluir companhia elétrica.");
             }
         }
     }

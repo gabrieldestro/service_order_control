@@ -82,7 +82,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao configurar os dados do cliente na tela de detalhes.", ex);
-                MessageBox.Show("Erro ao carregar os dados do cliente.");
+                DialogUtils.ShowInfo("Erro", "Erro ao carregar os dados do cliente.");
             }
         }
 
@@ -93,7 +93,7 @@ namespace ServiceOrder
                 var name = ClientNameTextBox.Text.Trim();
                 if (string.IsNullOrEmpty(name))
                 {
-                    MessageBox.Show("Informe o nome do cliente.");
+                    DialogUtils.ShowInfo("Erro", "Informe o nome do cliente.");
                     return;
                 }
 
@@ -118,17 +118,17 @@ namespace ServiceOrder
 
                 if (!result)
                 {
-                    MessageBox.Show("Erro ao salvar o cliente.");
+                    DialogUtils.ShowInfo("Erro", "Erro ao salvar o cliente.");
                     return;
                 }
 
-                MessageBox.Show("Cliente salvo com sucesso!");
+                DialogUtils.ShowInfo("Sucesso", "Cliente salvo com sucesso!");
                 Close();
             }
             catch (Exception ex)
             {
                 _log.Error("Erro ao salvar cliente.", ex);
-                MessageBox.Show("Ocorreu um erro ao salvar o cliente.");
+                DialogUtils.ShowInfo("Erro", "Ocorreu um erro ao salvar o cliente.");
             }
         }
 

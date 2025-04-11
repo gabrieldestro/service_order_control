@@ -17,6 +17,8 @@ using log4net;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceOrder.Domain.Entities;
 using ServiceOrder.Services.Interfaces;
+using ServiceOrder.Utils;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ServiceOrder
 {
@@ -58,7 +60,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao carregar prazos.", ex);
-                MessageBox.Show($"Erro ao carregar prazos.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", $"Erro ao carregar prazos.");
             }
             finally
             {
@@ -108,7 +110,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao abrir tela de novo prazo.", ex);
-                MessageBox.Show("Erro ao abrir a tela de novo prazo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "'Erro ao abrir a tela de novo prazo.");
             }
         }
 
@@ -126,7 +128,7 @@ namespace ServiceOrder
                 catch (Exception ex)
                 {
                     _log.Error("Erro ao abrir tela de edição de prazo.", ex);
-                    MessageBox.Show("Erro ao abrir a tela de edição de prazo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    DialogUtils.ShowInfo("Erro", "Erro ao abrir a tela de edição de prazo.");
                 }
             }
         }
@@ -135,10 +137,9 @@ namespace ServiceOrder
         {
             if (sender is Button btn && btn.DataContext is OrderDeadline selected)
             {
-                var result = MessageBox.Show($"Deseja excluir o prazo da ordem '{selected.OrderId}'?",
-                    "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                var result = DialogUtils.ShowConfirmation("Confirmação", $"Deseja excluir o prazo da ordem '{selected.OrderId}'?");
 
-                if (result == MessageBoxResult.Yes)
+                if (result)
                 {
                     try
                     {
@@ -148,7 +149,7 @@ namespace ServiceOrder
                     catch (Exception ex)
                     {
                         _log.Error($"Erro ao excluir o prazo da ordem '{selected.OrderId}'.", ex);
-                        MessageBox.Show("Erro ao excluir o prazo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                        DialogUtils.ShowInfo("Erro", "Erro ao excluir o prazo.");
                     }
                 }
             }

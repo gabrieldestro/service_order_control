@@ -17,6 +17,7 @@ using log4net;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceOrder.Domain.Entities;
 using ServiceOrder.Services.Interfaces;
+using ServiceOrder.Utils;
 
 namespace ServiceOrder
 {
@@ -58,7 +59,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao carregar lista de clientes.", ex);
-                MessageBox.Show($"Erro ao carregar clientes!", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", $"Erro ao carregar clientes!");
             }
             finally
             {
@@ -84,7 +85,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao aplicar filtros de cliente.", ex);
-                MessageBox.Show("Erro ao aplicar filtros.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao aplicar filtros.");
             }
         }
 
@@ -109,7 +110,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao limpar filtros de cliente.", ex);
-                MessageBox.Show("Erro ao limpar filtros.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao limpar filtros.");
             }
         }
 
@@ -124,7 +125,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao abrir janela de novo cliente.", ex);
-                MessageBox.Show("Erro ao abrir tela de cadastro de cliente.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao abrir tela de cadastro de cliente.");
             }
         }
 
@@ -143,7 +144,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao abrir janela de edição de cliente.", ex);
-                MessageBox.Show("Erro ao abrir tela de edição.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao abrir tela de edição.");
             }
         }
 
@@ -153,13 +154,13 @@ namespace ServiceOrder
             {
                 if (sender is Button btn && btn.DataContext is Client selected)
                 {
-                    var result = MessageBox.Show($"Deseja excluir o cliente '{selected.Name}'?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                    if (result == MessageBoxResult.Yes)
+                    var result = DialogUtils.ShowConfirmation("Confirmação", $"Deseja excluir o cliente '{selected.Name}'?");
+                    if (result)
                     {
                         bool success = await _clientService.DeleteAsync(selected.Id);
                         if (!success)
                         {
-                            MessageBox.Show("Erro ao excluir cliente.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                            DialogUtils.ShowInfo("Erro", "Erro ao excluir cliente.");
                             return;
                         }
 
@@ -170,7 +171,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao excluir cliente.", ex);
-                MessageBox.Show("Erro ao excluir cliente.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao excluir cliente.");
             }
         }
     }

@@ -19,6 +19,7 @@ using Microsoft.Win32;
 using ServiceOrder.Domain.Entities;
 using ServiceOrder.Services.Interfaces;
 using ServiceOrder.Services.Services;
+using ServiceOrder.Utils;
 
 namespace ServiceOrder
 {
@@ -51,8 +52,8 @@ namespace ServiceOrder
         // TODO: preciso adicionar um loading, need to imporve performance and organize the code
         private async void OnSeedClick(object sender, RoutedEventArgs e)
         {
-            var result = MessageBox.Show($"Deseja realmente fazer uma carga massiva? Atenção, isso pode gerar duplicidades.", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.Yes)
+            var result = DialogUtils.ShowConfirmation("Confirmação", $"Deseja realmente fazer uma carga massiva? Atenção, isso pode gerar duplicidades.");
+            if (result)
             {
                 var openFileDialog = new OpenFileDialog
                 {
@@ -129,17 +130,17 @@ namespace ServiceOrder
                             }
 
                             // Aqui você pode inserir no banco ou atualizar a tela
-                            MessageBox.Show($"{spreadsheetRows.Count} projetos importados com sucesso!", "Importação Concluída", MessageBoxButton.OK, MessageBoxImage.Information);
+                            DialogUtils.ShowInfo("Importação Concluída", $"{spreadsheetRows.Count} projetos importados com sucesso!");
                         }
                         else
                         {
-                            MessageBox.Show($"Não foram indentificados registros para importar!", "Importação Concluída", MessageBoxButton.OK, MessageBoxImage.Information);
+                            DialogUtils.ShowInfo("Importação Concluída", $"Não foram indentificados registros para importar!");
                         }
                     }
                     catch (Exception ex)
                     {
                         _log.Error("Erro ao importar a planilha.", ex);
-                        MessageBox.Show($"Ocorreu um erro ao importar a planilha. Verifique o arquivo e tente novamente: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                        DialogUtils.ShowInfo("Erro",$"Ocorreu um erro ao importar a planilha. Verifique o arquivo e tente novamente: {ex.Message}");
                         return;
                     }
                 }
@@ -173,26 +174,22 @@ namespace ServiceOrder
                         File.Copy(sourcePath, backupPath, overwrite: true);
                     });
 
-                    MessageBox.Show($"Backup realizado com sucesso!\nArquivo salvo em:\n{backupPath}",
-                        "Backup", MessageBoxButton.OK, MessageBoxImage.Information);
+                    DialogUtils.ShowInfo("Sucesso",$"Backup realizado com sucesso!\nArquivo salvo em:\n{backupPath}");
                 }
                 catch (FileNotFoundException ex)
                 {
                     _log.Error("Arquivo de banco de dados não encontrado para backup.", ex);
-                    MessageBox.Show("O arquivo original do banco de dados não foi encontrado. Verifique se ele existe.",
-                        "Arquivo não encontrado", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    DialogUtils.ShowInfo("Erro","O arquivo original do banco de dados não foi encontrado. Verifique se ele existe.");
                 }
                 catch (UnauthorizedAccessException ex)
                 {
                     _log.Error("Erro de permissão ao tentar salvar backup.", ex);
-                    MessageBox.Show("Permissão negada para salvar o arquivo no local selecionado.",
-                        "Permissão negada", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    DialogUtils.ShowInfo("Erro","Permissão negada para salvar o arquivo no local selecionado.");
                 }
                 catch (Exception ex)
                 {
                     _log.Error("Erro inesperado ao realizar o backup.", ex);
-                    MessageBox.Show("Ocorreu um erro inesperado ao realizar o backup.\n\n" + ex.Message,
-                        "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    DialogUtils.ShowInfo("Erro","Ocorreu um erro inesperado ao realizar o backup.\n\n" + ex.Message);
                 }
             }
         }

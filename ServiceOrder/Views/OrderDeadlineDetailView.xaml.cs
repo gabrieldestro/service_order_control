@@ -57,7 +57,7 @@ namespace ServiceOrder
             catch (Exception ex)
             {
                 _log.Error("Erro ao carregar ordens finalizadas para os prazos.", ex);
-                MessageBox.Show("Erro ao carregar a lista de ordens finalizadas.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao carregar a lista de ordens finalizadas.");
             }
         }
 
@@ -133,13 +133,13 @@ namespace ServiceOrder
                     await _orderDeadlineService.AddAsync(_orderDeadline);
                 }
 
-                MessageBox.Show("Prazo salvo com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                DialogUtils.ShowInfo("Sucesso", "Prazo salvo com sucesso!");
                 Close();
             }
             catch (Exception ex)
             {
                 _log.Error("Erro ao salvar prazo.", ex);
-                MessageBox.Show("Erro ao salvar o prazo.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                DialogUtils.ShowInfo("Erro", "Erro ao salvar o prazo.");
             }
         }
 
