@@ -7,7 +7,7 @@
 7. melhorar o tratamento de erros e incluir log (ok)
 8. implementar melhor filtros (ok)
 9. fazer funcionalidade de importar dados a partir da planilha fornecida base (ok, mas precisa testar)
-10. ajustar o css (fiz as telas de listagem, falta os detalhes, o options e os popups)
+10. ajustar o css (ok, mas falta criar um dialog customizado para os messagebox, esta no chat do gpt, só copiar)
 11. dar uma limpada no código
 
 

@@ -141,13 +141,52 @@ namespace ServiceOrder
         private void ValidateDates()
         {
             _2_DocSentDtPicker.IsEnabled = _1_ReceiptDtPicker.SelectedDate != null;
+            _2_DocSentDtPickerBtn.IsEnabled = _1_ReceiptDtPicker.SelectedDate != null;
+
             _3_DocRecivedDtPicker.IsEnabled = _2_DocSentDtPicker.SelectedDate != null;
+            _3_DocRecivedDtPickerBtn.IsEnabled = _2_DocSentDtPicker.SelectedDate != null;
+
             _4_ProjRegisteredDtPicker.IsEnabled = _3_DocRecivedDtPicker.SelectedDate != null;
+            _4_ProjRegisteredDtPickerBtn.IsEnabled = _3_DocRecivedDtPicker.SelectedDate != null;
+
             _5_ProjectSentDtPicker.IsEnabled = _4_ProjRegisteredDtPicker.SelectedDate != null;
+            _5_ProjectSentDtPickerBtn.IsEnabled = _4_ProjRegisteredDtPicker.SelectedDate != null;
+
             _6_ProjApprovedDtPicker.IsEnabled = _5_ProjectSentDtPicker.SelectedDate != null;
+            _6_ProjApprovedDtPickerBtn.IsEnabled = _5_ProjectSentDtPicker.SelectedDate != null;
+
             _7_RequestInspDtPicker.IsEnabled = _6_ProjApprovedDtPicker.SelectedDate != null;
+            _7_RequestInspDtPickerBtn.IsEnabled = _6_ProjApprovedDtPicker.SelectedDate != null;
+
             _8_FinalizationDtPicker.IsEnabled = _7_RequestInspDtPicker.SelectedDate != null;
+            _8_FinalizationDtPickerBtn.IsEnabled = _7_RequestInspDtPicker.SelectedDate != null;
         }
+        private void SetToday_Receipt(object sender, RoutedEventArgs e) =>
+            _1_ReceiptDtPicker.SelectedDate = DateTime.Today;
+
+        private void SetToday_DocSent(object sender, RoutedEventArgs e) =>
+            _2_DocSentDtPicker.SelectedDate = DateTime.Today;
+
+        private void SetToday_DocReceived(object sender, RoutedEventArgs e) =>
+            _3_DocRecivedDtPicker.SelectedDate = DateTime.Today;
+
+        private void SetToday_ProjRegistered(object sender, RoutedEventArgs e) =>
+            _4_ProjRegisteredDtPicker.SelectedDate = DateTime.Today;
+
+        private void SetToday_ProjectSent(object sender, RoutedEventArgs e) =>
+            _5_ProjectSentDtPicker.SelectedDate = DateTime.Today;
+
+        private void SetToday_ProjApproved(object sender, RoutedEventArgs e) =>
+            _6_ProjApprovedDtPicker.SelectedDate = DateTime.Today;
+
+        private void SetToday_RequestInsp(object sender, RoutedEventArgs e) =>
+            _7_RequestInspDtPicker.SelectedDate = DateTime.Today;
+
+        private void SetToday_Finalization(object sender, RoutedEventArgs e) =>
+            _8_FinalizationDtPicker.SelectedDate = DateTime.Today;
+
+        private void SetToday_Payment(object sender, RoutedEventArgs e) =>
+            _9_PaymentDtPicker.SelectedDate = DateTime.Today;
 
         private void OnNewClientClick(object sender, RoutedEventArgs e)
         {

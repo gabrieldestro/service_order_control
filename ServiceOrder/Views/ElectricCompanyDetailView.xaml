@@ -3,35 +3,43 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ServiceOrder"
         mc:Ignorable="d"
-        Title="Cadastro de Companhia Elétrica" Height="450" Width="800">
-    <Grid Margin="15">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        Title="Cadastro de Companhia Elétrica" Height="500" Width="850" Background="#F9F9F9">
 
-        <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="Cadastro de Companhia Elétrica" FontSize="20" Margin="0,0,0,15"/>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Background="#F9F9F9">
+            <StackPanel HorizontalAlignment="Center" MaxWidth="1000" Margin="20">
 
-            <TextBlock Text="Nome da companhia:" Margin="0,0,0,5"/>
-            <TextBox x:Name="CompanyNameTextBox" Height="30"/>
+                <!-- Card de conteúdo -->
+                <Border Background="White" CornerRadius="5" Padding="15" BorderBrush="#D3D3D3" BorderThickness="1" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock Text="Cadastro de Companhia Elétrica" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
 
-            <TextBlock Text="Cnpj:" Margin="0,0,0,5"/>
-            <TextBox x:Name="CnpjTextBox" Height="30"
-             PreviewTextInput="CnpjTextBox_PreviewTextInput"
-             TextChanged="CnpjTextBox_TextChanged"
-             MaxLength="18"/>
+                        <Label Content="Nome da companhia:" Style="{StaticResource FormLabelStyle}"/>
+                        <TextBox x:Name="CompanyNameTextBox" Height="30" Margin="0,5,0,15"/>
 
-            <TextBlock Text="Descrição:" Margin="0,0,0,5"/>
-            <TextBox x:Name="DescriptionTextBox" Height="100"/>
-        </StackPanel>
+                        <Label Content="CNPJ:" Style="{StaticResource FormLabelStyle}"/>
+                        <TextBox x:Name="CnpjTextBox"
+                                 Height="30"
+                                 Margin="0,5,0,15"
+                                 MaxLength="18"
+                                 PreviewTextInput="CnpjTextBox_PreviewTextInput"
+                                 TextChanged="CnpjTextBox_TextChanged"/>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0">
-            <Button Content="Salvar" Width="100" Margin="5" Click="OnSaveClick"/>
-            <Button Content="Cancelar" Width="100" Margin="5" Click="OnCancelClick"/>
-        </StackPanel>
-    </Grid>
+                        <Label Content="Descrição:" Style="{StaticResource FormLabelStyle}"/>
+                        <TextBox x:Name="DescriptionTextBox"
+                                 Height="100"
+                                 Margin="0,5,0,0"
+                                 TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Botões -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Salvar" Width="120" Margin="5" Click="OnSaveClick" Style="{StaticResource StandardButtonStyle}"/>
+                    <Button Content="Cancelar" Width="120" Margin="5" Click="OnCancelClick" Style="{StaticResource StandardButtonStyle}"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Window>

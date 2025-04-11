@@ -63,6 +63,11 @@
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="Background" Value="#005A9E"/>
                         </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="#EEE"/>
+                            <Setter Property="BorderBrush" Value="#CCC"/>
+                            <Setter Property="Foreground" Value="#888"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -103,5 +108,12 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style x:Key="ComboBoxFormStyle" TargetType="ComboBox">
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,5"/>
+        <Setter Property="Padding" Value="5,0"/>
     </Style>
 </ResourceDictionary>

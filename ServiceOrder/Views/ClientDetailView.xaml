@@ -3,60 +3,69 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ServiceOrder"
         mc:Ignorable="d"
-        Title="Cadastro de Cliente" Height="450" Width="800">
-    <Grid Margin="15">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        Title="Cadastro de Cliente" Height="500" Width="850" Background="#F9F9F9">
 
-        <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="Cadastro de Cliente" FontSize="20" Margin="0,0,0,15"/>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Background="#F9F9F9">
+            <StackPanel HorizontalAlignment="Center" MaxWidth="1000" Margin="20">
 
-            <TextBlock Text="Nome do Cliente:" Margin="0,0,0,5"/>
-            <TextBox x:Name="ClientNameTextBox" Height="30"/>
-            
-            <!-- Tipo de Pessoa -->
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Tipo de Pessoa:" Margin="0,0,0,5"/>
-                <ComboBox x:Name="PersonTypeComboBox" HorizontalAlignment="Left" Height="30" Width="150" SelectionChanged="PersonTypeComboBox_SelectionChanged">
-                    <ComboBoxItem Content="Pessoa Jurídica" IsSelected="True"/>
-                    <ComboBoxItem Content="Pessoa Física"/>
-                </ComboBox>
+                <Border Background="White" CornerRadius="5" Padding="15" BorderBrush="#D3D3D3" BorderThickness="1" Margin="0,0,0,15">
+                    <StackPanel>
+
+                        <TextBlock Text="Cadastro de Cliente" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
+
+                        <Label Content="Nome do Cliente:" Style="{StaticResource FormLabelStyle}"/>
+                        <TextBox x:Name="ClientNameTextBox" Height="30" Margin="0,5,0,15"/>
+
+                        <!-- Tipo de Pessoa -->
+                        <Label Content="Tipo de Pessoa:" Style="{StaticResource FormLabelStyle}"/>
+                        <ComboBox x:Name="PersonTypeComboBox"
+                                  Height="30"
+                                  Width="200"
+                                  Margin="0,5,0,15"
+                                  Style="{StaticResource ComboBoxFormStyle}"
+                                  SelectionChanged="PersonTypeComboBox_SelectionChanged">
+                            <ComboBoxItem Content="Pessoa Jurídica" IsSelected="True"/>
+                            <ComboBoxItem Content="Pessoa Física"/>
+                        </ComboBox>
+
+                        <!-- CPF -->
+                        <StackPanel x:Name="CpfPanel" Visibility="Collapsed" Margin="0,0,0,15">
+                            <Label Content="CPF:" Style="{StaticResource FormLabelStyle}"/>
+                            <TextBox x:Name="CpfTextBox"
+                                     Height="30"
+                                     Margin="0,5,0,0"
+                                     PreviewTextInput="CpfTextBox_PreviewTextInput"
+                                     TextChanged="CpfTextBox_TextChanged"
+                                     MaxLength="14"/>
+                        </StackPanel>
+
+                        <!-- CNPJ -->
+                        <StackPanel x:Name="CnpjPanel" Visibility="Visible" Margin="0,0,0,15">
+                            <Label Content="CNPJ:" Style="{StaticResource FormLabelStyle}"/>
+                            <TextBox x:Name="CnpjTextBox"
+                                     Height="30"
+                                     Margin="0,5,0,0"
+                                     PreviewTextInput="CnpjTextBox_PreviewTextInput"
+                                     TextChanged="CnpjTextBox_TextChanged"
+                                     MaxLength="18"/>
+                        </StackPanel>
+
+                        <Label Content="Descrição:" Style="{StaticResource FormLabelStyle}"/>
+                        <TextBox x:Name="DescriptionTextBox"
+                                 Height="100"
+                                 Margin="0,5,0,0"
+                                 TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Botões -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Salvar" Width="120" Margin="5" Click="OnSaveClick" Style="{StaticResource StandardButtonStyle}"/>
+                    <Button Content="Cancelar" Width="120" Margin="5" Click="OnCancelClick" Style="{StaticResource StandardButtonStyle}"/>
+                </StackPanel>
             </StackPanel>
-
-            <!-- CPF -->
-            <StackPanel x:Name="CpfPanel" Visibility="Collapsed" Margin="5">
-                <TextBlock Text="CPF:" Margin="0,0,0,5"/>
-                <TextBox x:Name="CpfTextBox" Height="30"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Center"
-                PreviewTextInput="CpfTextBox_PreviewTextInput"
-                TextChanged="CpfTextBox_TextChanged"
-                MaxLength="14"/>
-            </StackPanel>
-
-            <!-- CNPJ -->
-            <StackPanel x:Name="CnpjPanel" Visibility="Visible" Margin="5">
-                <TextBlock Text="CNPJ:" Margin="0,0,0,5"/>
-                <TextBox x:Name="CnpjTextBox" Height="30"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Center"
-                PreviewTextInput="CnpjTextBox_PreviewTextInput"
-                TextChanged="CnpjTextBox_TextChanged"
-                MaxLength="18"/>
-            </StackPanel>
-
-            <TextBlock Text="Descrição:" Margin="0,0,0,5"/>
-            <TextBox x:Name="DescriptionTextBox" Height="100"/>
-        </StackPanel>
-
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0">
-            <Button Content="Salvar" Width="100" Margin="5" Click="OnSaveClick"/>
-            <Button Content="Cancelar" Width="100" Margin="5" Click="OnCancelClick"/>
-        </StackPanel>
-    </Grid>
+        </Grid>
+    </ScrollViewer>
 </Window>
