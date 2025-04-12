@@ -22,20 +22,23 @@ namespace ServiceOrder.Repository.Context
             base.OnModelCreating(modelBuilder);
 
             // Configuração de Order
-            modelBuilder.Entity<Order>()
-                .HasKey(o => o.Id);
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.HasKey(o => o.Id);
+                entity.Property(o => o.Id).ValueGeneratedOnAdd();
+                entity.Property(o => o.Enabled).HasDefaultValue(true);
+                entity.Property(o => o.CreatedDate).HasDefaultValue(DateTime.Now);
 
-            modelBuilder.Entity<Order>()
-                .Property(o => o.Id)
-                .ValueGeneratedOnAdd();
-
-            modelBuilder.Entity<Order>()
-                .Property(o => o.Enabled)
-                .HasDefaultValue(true);
-
-            modelBuilder.Entity<Order>()
-                .Property(o => o.CreatedDate)
-                .HasDefaultValue(DateTime.Now);
+                entity.Property(e => e.ReceivedDate).HasColumnType("date");
+                entity.Property(e => e.DocumentSentDate).HasColumnType("date");
+                entity.Property(e => e.DocumentReceivedDate).HasColumnType("date");
+                entity.Property(e => e.ProjectRegistrationDate).HasColumnType("date");
+                entity.Property(e => e.ProjectSubmissionDate).HasColumnType("date");
+                entity.Property(e => e.ProjectApprovalDate).HasColumnType("date");
+                entity.Property(e => e.InspectionRequestDate).HasColumnType("date");
+                entity.Property(e => e.FinalizationDate).HasColumnType("date");
+                entity.Property(e => e.PaymentDate).HasColumnType("date");
+            });
 
             // Configuração de Client
             modelBuilder.Entity<Client>()

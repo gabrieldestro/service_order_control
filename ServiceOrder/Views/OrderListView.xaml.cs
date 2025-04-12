@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using log4net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using ServiceOrder.Domain.DTOs;
@@ -17,6 +18,8 @@ namespace ServiceOrder
     /// </summary>
     public partial class OrderListView : UserControl
     {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(OrderListView));
+
         private readonly IOrderService _orderService;
         private readonly IOrderDeadlineService _orderDeadlineService;
         private readonly IClientService _clientService;
@@ -63,15 +66,27 @@ namespace ServiceOrder
             if (saveFileDialog.ShowDialog() != true)
                 return;
 
-            ChangeViewOnLoad(false);
-
-            var memoryStream = _spreadsheetService.ExportOrdersToExcel(Orders.ToList());
-            using (var fileStream = File.Create(saveFileDialog.FileName))
+            try
             {
-                memoryStream.CopyTo(fileStream);
-            }
+                ChangeViewOnLoad(false);
 
-            ChangeViewOnLoad(true);
+                var memoryStream = _spreadsheetService.ExportOrdersToExcel(Orders.ToList());
+                using (var fileStream = File.Create(saveFileDialog.FileName))
+                {
+                    memoryStream.CopyTo(fileStream);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _log.Error("Erro ao exportar projetos.", ex);
+                DialogUtils.ShowInfo("Erro", $"Erro ao exportar projetos.");
+                return;
+            }
+            finally
+            {
+                ChangeViewOnLoad(true);
+            }
 
             DialogUtils.ShowInfo("Sucesso", "Arquivo salvo com sucesso!");
         }
@@ -175,6 +190,7 @@ namespace ServiceOrder
             }
             catch (Exception ex)
             {
+                _log.Error("Erro ao exportar projetos.", ex);
                 DialogUtils.ShowInfo("Erro", $"Erro ao carregar projetos.");
             }
             finally

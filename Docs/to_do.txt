@@ -7,9 +7,11 @@
 7. melhorar o tratamento de erros e incluir log (ok)
 8. implementar melhor filtros (ok)
 9. fazer funcionalidade de importar dados a partir da planilha fornecida base (ok, mas precisa testar)
-10. ajustar o css (ok, mas falta criar um dialog customizado para os messagebox, esta no chat do gpt, só copiar)
-11. dar uma limpada no código
+10. ajustar o css (ok)
+11. dar uma limpada no código (okish)
 
 
 12. Executar testes em todas as telas e funcionalidades.
 12.1 ver porque não loga
+12.2 eu acho que não lista se excluir o cliente releaciona a ordem.
+12.3 tem que adicionar o loading ao exportar e importar planilhas
