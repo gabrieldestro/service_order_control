@@ -153,10 +153,15 @@ namespace ServiceOrder
             {
                 if (sender is Button btn && btn.DataContext is ElectricCompany selected)
                 {
-                    var result = MessageBox.Show($"Deseja excluir a companhia '{selected.Name}'?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                    if (result == MessageBoxResult.Yes)
+                    var result = DialogUtils.ShowConfirmation("Confirmação", $"Deseja excluir a companhia '{selected.Name}'?");
+                    if (result)
                     {
-                        await _companyService.DeleteAsync(selected.Id);
+                        var success = await _companyService.DeleteAsync(selected.Id);
+                        if (!success)
+                        {
+                            DialogUtils.ShowInfo("Erro", "Erro ao excluir a companhia.");
+                        }
+
                         LoadCompaniesFilteredAsync();
                     }
                 }

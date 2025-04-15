@@ -94,21 +94,32 @@ namespace ServiceOrder
                 }
                 */
 
+                if (cnpj.Length > 0 && cnpj.Length < 18)
+                {
+                    DialogUtils.ShowInfo("Erro", "Informe um CNPJ válido.");
+                    return;
+                }
+
                 _company.Name = name;
                 _company.Cnpj = cnpj;
                 _company.Description = DescriptionTextBox.Text.Trim();
                 _company.LastUpdated = DateTime.Now;
 
+                var success = false;
                 if (_company.Id > 0)
                 {
-                    await _electricCompanyService.UpdateAsync(_company);
+                    success = await _electricCompanyService.UpdateAsync(_company);
                 }
                 else
                 {
-                    await _electricCompanyService.AddAsync(_company);
+                    success = await _electricCompanyService.AddAsync(_company);
                 }
 
-                DialogUtils.ShowInfo("Sucesso", "Companhia elétrica salva com sucesso!");
+                if (success)
+                    DialogUtils.ShowInfo("Sucesso", "Companhia elétrica salva com sucesso!");
+                else
+                    DialogUtils.ShowInfo("Erro", "Erro ao salvar Companhia elétrica!");
+
                 this.Close();
             }
             catch (Exception ex)

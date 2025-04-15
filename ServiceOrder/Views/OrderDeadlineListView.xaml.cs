@@ -137,18 +137,23 @@ namespace ServiceOrder
         {
             if (sender is Button btn && btn.DataContext is OrderDeadline selected)
             {
-                var result = DialogUtils.ShowConfirmation("Confirmação", $"Deseja excluir o prazo da ordem '{selected.OrderId}'?");
+                var result = DialogUtils.ShowConfirmation("Confirmação", $"Deseja excluir o prazo do projeto '{selected.OrderId}'?");
 
                 if (result)
                 {
                     try
                     {
-                        await _service.DeleteAsync(selected.Id);
+                        var success = await _service.DeleteAsync(selected.Id);
+                        if (!success)
+                        {
+                            DialogUtils.ShowInfo("Erro", "Erro ao excluir o prazo.");
+                        }
+
                         LoadDeadlinesWithFiltersAsync();
                     }
                     catch (Exception ex)
                     {
-                        _log.Error($"Erro ao excluir o prazo da ordem '{selected.OrderId}'.", ex);
+                        _log.Error($"Erro ao excluir o prazo do projeto '{selected.OrderId}'.", ex);
                         DialogUtils.ShowInfo("Erro", "Erro ao excluir o prazo.");
                     }
                 }

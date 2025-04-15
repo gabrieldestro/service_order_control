@@ -129,7 +129,12 @@ namespace ServiceOrder
                 var result = DialogUtils.ShowConfirmation("Confirmação", $"Deseja excluir o projeto {selectedOrder?.Order?.Id}?");
                 if (result)
                 {
-                    await _orderService.DeleteOrder(selectedOrder?.Order);
+                    var success = await _orderService.DeleteOrder(selectedOrder?.Order);
+                    if (!success)
+                    {
+                        DialogUtils.ShowInfo("Erro", "Erro ao excluir o projeto.");
+                    }
+
                     LoadOrdersWithFiltersAsync();
                 }
             }

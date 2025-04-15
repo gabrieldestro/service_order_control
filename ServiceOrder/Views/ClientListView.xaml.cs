@@ -92,10 +92,12 @@ namespace ServiceOrder
         private void LoadClientsFilteredAsync()
         {
             string searchText = SearchNameTextBox.Text.ToLower();
-            string searchCnpjText = SearchCnpjTextBox.Text;
+            string searchCnpjCpfText = SearchCnpjCpfTextBox.Text;
 
             LoadClientsAsync(client =>
-                (string.IsNullOrEmpty(searchCnpjText) || client?.Cnpj?.ToLower().Contains(searchCnpjText) == true) &&
+                (string.IsNullOrEmpty(searchCnpjCpfText) 
+                || client?.Cnpj?.ToLower().Contains(searchCnpjCpfText) == true 
+                || client?.Cpf?.ToLower().Contains(searchCnpjCpfText) == true) &&
                 (string.IsNullOrEmpty(searchText) || client?.Name?.ToLower().Contains(searchText) == true));
         }
 
@@ -104,7 +106,7 @@ namespace ServiceOrder
             try
             {
                 SearchNameTextBox.Clear();
-                SearchCnpjTextBox.Clear();
+                SearchCnpjCpfTextBox.Clear();
                 LoadClientsFilteredAsync();
             }
             catch (Exception ex)
@@ -161,7 +163,6 @@ namespace ServiceOrder
                         if (!success)
                         {
                             DialogUtils.ShowInfo("Erro", "Erro ao excluir cliente.");
-                            return;
                         }
 
                         LoadClientsFilteredAsync();

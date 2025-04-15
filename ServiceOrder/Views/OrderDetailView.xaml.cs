@@ -117,9 +117,11 @@ namespace ServiceOrder
 
         public void SetOrder(Order order)
         {
+            var new_order = new Order();
+
             if (order == null)
             {
-                order = new Order
+                new_order = new Order
                 {
                     ReceivedDate = DateTime.Now,
                     LastUpdated = DateTime.Now
@@ -128,10 +130,41 @@ namespace ServiceOrder
             else
             {
                 ServiceOrderName.IsEnabled = false;
+
+                new_order = new Order
+                {
+                    Id = order.Id,
+                    OrderName = order.OrderName,
+                    Description = order.Description,
+                    ProjectValue = order.ProjectValue,
+
+                    ClientId = order.ClientId,
+                    Client = order.Client,
+
+                    FinalClientId = order.FinalClientId,
+                    FinalClient = order.FinalClient,
+
+                    ElectricCompanyId = order.ElectricCompanyId,
+                    ElectricCompany = order.ElectricCompany,
+
+                    ReceivedDate = order.ReceivedDate,
+                    DocumentSentDate = order.DocumentSentDate,
+                    DocumentReceivedDate = order.DocumentReceivedDate,
+                    FinalizationDate = order.FinalizationDate,
+                    PaymentDate = order.PaymentDate,
+                    InspectionRequestDate = order.InspectionRequestDate,
+                    ProjectApprovalDate = order.ProjectApprovalDate,
+                    ProjectRegistrationDate = order.ProjectRegistrationDate,
+                    ProjectSubmissionDate = order.ProjectSubmissionDate,
+
+                    Enabled = order.Enabled,
+                    LastUpdated = order.LastUpdated,
+                    CreatedDate = order.CreatedDate
+                };
             }
 
-            _order = order;
-            DataContext = order;
+            _order = new_order;
+            DataContext = new_order;
         }
 
         private void AnyDateChanged(object sender, SelectionChangedEventArgs e)
@@ -281,18 +314,22 @@ namespace ServiceOrder
 
                 currentOrder.LastUpdated = DateTime.Now;
 
+                var success = false;
                 if (currentOrder.Id == 0)
-                    await _orderService.AddOrder(currentOrder);
+                    success = await _orderService.AddOrder(currentOrder);
                 else
-                    await _orderService.UpdateOrder(currentOrder);
+                    success = await _orderService.UpdateOrder(currentOrder);
 
-                DialogUtils.ShowInfo("Sucesso", "Ordem de serviço salva com sucesso!");
+                if (success)
+                    DialogUtils.ShowInfo("Sucesso", "Projeto salvo com sucesso!");
+                else
+                    DialogUtils.ShowInfo("Erro", "Erro ao salvar projeto.");
                 Close();
             }
             catch (Exception ex)
             {
-                _log.Error("Erro ao salvar a ordem de serviço.", ex);
-                DialogUtils.ShowInfo("Erro", "Erro ao salvar a ordem de serviço.");
+                _log.Error("Erro ao salvar o projeto.", ex);
+                DialogUtils.ShowInfo("Erro", "Erro ao salvar o projeto.");
             }
         }
     }

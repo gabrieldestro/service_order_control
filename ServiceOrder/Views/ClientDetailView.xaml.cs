@@ -100,6 +100,28 @@ namespace ServiceOrder
                 var cpf = CpfTextBox.Text.Trim();
                 var cnpj = CnpjTextBox.Text.Trim();
 
+                // pessoa fisica    
+                if (PersonTypeComboBox.SelectedIndex == 1)
+                {
+                    cnpj = string.Empty;
+                    if (cpf.Length > 0 && cpf.Length < 14)
+                    {
+                        DialogUtils.ShowInfo("Erro", "Informe um CPF válido.");
+                        return;
+                    }
+                }
+
+                // pessoa juridica
+                if (PersonTypeComboBox.SelectedIndex == 0)
+                {
+                    cpf = string.Empty;
+                    if (cnpj.Length > 0 && cnpj.Length < 18)
+                    {
+                        DialogUtils.ShowInfo("Erro", "Informe um CNPJ válido.");
+                        return;
+                    }
+                }
+
                 _client.Cnpj = cnpj;
                 _client.Cpf = cpf;
                 _client.Name = name;
@@ -191,11 +213,16 @@ namespace ServiceOrder
         {
             try
             {
-                var txt = CpfTextBox;
-                string formatted = FormatUtils.FormatCpf(txt.Text);
+                var textBox = (TextBox)sender;
+                string onlyDigits = new string(textBox.Text.Where(char.IsDigit).ToArray());
 
-                txt.Text = formatted;
-                txt.CaretIndex = txt.Text.Length;
+                if (string.IsNullOrEmpty(onlyDigits))
+                    return;
+
+                string formatted = FormatUtils.FormatCpf(onlyDigits);
+
+                textBox.Text = formatted;
+                textBox.CaretIndex = formatted.Length;
             }
             catch (Exception ex)
             {

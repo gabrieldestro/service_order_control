@@ -40,7 +40,7 @@
                   CanUserAddRows="False" 
                   IsReadOnly="True" 
                   CellStyle="{StaticResource LeftAlignedCellStyle}">
-
+            
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Ações" Width="150">
                     <DataGridTemplateColumn.CellTemplate>

@@ -25,8 +25,8 @@
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical" Margin="10">
-                        <Label Content="CNPJ:" Style="{StaticResource FormLabelStyle}"/>
-                        <TextBox x:Name="SearchCnpjTextBox" Width="150" Height="25" Margin="5"/>
+                        <Label Content="CNPJ/CPF:" Style="{StaticResource FormLabelStyle}"/>
+                        <TextBox x:Name="SearchCnpjCpfTextBox" Width="150" Height="25" Margin="5"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="10">
@@ -55,6 +55,7 @@
 
                 <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="200"/>
                 <DataGridTextColumn Header="CNPJ" Binding="{Binding Cnpj}" Width="150"/>
+                <DataGridTextColumn Header="CPF" Binding="{Binding Cpf}" Width="150"/>
                 <DataGridTextColumn Header="Criado em" Binding="{Binding CreatedDate, StringFormat=dd/MM/yyyy}" Width="120"/>
                 <DataGridTextColumn Header="Atualizado em" Binding="{Binding LastUpdated, StringFormat=dd/MM/yyyy}" Width="120"/>
             </DataGrid.Columns>

@@ -85,6 +85,8 @@ namespace ServiceOrder
             {
                 _orderDeadline = deadline;
                 OrderComboBox.IsEnabled = false;
+
+                DescriptionTextBox.Text = deadline.Description;
             }
 
             DataContext = _orderDeadline;
@@ -124,16 +126,21 @@ namespace ServiceOrder
                 _orderDeadline.Description = DescriptionTextBox.Text.Trim();
                 _orderDeadline.LastUpdated = DateTime.Now;
 
+                var success = false;
                 if (_orderDeadline.Id > 0)
                 {
-                    await _orderDeadlineService.UpdateAsync(_orderDeadline);
+                    success = await _orderDeadlineService.UpdateAsync(_orderDeadline);
                 }
                 else
                 {
-                    await _orderDeadlineService.AddAsync(_orderDeadline);
+                    success = await _orderDeadlineService.AddAsync(_orderDeadline);
                 }
 
-                DialogUtils.ShowInfo("Sucesso", "Prazo salvo com sucesso!");
+                if (success)
+                    DialogUtils.ShowInfo("Sucesso", "Prazo salvo com sucesso!");
+                else
+                    DialogUtils.ShowInfo("Erro", "Erro ao salvar prazo!");
+
                 Close();
             }
             catch (Exception ex)

@@ -74,7 +74,7 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTextColumn Header="Projeto" Binding="{Binding Order.OrderName}" Width="140"/>
-                <DataGridTextColumn Header="Valor do Projeto" Binding="{Binding ProjectValue, StringFormat=C}" Width="140"/>
+                <DataGridTextColumn Header="Valor do Projeto" Binding="{Binding Order.ProjectValue, StringFormat=C}" Width="140"/>
                 <DataGridTextColumn Header="Cliente Revendedor" Binding="{Binding Order.Client.Name, StringFormat=C}" Width="140"/>
                 <DataGridTextColumn Header="Cliente Final" Binding="{Binding Order.FinalClient.Name, StringFormat=C}" Width="140"/>
                 <DataGridTextColumn Header="Cia. Elétrica" Binding="{Binding Order.ElectricCompany.Name, StringFormat=C}" Width="140"/>

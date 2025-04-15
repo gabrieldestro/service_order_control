@@ -130,24 +130,25 @@ namespace ServiceOrder
 
                                 await _orderService.AddOrder(row.Order);
                             }
+                            ChangeViewOnLoad(true);
 
                             // Aqui você pode inserir no banco ou atualizar a tela
                             DialogUtils.ShowInfo("Importação Concluída", $"{spreadsheetRows.Count} projetos importados com sucesso!");
                         }
                         else
                         {
+                            ChangeViewOnLoad(true);
+
                             DialogUtils.ShowInfo("Importação Concluída", $"Não foram indentificados registros para importar!");
                         }
                     }
                     catch (Exception ex)
                     {
+                        ChangeViewOnLoad(true);
+
                         _log.Error("Erro ao importar a planilha.", ex);
                         DialogUtils.ShowInfo("Erro",$"Ocorreu um erro ao importar a planilha. Verifique o arquivo e tente novamente: {ex.Message}");
                         return;
-                    }
-                    finally
-                    {
-                        ChangeViewOnLoad(true);
                     }
                 }
             }
@@ -186,27 +187,30 @@ namespace ServiceOrder
 
                         File.Copy(sourcePath, backupPath, overwrite: true);
                     });
+                    ChangeViewOnLoad(true);
 
                     DialogUtils.ShowInfo("Sucesso", $"Backup realizado com sucesso!\nArquivo salvo em:\n{backupPath}");
                 }
                 catch (FileNotFoundException ex)
                 {
+                    ChangeViewOnLoad(true);
+
                     _log.Error("Arquivo de banco de dados não encontrado para backup.", ex);
                     DialogUtils.ShowInfo("Erro", "O arquivo original do banco de dados não foi encontrado. Verifique se ele existe.");
                 }
                 catch (UnauthorizedAccessException ex)
                 {
+                    ChangeViewOnLoad(true);
+
                     _log.Error("Erro de permissão ao tentar salvar backup.", ex);
                     DialogUtils.ShowInfo("Erro", "Permissão negada para salvar o arquivo no local selecionado.");
                 }
                 catch (Exception ex)
                 {
+                    ChangeViewOnLoad(true);
+
                     _log.Error("Erro inesperado ao realizar o backup.", ex);
                     DialogUtils.ShowInfo("Erro", "Ocorreu um erro inesperado ao realizar o backup.\n\n" + ex.Message);
-                }
-                finally
-                {
-                    ChangeViewOnLoad(true);
                 }
             }
         }

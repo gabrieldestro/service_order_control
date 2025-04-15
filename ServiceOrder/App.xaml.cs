@@ -18,6 +18,8 @@ namespace ServiceOrder
     /// </summary>
     public partial class App : Application
     {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(App));
+
         public static IServiceProvider ServiceProvider { get; private set; }
 
         public App()
@@ -53,8 +55,7 @@ namespace ServiceOrder
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
 
-            ILog log = LogManager.GetLogger(typeof(App));
-            log.Info("Aplicação iniciada.");
+            _log.Info("Aplicação iniciada.");
 
             // Aplica as migrações para garantir que o banco de dados seja criado
             var dbContext = ServiceProvider.GetRequiredService<AppDbContext>();

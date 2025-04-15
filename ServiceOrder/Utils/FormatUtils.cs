@@ -25,20 +25,15 @@ namespace ServiceOrder.Utils
 
         public static string FormatCpf(string input)
         {
-            if (string.IsNullOrWhiteSpace(input))
-                return string.Empty;
+            if (input.Length > 11)
+                input = input.Substring(0, 11);
 
-            var digits = new string(input.Where(char.IsDigit).ToArray());
-
-            if (digits.Length > 11)
-                digits = digits.Substring(0, 11);
-
-            return digits.Length switch
+            return input.Length switch
             {
-                >= 10 => Convert.ToUInt64(digits).ToString(@"000\.000\.000\-00"),
-                >= 7 => Convert.ToUInt64(digits).ToString(@"000\.000\.000"),
-                >= 4 => Convert.ToUInt64(digits).ToString(@"000\.000"),
-                _ => digits
+                <= 3 => input,
+                <= 6 => $"{input[..3]}.{input[3..]}",
+                <= 9 => $"{input[..3]}.{input[3..6]}.{input[6..]}",
+                _ => $"{input[..3]}.{input[3..6]}.{input[6..9]}-{input[9..]}",
             };
         }
     }

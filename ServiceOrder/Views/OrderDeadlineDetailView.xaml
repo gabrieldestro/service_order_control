@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Cadastro de Prazo" Height="600" Width="850" Background="#F9F9F9">
+        Title="Cadastro de Prazo" Height="600" Width="850" Background="#F9F9F9"
+        >
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid Background="#F9F9F9">
