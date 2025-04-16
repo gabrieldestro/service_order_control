@@ -39,42 +39,38 @@
                         <!-- Grade 3x4 proporcional -->
                         <UniformGrid Columns="3" Rows="4" Margin="0,0,0,10">
                             <StackPanel Margin="5">
-                                <Label Content="Recebimento (dias):" Style="{StaticResource FormLabelStyle}"/>
-                                <TextBox Text="{Binding ReceivedDays}" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
+                                <Label Content="Documento Enviado (dias):" Style="{StaticResource FormLabelStyle}"/>
+                                <TextBox Name="DocumentSentDaysTxt" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
                             </StackPanel>
                             <StackPanel Margin="5">
                                 <Label Content="Documento Recebido (dias):" Style="{StaticResource FormLabelStyle}"/>
-                                <TextBox Text="{Binding DocumentReceivedDays}" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
-                            </StackPanel>
-                            <StackPanel Margin="5">
-                                <Label Content="Envio Projeto (dias):" Style="{StaticResource FormLabelStyle}"/>
-                                <TextBox Text="{Binding ProjectSubmissionDays}" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
+                                <TextBox Name="DocumentReceivedDaysTxt" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
                             </StackPanel>
 
                             <StackPanel Margin="5">
-                                <Label Content="Documento Enviado (dias):" Style="{StaticResource FormLabelStyle}"/>
-                                <TextBox Text="{Binding DocumentSentDays}" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
+                                <Label Content="Cadastro Projeto (dias):" Style="{StaticResource FormLabelStyle}"/>
+                                <TextBox Name="ProjectRegistrationDaysTxt" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
                             </StackPanel>
                             <StackPanel Margin="5">
-                                <Label Content="Cadastro Projeto (dias):" Style="{StaticResource FormLabelStyle}"/>
-                                <TextBox Text="{Binding ProjectRegistrationDays}" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
+                                <Label Content="Envio Projeto (dias):" Style="{StaticResource FormLabelStyle}"/>
+                                <TextBox Name="ProjectSubmissionDaysTxt" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
                             </StackPanel>
                             <StackPanel Margin="5">
                                 <Label Content="Aprovação Projeto (dias):" Style="{StaticResource FormLabelStyle}"/>
-                                <TextBox Text="{Binding ProjectApprovalDays}" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
+                                <TextBox Name="ProjectApprovalDaysTxt" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
                             </StackPanel>
 
                             <StackPanel Margin="5">
                                 <Label Content="Pedido Vistoria (dias):" Style="{StaticResource FormLabelStyle}"/>
-                                <TextBox Text="{Binding InspectionRequestDays}" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
+                                <TextBox Name="InspectionRequestDaysTxt" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
                             </StackPanel>
                             <StackPanel Margin="5">
                                 <Label Content="Finalização (dias):" Style="{StaticResource FormLabelStyle}"/>
-                                <TextBox Text="{Binding FinalizationDays}" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
+                                <TextBox Name="FinalizationDaysTxt" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
                             </StackPanel>
                             <StackPanel Margin="5">
                                 <Label Content="Pagamento (dias):" Style="{StaticResource FormLabelStyle}"/>
-                                <TextBox Text="{Binding PaymentDays}" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
+                                <TextBox Name="PaymentDaysTxt" PreviewTextInput="OnlyPositiveNumbers_PreviewTextInput"/>
                             </StackPanel>
                         </UniformGrid>
                     </StackPanel>

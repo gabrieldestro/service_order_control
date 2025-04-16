@@ -17,7 +17,6 @@ namespace ServiceOrder.Domain.Entities
         [MaxLength(300)]
         public string? Description { get; set; }
 
-        public int? ReceivedDays { get; set; }
         public int? DocumentSentDays { get; set; }
         public int? DocumentReceivedDays { get; set; }
         public int? ProjectRegistrationDays { get; set; }

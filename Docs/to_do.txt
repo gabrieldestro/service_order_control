@@ -33,38 +33,39 @@
 12.3.1.2 - criar um cliente final a partir do projeto - (ok)
 12.3.1.3 - criar uma companhia a partir do projeto - (ok)
 12.3.2 - editar um projeto
-12.3.2.1 - avançar um projeto
-12.3.2.2 - editar o cliente
-12.3.2.3 - editar o cliente final
-12.3.2.4 - editar a companhia
-12.3.3 - excluir um projeto
-12.3.4 - excluir o cliente associado a um projeto
-12.3.5 - excluir a companhia associada a um projeto
+12.3.2.1 - avançar um projeto - (ok)
+12.3.2.2 - editar o cliente - (ok)
+12.3.2.3 - editar o cliente final - (ok)
+12.3.2.4 - editar a companhia - (ok)
+12.3.3 - excluir um projeto - (ok)
+12.3.4 - excluir o cliente associado a um projeto - (not ok)
+12.3.5 - excluir a companhia associada a um projeto - (not ok)
 12.3.4 - testar os filtros
-12.3.5.1 - testar o filtro de texto
-12.3.5.2 - testar o filtro por data
-12.3.5.3 - testar o filtro de pago
-12.3.6 - testar o botão próximo
+12.3.5.1 - testar o filtro de texto - (ok)
+12.3.5.2 - testar o filtro por data - (ok)
+12.3.5.3 - testar o filtro de pago - (ok)
+12.3.6 - testar o botão próximo - (pending)
 
 12.4 - prazos
-12.4.1 - criar um prazo
-12.4.2 - editar um prazo
-12.4.3 - excluir um prazo
+12.4.1 - criar um prazo - (ok)
+12.4.2 - editar um prazo - (ok)
+12.4.3 - excluir um prazo - (ok)
 
 12.5 - projeto com prazo
-12.5.1 - cadastrar um prazo especifico para um projeto
-12.5.2 - testar o filtro de atrasado
+12.5.1 - cadastrar um prazo especifico para um projeto - (ok)
+12.5.2 - testar o filtro de atrasado - (not ok)
 
 12.6 - opções
-12.6.1 - testar o backup
-12.6.2 - testar a importação massiva a partir da planilha base
+12.6.1 - testar o backup - (ok)
+12.6.2 - testar a importação massiva a partir da planilha base - (pending)
 
-12.7 - testar a exportação de projetos
+12.7 - testar a exportação de projetos - (pending)
 
 Possíveis bugs:
 1 ver porque não loga (corrigido)
-2 eu acho que não lista se excluir o cliente releaciona a ordem.
-3 tem que adicionar o loading ao exportar e importar planilhas
-4 bug na mascara de preço, ver se tem o mesmo bug no CNPJ e no cpf (não tem, é só na currency)
-5 bug no databinding, ele atualiza o campo mesmo sem clicar em salvar
+2 eu acho que não lista se excluir o cliente releaciona a ordem. Não trás assim do banco, mas a query está certo, suspeito ser coisa do EF
+3 tem que adicionar o loading ao exportar e importar planilhas (corrigido)
+4 bug na mascara de preço, ver se tem o mesmo bug no CNPJ e no cpf (corrigido)
+5 bug no databinding, ele atualiza o campo mesmo sem clicar em salvar (corrigido)
 6 ele deixar salvar dois prazos para o mesmo projeto, ou branco
+7 Filtro de atrasados não esta funcionando

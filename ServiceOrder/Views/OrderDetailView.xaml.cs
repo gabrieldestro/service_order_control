@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 using ControlzEx.Theming;
 using log4net;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceOrder.Domain.Entities;
-using ServiceOrder.Domain.Interfaces;
-using ServiceOrder.Repository.Repositories;
+using ServiceOrder.Domain.Utils;
 using ServiceOrder.Services.Interfaces;
 using ServiceOrder.Utils;
 
@@ -60,6 +52,7 @@ namespace ServiceOrder
             {
                 await LoadClientsAsync();
                 await LoadElectricCompaniesAsync();
+                ValidateDates();
             }
             catch (Exception ex)
             {
@@ -117,54 +110,39 @@ namespace ServiceOrder
 
         public void SetOrder(Order order)
         {
-            var new_order = new Order();
 
             if (order == null)
             {
-                new_order = new Order
+                var new_order = new Order
                 {
                     ReceivedDate = DateTime.Now,
                     LastUpdated = DateTime.Now
                 };
+
+                order = new_order;
             }
             else
             {
                 ServiceOrderName.IsEnabled = false;
 
-                new_order = new Order
-                {
-                    Id = order.Id,
-                    OrderName = order.OrderName,
-                    Description = order.Description,
-                    ProjectValue = order.ProjectValue,
+                ServiceOrderName.Text = order.OrderName;
 
-                    ClientId = order.ClientId,
-                    Client = order.Client,
+                DescriptionTxt.Text = order.Description;
+                ProjectValueTxt.Text = order.ProjectValue.ToString();
 
-                    FinalClientId = order.FinalClientId,
-                    FinalClient = order.FinalClient,
-
-                    ElectricCompanyId = order.ElectricCompanyId,
-                    ElectricCompany = order.ElectricCompany,
-
-                    ReceivedDate = order.ReceivedDate,
-                    DocumentSentDate = order.DocumentSentDate,
-                    DocumentReceivedDate = order.DocumentReceivedDate,
-                    FinalizationDate = order.FinalizationDate,
-                    PaymentDate = order.PaymentDate,
-                    InspectionRequestDate = order.InspectionRequestDate,
-                    ProjectApprovalDate = order.ProjectApprovalDate,
-                    ProjectRegistrationDate = order.ProjectRegistrationDate,
-                    ProjectSubmissionDate = order.ProjectSubmissionDate,
-
-                    Enabled = order.Enabled,
-                    LastUpdated = order.LastUpdated,
-                    CreatedDate = order.CreatedDate
-                };
+                _1_ReceiptDtPicker.SelectedDate = order.ReceivedDate;
+                _2_DocSentDtPicker.SelectedDate = order.DocumentSentDate;
+                _3_DocRecivedDtPicker.SelectedDate = order.DocumentReceivedDate;
+                _4_ProjRegisteredDtPicker.SelectedDate = order.ProjectRegistrationDate;
+                _5_ProjectSentDtPicker.SelectedDate = order.ProjectSubmissionDate;
+                _6_ProjApprovedDtPicker.SelectedDate = order.ProjectApprovalDate;
+                _7_RequestInspDtPicker.SelectedDate = order.InspectionRequestDate;
+                _8_FinalizationDtPicker.SelectedDate = order.FinalizationDate;
+                _9_PaymentDtPicker.SelectedDate = order.PaymentDate;
             }
 
-            _order = new_order;
-            DataContext = new_order;
+            _order = order;
+            DataContext = order;
         }
 
         private void AnyDateChanged(object sender, SelectionChangedEventArgs e)
@@ -314,6 +292,19 @@ namespace ServiceOrder
 
                 currentOrder.LastUpdated = DateTime.Now;
 
+                currentOrder.Description = DescriptionTxt.Text;
+                currentOrder.ProjectValue = ProjectValueTxt.Text.ToDecimalFromCurrencyOrNull();
+
+                currentOrder.ReceivedDate = _1_ReceiptDtPicker.SelectedDate;
+                currentOrder.DocumentSentDate = _2_DocSentDtPicker.SelectedDate;
+                currentOrder.DocumentReceivedDate = _3_DocRecivedDtPicker.SelectedDate;
+                currentOrder.ProjectRegistrationDate = _4_ProjRegisteredDtPicker.SelectedDate;
+                currentOrder.ProjectSubmissionDate = _5_ProjectSentDtPicker.SelectedDate;
+                currentOrder.ProjectApprovalDate = _6_ProjApprovedDtPicker.SelectedDate;
+                currentOrder.InspectionRequestDate = _7_RequestInspDtPicker.SelectedDate;
+                currentOrder.FinalizationDate = _8_FinalizationDtPicker.SelectedDate;
+                currentOrder.PaymentDate = _9_PaymentDtPicker.SelectedDate;
+
                 var success = false;
                 if (currentOrder.Id == 0)
                     success = await _orderService.AddOrder(currentOrder);
@@ -331,6 +322,39 @@ namespace ServiceOrder
                 _log.Error("Erro ao salvar o projeto.", ex);
                 DialogUtils.ShowInfo("Erro", "Erro ao salvar o projeto.");
             }
+
+        }
+
+        private void MonetaryTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !Regex.IsMatch(e.Text, "[0-9]");
+        }
+
+        private void MonetaryTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox == null) return;
+
+            // Captura a posição atual do cursor
+            int caret = textBox.CaretIndex;
+
+            // Usa o Dispatcher para evitar loop de eventos
+            textBox.Dispatcher.InvokeAsync(() =>
+            {
+                string digits = Regex.Replace(textBox.Text, @"[^\d]", "");
+
+                if (decimal.TryParse(digits, out decimal number))
+                {
+                    number /= 100; // Ajusta para centavos
+                    string formatted = string.Format(CultureInfo.GetCultureInfo("pt-BR"), "{0:C}", number);
+
+                    if (textBox.Text != formatted)
+                    {
+                        textBox.Text = formatted;
+                        textBox.CaretIndex = formatted.Length;
+                    }
+                }
+            }, DispatcherPriority.Background);
         }
     }
 }

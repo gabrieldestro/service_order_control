@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ServiceOrder.Domain.Interfaces;
 using ServiceOrder.Repository.Context;
 using ServiceOrder.Repository.Repositories;
@@ -14,7 +16,9 @@ namespace ServiceOrder.IoC
         {
             // Configuração do SQLite e DbContext
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite("Data Source=serviceorders.db"));
+                options.UseSqlite("Data Source=serviceorders.db")
+                .LogTo(message => Debug.WriteLine(message), LogLevel.Information)
+                .EnableSensitiveDataLogging());
 
             // Registro do repositório
             services.AddScoped<IOrderRepository, OrderRepository>();

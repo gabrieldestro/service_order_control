@@ -20,6 +20,18 @@ namespace ServiceOrder.Services.Services
             _repository = repository;
         }
 
+        public bool AllDeadlinesRegistered(OrderDeadline d)
+        {
+            return d.DocumentSentDays != null
+                && d.DocumentReceivedDays != null
+                && d.ProjectRegistrationDays != null
+                && d.ProjectSubmissionDays != null
+                && d.ProjectApprovalDays != null
+                && d.InspectionRequestDays != null
+                && d.FinalizationDays != null
+                && d.PaymentDays != null;
+        }
+
         public async Task<List<OrderDeadline>> GetAllAsync()
         {
             return await _repository.GetAllAsync();

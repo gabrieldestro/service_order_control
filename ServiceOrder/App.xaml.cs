@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceOrder.IoC;
 using ServiceOrder.Repository.Context;
+using System.Globalization;
 
 namespace ServiceOrder
 {
@@ -51,6 +52,15 @@ namespace ServiceOrder
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            var culture = new CultureInfo("pt-BR");
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+
+            FrameworkElement.LanguageProperty.OverrideMetadata(
+            typeof(FrameworkElement),
+            new FrameworkPropertyMetadata(
+                System.Windows.Markup.XmlLanguage.GetLanguage(culture.IetfLanguageTag)));
 
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
             XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));

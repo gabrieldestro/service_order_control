@@ -20,7 +20,7 @@
                             <StackPanel Margin="5">
                                 <Label Content="Cliente:"/> 
                                 <StackPanel Orientation="Horizontal">
-                                    <ComboBox x:Name="ClientComboBox" Width="150" Height="30" Style="{StaticResource ComboBoxFormStyle}" SelectedValue="{Binding ClientId, Mode=TwoWay}" Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="ClientComboBox" Width="150" Height="30" Style="{StaticResource ComboBoxFormStyle}" Margin="0,0,0,5"/>
                                     <Button Content="Novo" VerticalAlignment="Center" Height="30" Style="{StaticResource StandardButtonStyle}" Width="80" Margin="5,0,0,5" Click="OnNewClientClick"/>
                                 </StackPanel>
                             </StackPanel>
@@ -29,7 +29,7 @@
                             <StackPanel Margin="5">
                                 <Label Content="Cliente Final:"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <ComboBox x:Name="ClientFinalComboBox" Width="150" Height="30" Style="{StaticResource ComboBoxFormStyle}" SelectedValue="{Binding FinalClientid, Mode=TwoWay}" Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="ClientFinalComboBox" Width="150" Height="30" Style="{StaticResource ComboBoxFormStyle}" Margin="0,0,0,5"/>
                                     <Button Content="Novo" Style="{StaticResource StandardButtonStyle}" Height="30" Width="80" Margin="5,0,0,5" Click="OnNewFinalClientClick"/>
                                 </StackPanel>
                             </StackPanel>
@@ -38,17 +38,17 @@
                             <StackPanel Margin="5">
                                 <Label Content="Companhia Elétrica:"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <ComboBox x:Name="ElectricCompanyComboBox" Width="150" Height="30" Style="{StaticResource ComboBoxFormStyle}" SelectedValue="{Binding ElectricCompanyId, Mode=TwoWay}" Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="ElectricCompanyComboBox" Width="150" Height="30" Style="{StaticResource ComboBoxFormStyle}" Margin="0,0,0,5"/>
                                     <Button Content="Nova" Style="{StaticResource StandardButtonStyle}" Height="30" Width="80" Margin="5,0,0,5" Click="OnNewElectricCompanyClick"/>
                                 </StackPanel>
                             </StackPanel>
                         </UniformGrid>
 
                         <Label Content="Valor do Projeto:"/>
-                        <TextBox Text="{Binding ProjectValue, StringFormat=C, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
+                        <TextBox Name="ProjectValueTxt" PreviewTextInput="MonetaryTextBox_PreviewTextInput" TextChanged="MonetaryTextBox_TextChanged" Margin="0,0,0,10"/>
 
                         <Label Content="Descrição:"/>
-                        <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Height="100" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                        <TextBox Name="DescriptionTxt" Height="100" TextWrapping="Wrap" Margin="0,0,0,10"/>
                     </StackPanel>
                 </Border>
 
@@ -61,7 +61,7 @@
                             <StackPanel Margin="5">
                                 <Label Content="1. Data de Recebimento:"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <DatePicker Name="_1_ReceiptDtPicker" SelectedDate="{Binding ReceivedDate}" SelectedDateChanged="AnyDateChanged" Width="160"/>
+                                    <DatePicker Name="_1_ReceiptDtPicker" SelectedDateChanged="AnyDateChanged" Width="160"/>
                                     <Button Content="✔" Name="_1_ReceiptDtPickerBtn" Style="{StaticResource StandardButtonStyle}" Margin="5,0,0,0" Width="30" Click="SetToday_Receipt"/>
                                 </StackPanel>
                             </StackPanel>
@@ -69,7 +69,7 @@
                             <StackPanel Margin="5">
                                 <Label Content="2. Documento Enviado:"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <DatePicker Name="_2_DocSentDtPicker" SelectedDate="{Binding DocumentSentDate}" SelectedDateChanged="AnyDateChanged" Width="160"/>
+                                    <DatePicker Name="_2_DocSentDtPicker" SelectedDateChanged="AnyDateChanged" Width="160"/>
                                     <Button Content="✔" Name="_2_DocSentDtPickerBtn" Style="{StaticResource StandardButtonStyle}" Margin="5,0,0,0" Width="30" Click="SetToday_DocSent"/>
                                 </StackPanel>
                             </StackPanel>
@@ -77,7 +77,7 @@
                             <StackPanel Margin="5">
                                 <Label Content="3. Documento Recebido:"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <DatePicker Name="_3_DocRecivedDtPicker" SelectedDate="{Binding DocumentReceivedDate}" SelectedDateChanged="AnyDateChanged" Width="160"/>
+                                    <DatePicker Name="_3_DocRecivedDtPicker" SelectedDateChanged="AnyDateChanged" Width="160"/>
                                     <Button Content="✔" Name="_3_DocRecivedDtPickerBtn" Style="{StaticResource StandardButtonStyle}" Margin="5,0,0,0" Width="30" Click="SetToday_DocReceived"/>
                                 </StackPanel>
                             </StackPanel>
@@ -85,7 +85,7 @@
                             <StackPanel Margin="5">
                                 <Label Content="4. Cadastro Projeto:"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <DatePicker Name="_4_ProjRegisteredDtPicker" SelectedDate="{Binding ProjectRegistrationDate}" SelectedDateChanged="AnyDateChanged" Width="160"/>
+                                    <DatePicker Name="_4_ProjRegisteredDtPicker" SelectedDateChanged="AnyDateChanged" Width="160"/>
                                     <Button Content="✔" Name="_4_ProjRegisteredDtPickerBtn" Style="{StaticResource StandardButtonStyle}" Margin="5,0,0,0" Width="30" Click="SetToday_ProjRegistered"/>
                                 </StackPanel>
                             </StackPanel>
@@ -93,7 +93,7 @@
                             <StackPanel Margin="5">
                                 <Label Content="5. Envio Projeto:"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <DatePicker Name="_5_ProjectSentDtPicker" SelectedDate="{Binding ProjectSubmissionDate}" SelectedDateChanged="AnyDateChanged" Width="160"/>
+                                    <DatePicker Name="_5_ProjectSentDtPicker" SelectedDateChanged="AnyDateChanged" Width="160"/>
                                     <Button Content="✔" Name="_5_ProjectSentDtPickerBtn" Style="{StaticResource StandardButtonStyle}" Margin="5,0,0,0" Width="30" Click="SetToday_ProjectSent"/>
                                 </StackPanel>
                             </StackPanel>
@@ -101,7 +101,7 @@
                             <StackPanel Margin="5">
                                 <Label Content="6. Aprovação Projeto:"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <DatePicker Name="_6_ProjApprovedDtPicker" SelectedDate="{Binding ProjectApprovalDate}" SelectedDateChanged="AnyDateChanged" Width="160"/>
+                                    <DatePicker Name="_6_ProjApprovedDtPicker" SelectedDateChanged="AnyDateChanged" Width="160"/>
                                     <Button Content="✔" Name="_6_ProjApprovedDtPickerBtn" Style="{StaticResource StandardButtonStyle}" Margin="5,0,0,0" Width="30" Click="SetToday_ProjApproved"/>
                                 </StackPanel>
                             </StackPanel>
@@ -109,7 +109,7 @@
                             <StackPanel Margin="5">
                                 <Label Content="7. Pedido de Vistoria:"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <DatePicker Name="_7_RequestInspDtPicker" SelectedDate="{Binding InspectionRequestDate}" SelectedDateChanged="AnyDateChanged" Width="160"/>
+                                    <DatePicker Name="_7_RequestInspDtPicker" SelectedDateChanged="AnyDateChanged" Width="160"/>
                                     <Button Content="✔" Name="_7_RequestInspDtPickerBtn" Style="{StaticResource StandardButtonStyle}" Margin="5,0,0,0" Width="30" Click="SetToday_RequestInsp"/>
                                 </StackPanel>
                             </StackPanel>
@@ -117,7 +117,7 @@
                             <StackPanel Margin="5">
                                 <Label Content="8. Finalização:"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <DatePicker Name="_8_FinalizationDtPicker" SelectedDate="{Binding FinalizationDate}" SelectedDateChanged="AnyDateChanged" Width="160"/>
+                                    <DatePicker Name="_8_FinalizationDtPicker" SelectedDateChanged="AnyDateChanged" Width="160"/>
                                     <Button Content="✔" Name="_8_FinalizationDtPickerBtn" Style="{StaticResource StandardButtonStyle}" Margin="5,0,0,0" Width="30" Click="SetToday_Finalization"/>
                                 </StackPanel>
                             </StackPanel>
@@ -125,7 +125,7 @@
                             <StackPanel Margin="5">
                                 <Label Content="9. Pagamento:"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <DatePicker Name="_9_PaymentDtPicker" SelectedDate="{Binding PaymentDate}" SelectedDateChanged="AnyDateChanged" Width="160"/>
+                                    <DatePicker Name="_9_PaymentDtPicker" SelectedDateChanged="AnyDateChanged" Width="160"/>
                                     <Button Content="✔" Name="_9_PaymentDtPickerBtn" Style="{StaticResource StandardButtonStyle}" Margin="5,0,0,0" Width="30" Click="SetToday_Payment"/>
                                 </StackPanel>
                             </StackPanel>

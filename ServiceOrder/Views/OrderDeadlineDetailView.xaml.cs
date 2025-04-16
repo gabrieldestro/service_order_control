@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using ControlzEx.Theming;
 using log4net;
 using ServiceOrder.Domain.Entities;
+using ServiceOrder.Domain.Utils;
 using ServiceOrder.Services.Interfaces;
 using ServiceOrder.Services.Services;
 using ServiceOrder.Utils;
@@ -87,6 +88,15 @@ namespace ServiceOrder
                 OrderComboBox.IsEnabled = false;
 
                 DescriptionTextBox.Text = deadline.Description;
+
+                DocumentSentDaysTxt.Text = deadline.DocumentSentDays?.ToString();
+                DocumentReceivedDaysTxt.Text = deadline.DocumentReceivedDays?.ToString();
+                ProjectRegistrationDaysTxt.Text = deadline.ProjectRegistrationDays?.ToString();
+                ProjectSubmissionDaysTxt.Text = deadline.ProjectSubmissionDays?.ToString();
+                ProjectApprovalDaysTxt.Text = deadline.ProjectApprovalDays?.ToString();
+                InspectionRequestDaysTxt.Text = deadline.InspectionRequestDays?.ToString();
+                FinalizationDaysTxt.Text = deadline.FinalizationDays?.ToString();
+                PaymentDaysTxt.Text = deadline.PaymentDays?.ToString();
             }
 
             DataContext = _orderDeadline;
@@ -125,6 +135,21 @@ namespace ServiceOrder
                 _orderDeadline = currentDeadline;
                 _orderDeadline.Description = DescriptionTextBox.Text.Trim();
                 _orderDeadline.LastUpdated = DateTime.Now;
+
+                _orderDeadline.DocumentSentDays = DocumentSentDaysTxt.Text.ToIntOrNull();
+                _orderDeadline.DocumentReceivedDays = DocumentReceivedDaysTxt.Text.ToIntOrNull();
+                _orderDeadline.ProjectRegistrationDays = ProjectRegistrationDaysTxt.Text.ToIntOrNull();
+                _orderDeadline.ProjectSubmissionDays = ProjectSubmissionDaysTxt.Text.ToIntOrNull();
+                _orderDeadline.ProjectApprovalDays = ProjectApprovalDaysTxt.Text.ToIntOrNull();
+                _orderDeadline.InspectionRequestDays = InspectionRequestDaysTxt.Text.ToIntOrNull();
+                _orderDeadline.FinalizationDays = FinalizationDaysTxt.Text.ToIntOrNull();
+                _orderDeadline.PaymentDays = PaymentDaysTxt.Text.ToIntOrNull();
+
+                if (!_orderDeadlineService.AllDeadlinesRegistered(_orderDeadline))
+                {
+                    DialogUtils.ShowInfo("Erro", "Todos os campos de prazo devem ter valor!");
+                    return;
+                }
 
                 var success = false;
                 if (_orderDeadline.Id > 0)

@@ -148,7 +148,7 @@ namespace ServiceOrder
                 ChangeViewOnLoad(false);
 
                 var startDate = DateTime.Today.AddDays(-90);
-                var endDate = DateTime.Today;
+                var endDate = DateTime.Today.AddDays(90);
 
                 if (StartDatePicker.SelectedDate != null && EndDatePicker.SelectedDate != null)
                 {
@@ -163,8 +163,13 @@ namespace ServiceOrder
                 foreach (var order in orders)
                 {
                     order.Client = clients.FirstOrDefault(c => c.Id == order.ClientId);
+                    order.ClientId = order.Client?.Id ?? 0;
+
                     order.FinalClient = clients.FirstOrDefault(c => c.Id == order.FinalClientId);
+                    order.FinalClientId = order.FinalClient?.Id ?? 0;
+
                     order.ElectricCompany = electricCompanies.FirstOrDefault(c => c.Id == order.ElectricCompanyId);
+                    order.ElectricCompanyId = order.ElectricCompany?.Id ?? 0;
                 }
 
                 var deadlines = await Task.Run(() => _orderDeadlineService.GetAllAsync());
@@ -227,9 +232,10 @@ namespace ServiceOrder
             string searchText = SearchTextBox.Text.ToLower();
 
             LoadOrdersAsync(order =>
-                (string.IsNullOrEmpty(searchText) || order.OrderName.ToLower().Contains(searchText)) &&
-                (string.IsNullOrEmpty(searchText) || order.FinalClient?.Name?.ToLower().Contains(searchText) == true) &&
-                (string.IsNullOrEmpty(searchText) || order.Client?.Name?.ToLower().Contains(searchText) == true) &&
+                (string.IsNullOrEmpty(searchText) 
+                || order.OrderName.ToLower().Contains(searchText)
+                || order.FinalClient?.Name?.ToLower().Contains(searchText) == true
+                || order.Client?.Name?.ToLower().Contains(searchText) == true) &&
                 (PayedCheckBox.IsChecked == false) || (order.PaymentDate == null));
         }
 
