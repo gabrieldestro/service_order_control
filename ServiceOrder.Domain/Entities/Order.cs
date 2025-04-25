@@ -32,15 +32,15 @@ namespace ServiceOrder.Domain.Entities
         public DateTime? LastUpdated { get; set; }
 
         public decimal? ProjectValue { get; set; }
-        public bool Enabled { get; set; }
+        public bool Enabled { get; set; } = true;
 
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
         public Client? Client { get; set; }
 
-        public int FinalClientId { get; set; }
+        public int? FinalClientId { get; set; }
         public Client? FinalClient { get; set; }
 
-        public int ElectricCompanyId { get; set; }
+        public int? ElectricCompanyId { get; set; }
         public ElectricCompany? ElectricCompany { get; set; }
     }
 }

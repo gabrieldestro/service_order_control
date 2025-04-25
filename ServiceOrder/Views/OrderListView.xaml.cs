@@ -149,6 +149,7 @@ namespace ServiceOrder
 
                 var startDate = DateTime.Today.AddDays(-90);
                 var endDate = DateTime.Today.AddDays(90);
+                List<OrderDTO> ordersFiltered = new List<OrderDTO>();
 
                 if (StartDatePicker.SelectedDate != null && EndDatePicker.SelectedDate != null)
                 {
@@ -173,13 +174,13 @@ namespace ServiceOrder
                 }
 
                 var deadlines = await Task.Run(() => _orderDeadlineService.GetAllAsync());
-                var generalDeadline = deadlines.FirstOrDefault(d => String.IsNullOrEmpty(d.OrderId));
+                var generalDeadline = deadlines.FirstOrDefault(d => String.IsNullOrEmpty(d.OrderIdentifier));
                 
-                var filteredOrders = filter != null ? orders.Where(filter) : orders;
+                var filteredOrders = filter != null ? orders.Where(filter).ToList() : orders;
 
                 foreach (var order in filteredOrders)
                 {
-                    var specificDeadline = deadlines.FirstOrDefault(d => d.OrderId == order.OrderName.ToString());
+                    var specificDeadline = deadlines.FirstOrDefault(d => d.OrderIdentifier == order.OrderName.ToString());
                     var deadline = specificDeadline ?? generalDeadline;
 
                     var dto = new OrderDTO
@@ -187,13 +188,16 @@ namespace ServiceOrder
                         Order = order,
                         Deadline = deadline
                     };
-                    Orders.Add(dto);
+                    ordersFiltered.Add(dto);
                 }
 
-                if (Orders != null)
-                    Orders
-                        .Where(order => (ExpiredCheckBox.IsChecked == false) || order.IsAnyExpired())
-                        .ToList();
+                ordersFiltered = 
+                    ordersFiltered
+                    .Where(order => (ExpiredCheckBox.IsChecked == false) || order.IsAnyExpired())
+                    .ToList();
+
+                foreach (var order in ordersFiltered)
+                    Orders.Add(order);
 
                 OrderDataGrid.ItemsSource = Orders;
                 UpdateRecordCount(Orders.Count);
@@ -235,8 +239,8 @@ namespace ServiceOrder
                 (string.IsNullOrEmpty(searchText) 
                 || order.OrderName.ToLower().Contains(searchText)
                 || order.FinalClient?.Name?.ToLower().Contains(searchText) == true
-                || order.Client?.Name?.ToLower().Contains(searchText) == true) &&
-                (PayedCheckBox.IsChecked == false) || (order.PaymentDate == null));
+                || order.Client?.Name?.ToLower().Contains(searchText) == true)
+                && (PayedCheckBox.IsChecked == false || order.PaymentDate == null));
         }
 
         private void OnClearFiltersClick(object sender, RoutedEventArgs e)

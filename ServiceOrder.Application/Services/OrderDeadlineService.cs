@@ -51,7 +51,7 @@ namespace ServiceOrder.Services.Services
             }
             catch (Exception ex)
             {
-                _log.Error($"Erro ao adicionar prazo da ordem (OrderId={orderDeadline?.OrderId}): {ex.Message}", ex);
+                _log.Error($"Erro ao adicionar prazo da ordem (OrderId={orderDeadline?.OrderIdentifier}): {ex.Message}", ex);
                 return false;
             }
         }

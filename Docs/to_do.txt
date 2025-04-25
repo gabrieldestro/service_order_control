@@ -1,3 +1,6 @@
+Preciso dar uma estudada em como posso escrever testes unitários para essa aplicação.
+Repetir bateria de testes
+
 1. Ajustar todas as views de Detalhe (ok)
 2. Ajustar todas as views de Listagem (ok)
 3. Criar os prazos (ok)
@@ -38,13 +41,13 @@
 12.3.2.3 - editar o cliente final - (ok)
 12.3.2.4 - editar a companhia - (ok)
 12.3.3 - excluir um projeto - (ok)
-12.3.4 - excluir o cliente associado a um projeto - (not ok)
-12.3.5 - excluir a companhia associada a um projeto - (not ok)
+12.3.4 - excluir o cliente associado a um projeto - (ok)
+12.3.5 - excluir a companhia associada a um projeto - (ok)
 12.3.4 - testar os filtros
 12.3.5.1 - testar o filtro de texto - (ok)
 12.3.5.2 - testar o filtro por data - (ok)
 12.3.5.3 - testar o filtro de pago - (ok)
-12.3.6 - testar o botão próximo - (pending)
+12.3.6 - testar o botão próximo - (ok)
 
 12.4 - prazos
 12.4.1 - criar um prazo - (ok)
@@ -53,19 +56,14 @@
 
 12.5 - projeto com prazo
 12.5.1 - cadastrar um prazo especifico para um projeto - (ok)
-12.5.2 - testar o filtro de atrasado - (not ok)
+12.5.2 - testar o filtro de atrasado - (ok)
 
 12.6 - opções
 12.6.1 - testar o backup - (ok)
 12.6.2 - testar a importação massiva a partir da planilha base - (pending)
 
-12.7 - testar a exportação de projetos - (pending)
+12.7 - testar a exportação de projetos - (ok)
 
 Possíveis bugs:
-1 ver porque não loga (corrigido)
-2 eu acho que não lista se excluir o cliente releaciona a ordem. Não trás assim do banco, mas a query está certo, suspeito ser coisa do EF
-3 tem que adicionar o loading ao exportar e importar planilhas (corrigido)
-4 bug na mascara de preço, ver se tem o mesmo bug no CNPJ e no cpf (corrigido)
-5 bug no databinding, ele atualiza o campo mesmo sem clicar em salvar (corrigido)
-6 ele deixar salvar dois prazos para o mesmo projeto, ou branco
-7 Filtro de atrasados não esta funcionando
+1 Seria legal se os ícones mudassem de cor
+2 Parace que em alguns casos (importação e exportação), o loading não aparece corretamente.

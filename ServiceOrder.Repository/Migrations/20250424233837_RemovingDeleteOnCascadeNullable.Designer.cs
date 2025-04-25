@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServiceOrder.Repository.Context;
 
@@ -10,9 +11,11 @@ using ServiceOrder.Repository.Context;
 namespace ServiceOrder.Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250424233837_RemovingDeleteOnCascadeNullable")]
+    partial class RemovingDeleteOnCascadeNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.12");
@@ -34,7 +37,7 @@ namespace ServiceOrder.Repository.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2025, 4, 24, 21, 38, 52, 444, DateTimeKind.Local).AddTicks(2562));
+                        .HasDefaultValue(new DateTime(2025, 4, 24, 20, 38, 36, 891, DateTimeKind.Local).AddTicks(1484));
 
                     b.Property<string>("Description")
                         .HasMaxLength(300)
@@ -70,7 +73,7 @@ namespace ServiceOrder.Repository.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2025, 4, 24, 21, 38, 52, 444, DateTimeKind.Local).AddTicks(2904));
+                        .HasDefaultValue(new DateTime(2025, 4, 24, 20, 38, 36, 891, DateTimeKind.Local).AddTicks(1868));
 
                     b.Property<string>("Description")
                         .HasMaxLength(300)
@@ -105,7 +108,7 @@ namespace ServiceOrder.Repository.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2025, 4, 24, 21, 38, 52, 444, DateTimeKind.Local).AddTicks(253));
+                        .HasDefaultValue(new DateTime(2025, 4, 24, 20, 38, 36, 890, DateTimeKind.Local).AddTicks(9507));
 
                     b.Property<string>("Description")
                         .HasMaxLength(300)
@@ -179,7 +182,7 @@ namespace ServiceOrder.Repository.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue(new DateTime(2025, 4, 24, 21, 38, 52, 444, DateTimeKind.Local).AddTicks(3254));
+                        .HasDefaultValue(new DateTime(2025, 4, 24, 20, 38, 36, 891, DateTimeKind.Local).AddTicks(2227));
 
                     b.Property<string>("Description")
                         .HasMaxLength(300)
@@ -205,7 +208,7 @@ namespace ServiceOrder.Repository.Migrations
                     b.Property<DateTime?>("LastUpdated")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("OrderIdentifier")
+                    b.Property<string>("OrderId")
                         .HasMaxLength(30)
                         .HasColumnType("TEXT");
 

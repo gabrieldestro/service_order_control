@@ -26,6 +26,6 @@ namespace ServiceOrder.Domain.Entities
         public DateTime? CreatedDate { get; set; }
         public DateTime? LastUpdated { get; set; }
 
-        public bool Enabled { get; set; }
+        public bool Enabled { get; set; } = true;
     }
 }

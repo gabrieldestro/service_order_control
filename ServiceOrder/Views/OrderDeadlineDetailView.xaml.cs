@@ -72,8 +72,8 @@ namespace ServiceOrder
             OrderComboBox.DisplayMemberPath = "OrderName";
             OrderComboBox.SelectedValuePath = "OrderName";
 
-            if (!string.IsNullOrEmpty(_orderDeadline.OrderId))
-                OrderComboBox.SelectedValue = _orderDeadline.OrderId;
+            if (!string.IsNullOrEmpty(_orderDeadline.OrderIdentifier))
+                OrderComboBox.SelectedValue = _orderDeadline.OrderIdentifier;
         }
 
         public void SetDeadline(OrderDeadline deadline)
@@ -86,6 +86,18 @@ namespace ServiceOrder
             {
                 _orderDeadline = deadline;
                 OrderComboBox.IsEnabled = false;
+                ProjectSpecificCheckBox.IsEnabled = false;
+
+                if (!string.IsNullOrEmpty(deadline.OrderIdentifier))
+                {
+                    ProjectSpecificCheckBox.IsChecked = true;
+                    OrderComboBox.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    ProjectSpecificCheckBox.IsChecked = false;
+                    OrderComboBox.Visibility = Visibility.Collapsed;
+                }
 
                 DescriptionTextBox.Text = deadline.Description;
 
@@ -100,6 +112,16 @@ namespace ServiceOrder
             }
 
             DataContext = _orderDeadline;
+        }
+
+        private void ProjectSpecificCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            OrderComboBox.Visibility = Visibility.Visible;
+        }
+
+        private void ProjectSpecificCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            OrderComboBox.Visibility = Visibility.Collapsed;
         }
 
         private void OnlyPositiveNumbers_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -127,9 +149,21 @@ namespace ServiceOrder
                 if (DataContext is not OrderDeadline currentDeadline)
                     throw new InvalidOperationException("Objeto de prazo inválido.");
 
-                if (OrderComboBox.SelectedItem is Order selectedOrder)
+                if (ProjectSpecificCheckBox.IsChecked == true)
                 {
-                    _orderDeadline.OrderId = selectedOrder.OrderName;
+                    if (OrderComboBox.SelectedItem is Order selectedOrder)
+                    {
+                        _orderDeadline.OrderIdentifier = selectedOrder.OrderName;
+                    }
+                    else
+                    {
+                        DialogUtils.ShowInfo("Erro", "Prazos para projetos específicos precisam ter um projeto selecionado.");
+                        return;
+                    }
+                }
+                else
+                {
+                    _orderDeadline.OrderIdentifier = null;
                 }
 
                 _orderDeadline = currentDeadline;

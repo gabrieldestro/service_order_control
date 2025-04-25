@@ -62,7 +62,10 @@ namespace ServiceOrder.Domain.DTOs
         // Utilitário para tooltip
         private string GetTooltip(DateTime? current, DateTime? previous, int? days)
         {
-            if (Deadline == null || !days.HasValue || !previous.HasValue)
+            if (!previous.HasValue)
+                return "";
+
+            if (Deadline == null || !days.HasValue)
                 return "Prazo não configurado";
 
             var expected = previous.Value.AddDays(days.Value);

@@ -89,7 +89,7 @@ namespace ServiceOrder
         {
             string searchText = SearchNameTextBox.Text.ToLower();
             LoadDeadlinesAsync(deadline =>
-                string.IsNullOrEmpty(searchText) || (deadline.OrderId?.ToLower().Contains(searchText) ?? false));
+                string.IsNullOrEmpty(searchText) || (deadline.OrderIdentifier?.ToLower().Contains(searchText) ?? false));
         }   
 
         private void OnClearFiltersClick(object sender, RoutedEventArgs e)
@@ -137,7 +137,7 @@ namespace ServiceOrder
         {
             if (sender is Button btn && btn.DataContext is OrderDeadline selected)
             {
-                var result = DialogUtils.ShowConfirmation("Confirmação", $"Deseja excluir o prazo do projeto '{selected.OrderId}'?");
+                var result = DialogUtils.ShowConfirmation("Confirmação", $"Deseja excluir o prazo do projeto '{selected.OrderIdentifier}'?");
 
                 if (result)
                 {
@@ -153,7 +153,7 @@ namespace ServiceOrder
                     }
                     catch (Exception ex)
                     {
-                        _log.Error($"Erro ao excluir o prazo do projeto '{selected.OrderId}'.", ex);
+                        _log.Error($"Erro ao excluir o prazo do projeto '{selected.OrderIdentifier}'.", ex);
                         DialogUtils.ShowInfo("Erro", "Erro ao excluir o prazo.");
                     }
                 }

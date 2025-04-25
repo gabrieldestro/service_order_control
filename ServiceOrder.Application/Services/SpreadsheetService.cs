@@ -115,43 +115,44 @@ namespace ServiceOrder.Services.Services
             {
                 using var workbook = new XLWorkbook(filePath);
                 var worksheet = workbook.Worksheet(1); // Usa a primeira planilha
-                var rows = worksheet.RowsUsed().Skip(5); // Skip 5 linhas
+                var rows = worksheet.RowsUsed().Skip(4); // Skip 5 linhas
 
                 foreach (var row in rows) // pula linha de título
                 {
                     // Verifica se a célula obrigatória está vazia, ignora linhas em branco
-                    if (string.IsNullOrWhiteSpace(row.Cell(10).GetString()))
-                        continue;
-
-                    var data = new OrderDTO
+                    if (string.IsNullOrWhiteSpace(row.Cell(1).GetString()))
                     {
-                        Order = new Domain.Entities.Order
-                        {
-                            OrderName = row.Cell(0).GetString(),
-                            ReceivedDate = ParseUtils.TryParseDate(row.Cell(10).ToString()),//.GetDateTime(),
-                            DocumentSentDate = ParseUtils.TryParseDate(row.Cell(14).ToString()),
-                            DocumentReceivedDate = ParseUtils.TryParseDate(row.Cell(15).ToString()),
-                            ProjectRegistrationDate = ParseUtils.TryParseDate(row.Cell(16).ToString()),
-                            ProjectSubmissionDate = ParseUtils.TryParseDate(row.Cell(17).ToString()),
-                            ProjectApprovalDate = ParseUtils.TryParseDate(row.Cell(18).ToString()),
-                            InspectionRequestDate = ParseUtils.TryParseDate(row.Cell(19).ToString()),
-                            FinalizationDate = ParseUtils.TryParseDate(row.Cell(20).ToString()),
-                            PaymentDate = ParseUtils.TryParseDate(row.Cell(21).ToString()),
-                            ProjectValue = ParseUtils.TryParseDecimal(row.Cell(22).ToString()),
-                            FinalClient = new Domain.Entities.Client
-                            {
-                                Name = row.Cell(11).GetString()
-                            },
-                            Client = new Domain.Entities.Client
-                            {
-                                Name = row.Cell(12).GetString()
-                            },
-                            ElectricCompany = new Domain.Entities.ElectricCompany
-                            {
-                                Name = row.Cell(13).GetString()
-                            }
-                        }
+                        line++;
+                        continue;
+                    }
+
+                    var order = new Domain.Entities.Order();
+                    order.OrderName = row.Cell(1).GetString();
+                    order.ReceivedDate = ParseUtils.TryParseDate(row.Cell(11).GetString());//.GetDateTime(),
+                    order.DocumentSentDate = ParseUtils.TryParseDate(row.Cell(15).GetString());
+                    order.DocumentReceivedDate = ParseUtils.TryParseDate(row.Cell(16).GetString());
+                    order.ProjectRegistrationDate = ParseUtils.TryParseDate(row.Cell(17).GetString());
+                    order.ProjectSubmissionDate = ParseUtils.TryParseDate(row.Cell(18).GetString());
+                    order.ProjectApprovalDate = ParseUtils.TryParseDate(row.Cell(19).GetString());
+                    order.InspectionRequestDate = ParseUtils.TryParseDate(row.Cell(20).GetString());
+                    order.FinalizationDate = ParseUtils.TryParseDate(row.Cell(21).GetString());
+                    order.PaymentDate = ParseUtils.TryParseDate(row.Cell(22).GetString());
+                    order.ProjectValue = ParseUtils.TryParseDecimal(row.Cell(23).GetString());
+                    order.FinalClient = new Domain.Entities.Client
+                    {
+                        Name = row.Cell(12).GetString()
                     };
+                    order.Client = new Domain.Entities.Client
+                    {
+                        Name = row.Cell(13).GetString()
+                    };
+                    order.ElectricCompany = new Domain.Entities.ElectricCompany
+                    {
+                        Name = row.Cell(14).GetString()
+                    };
+
+                    var data = new OrderDTO()
+                    { Order = order };
 
                     orders.Add(data);
                     line++;

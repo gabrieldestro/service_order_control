@@ -12,7 +12,7 @@ namespace ServiceOrder.Domain.Entities
         public int Id { get; set; }
 
         [MaxLength(30)]
-        public string OrderId { get; set; }
+        public string OrderIdentifier { get; set; }
 
         [MaxLength(300)]
         public string? Description { get; set; }
@@ -29,6 +29,6 @@ namespace ServiceOrder.Domain.Entities
         public DateTime? CreatedDate { get; set; }
         public DateTime? LastUpdated { get; set; }
 
-        public bool Enabled { get; set; }
+        public bool Enabled { get; set; } = true;
     }
 }

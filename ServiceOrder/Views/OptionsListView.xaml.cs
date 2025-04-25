@@ -67,6 +67,7 @@ namespace ServiceOrder
 
                     try
                     {
+                        int ordersImported = 0;
                         ChangeViewOnLoad(false);
 
                         var spreadsheetRows = _spreadsheetService.MassiveImportFromSpreadsheet(filePath);
@@ -122,18 +123,24 @@ namespace ServiceOrder
                                 row.Order.FinalClientId = (int)(clients.FirstOrDefault(c => c.Name == row.Order.FinalClient.Name)?.Id);
                                 row.Order.ElectricCompanyId = (int)(electricCompanies.FirstOrDefault(c => c.Name == row.Order.ElectricCompany.Name)?.Id);
                             
-                                if (orders.Any(o => o.OrderName == row.Order.OrderName))
+                                // Limpa o objeto para que o idiota do EF não tente fazer o insert sem eu pedir
+                                row.Order.Client = null; 
+                                row.Order.FinalClient = null; 
+                                row.Order.ElectricCompany = null; 
+
+                                if (!String.IsNullOrEmpty(row.Order.OrderName) && orders.Any(o => o.OrderName == row.Order.OrderName))
                                 {
                                     _log.Warn($"A ordem {row.Order.OrderName} já existe. Ignorando a importação.");
                                     continue;
                                 }
 
+                                ordersImported++;
                                 await _orderService.AddOrder(row.Order);
                             }
                             ChangeViewOnLoad(true);
 
                             // Aqui você pode inserir no banco ou atualizar a tela
-                            DialogUtils.ShowInfo("Importação Concluída", $"{spreadsheetRows.Count} projetos importados com sucesso!");
+                            DialogUtils.ShowInfo("Importação Concluída", $"{ordersImported} projetos importados com sucesso!");
                         }
                         else
                         {
