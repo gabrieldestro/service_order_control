@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,7 +44,6 @@ namespace ServiceOrder.Domain.DTOs
         // 8. Payment
         public string PaymentStatusIcon => GetStatusIcon(Order.PaymentDate, Order.FinalizationDate, Deadline?.PaymentDays);
         public string PaymentTooltip => GetTooltip(Order.PaymentDate, Order.FinalizationDate, Deadline?.PaymentDays);
-
 
         // Utilitário para status de ícone
         private string GetStatusIcon(DateTime? current, DateTime? previous, int? days)

@@ -54,7 +54,7 @@ namespace ServiceOrder
             detailView.ShowDialog();
         }
 
-        private void OnExportClick(object sender, RoutedEventArgs e)
+        private async void OnExportClick(object sender, RoutedEventArgs e)
         {
             var saveFileDialog = new SaveFileDialog
             {
@@ -73,7 +73,7 @@ namespace ServiceOrder
                 var memoryStream = _spreadsheetService.ExportOrdersToExcel(Orders.ToList());
                 using (var fileStream = File.Create(saveFileDialog.FileName))
                 {
-                    memoryStream.CopyTo(fileStream);
+                    await memoryStream.CopyToAsync(fileStream);
                 }
 
             }

@@ -163,6 +163,9 @@ namespace ServiceOrder
 
         private void ChangeViewOnLoad(bool show)
         {
+            SeedButton.IsEnabled = show;
+            BackupButton.IsEnabled = show;
+
             LoadingProgressBar.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
         }
 

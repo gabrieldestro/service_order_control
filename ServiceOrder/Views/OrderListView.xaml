@@ -1,8 +1,12 @@
 ﻿<UserControl x:Class="ServiceOrder.OrderListView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Background="#F9F9F9">
-
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:ServiceOrder.Formatters"
+             Background="#F9F9F9">
+    
+    <UserControl.Resources>
+        <local:PaymentStatusToBrushFormatter x:Key="StatusToBrushConverter"/>
+    </UserControl.Resources>
+    
     <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -94,7 +98,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding DocumentSentTooltip}">
-                                <TextBlock Text="{Binding DocumentSentStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding DocumentSentStatusIcon}" Foreground="{Binding DocumentSentStatusIcon, Converter={StaticResource StatusToBrushConverter}}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.DocumentSentDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
                             </StackPanel>
                         </DataTemplate>
@@ -105,7 +109,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding DocumentReceivedTooltip}">
-                                <TextBlock Text="{Binding DocumentReceivedStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding DocumentReceivedStatusIcon}" Foreground="{Binding DocumentReceivedStatusIcon, Converter={StaticResource StatusToBrushConverter}}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.DocumentReceivedDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
                             </StackPanel>
                         </DataTemplate>
@@ -116,7 +120,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding ProjectRegistrationTooltip}">
-                                <TextBlock Text="{Binding ProjectRegistrationStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding ProjectRegistrationStatusIcon}" Foreground="{Binding ProjectRegistrationStatusIcon, Converter={StaticResource StatusToBrushConverter}}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.ProjectRegistrationDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
                             </StackPanel>
                         </DataTemplate>
@@ -127,7 +131,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding ProjectSubmissionTooltip}">
-                                <TextBlock Text="{Binding ProjectSubmissionStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding ProjectSubmissionStatusIcon}" Foreground="{Binding ProjectSubmissionStatusIcon, Converter={StaticResource StatusToBrushConverter}}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.ProjectSubmissionDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
                             </StackPanel>
                         </DataTemplate>
@@ -138,7 +142,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding ProjectApprovalTooltip}">
-                                <TextBlock Text="{Binding ProjectApprovalStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding ProjectApprovalStatusIcon}" Foreground="{Binding ProjectApprovalStatusIcon, Converter={StaticResource StatusToBrushConverter}}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.ProjectApprovalDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
                             </StackPanel>
                         </DataTemplate>
@@ -149,7 +153,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding InspectionRequestTooltip}">
-                                <TextBlock Text="{Binding InspectionRequestStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding InspectionRequestStatusIcon}" Foreground="{Binding InspectionRequestStatusIcon, Converter={StaticResource StatusToBrushConverter}}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.InspectionRequestDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
                             </StackPanel>
                         </DataTemplate>
@@ -160,7 +164,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding FinalizationTooltip}">
-                                <TextBlock Text="{Binding FinalizationStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding FinalizationStatusIcon}" Foreground="{Binding FinalizationStatusIcon, Converter={StaticResource StatusToBrushConverter}}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.FinalizationDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
                             </StackPanel>
                         </DataTemplate>
@@ -171,7 +175,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" ToolTip="{Binding PaymentTooltip}">
-                                <TextBlock Text="{Binding PaymentStatusIcon}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding PaymentStatusIcon}" Foreground="{Binding PaymentStatusIcon, Converter={StaticResource StatusToBrushConverter}}" FontSize="12" Margin="5,0,5,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="{Binding Order.PaymentDate, StringFormat=dd/MM/yyyy}" Margin="0,0,5,0"/>
                             </StackPanel>
                         </DataTemplate>

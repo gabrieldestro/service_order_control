@@ -1,3 +1,4 @@
+Fazer o manual
 Preciso dar uma estudada em como posso escrever testes unitários para essa aplicação.
 Repetir bateria de testes
 
@@ -60,10 +61,6 @@ Repetir bateria de testes
 
 12.6 - opções
 12.6.1 - testar o backup - (ok)
-12.6.2 - testar a importação massiva a partir da planilha base - (pending)
+12.6.2 - testar a importação massiva a partir da planilha base - (ok)
 
 12.7 - testar a exportação de projetos - (ok)
-
-Possíveis bugs:
-1 Seria legal se os ícones mudassem de cor
-2 Parace que em alguns casos (importação e exportação), o loading não aparece corretamente.
