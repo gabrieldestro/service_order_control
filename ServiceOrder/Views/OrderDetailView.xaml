@@ -18,7 +18,7 @@
                         <UniformGrid Columns="3" Margin="0,0,0,10">
                             <!-- Cliente -->
                             <StackPanel Margin="5">
-                                <Label Content="Cliente:"/> 
+                                <Label Content="Revenda Cliente MJA:"/> 
                                 <StackPanel Orientation="Horizontal">
                                     <ComboBox x:Name="ClientComboBox" Width="150" Height="30" Style="{StaticResource ComboBoxFormStyle}" Margin="0,0,0,5"/>
                                     <Button Content="Novo" VerticalAlignment="Center" Height="30" Style="{StaticResource StandardButtonStyle}" Width="80" Margin="5,0,0,5" Click="OnNewClientClick"/>
