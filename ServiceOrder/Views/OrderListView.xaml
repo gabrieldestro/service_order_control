@@ -183,6 +183,7 @@
                 <DataGridTextColumn Header="Cliente Final" Binding="{Binding Order.FinalClient.Name, StringFormat=C}" Width="140"/>
                 <DataGridTextColumn Header="Cia. Elétrica" Binding="{Binding Order.ElectricCompany.Name, StringFormat=C}" Width="140"/>
 
+                <DataGridTextColumn Header="Data de Criação" Binding="{Binding Order.CreatedDate, StringFormat=dd/MM/yyyy}" Width="120"/>
                 <DataGridTextColumn Header="Última Atualização" Binding="{Binding Order.LastUpdated, StringFormat=dd/MM/yyyy}" Width="120"/>
             </DataGrid.Columns>
         </DataGrid>

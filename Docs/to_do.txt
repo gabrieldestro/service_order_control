@@ -10,40 +10,40 @@ Preciso dar uma estudada em como posso escrever testes unitários para essa apli
 12. Executar testes em todas as telas e funcionalidades.
 12.1 - clientes
 12.1.1 - criar um cliente
-12.1.1.1 - criar um cliente sem CNPJ ou cpf - (ok) (ok)
-12.1.1.2 - criar um cliente com cpf - (ok) (ok)
-12.1.1.3 - criar um cliente com CNPJ - (ok) (ok)
-12.1.2 - editar um cliente - (ok) (ok)
-12.1.3 - excluir um cliente - (ok) (ok)
+12.1.1.1 - criar um cliente sem CNPJ ou cpf - (ok) (ok) (ok)
+12.1.1.2 - criar um cliente com cpf - (ok) (ok) (ok)
+12.1.1.3 - criar um cliente com CNPJ - (ok) (ok) (ok)
+12.1.2 - editar um cliente - (ok) (ok) (ok)
+12.1.3 - excluir um cliente - (ok) (ok) (ok)
 
 12.2 - companhias
 12.2.1 - criar uma companhia
-12.2.1.1 - criar uma companhia sem CNPJ - (ok) (ok)
-12.2.1.3 - criar uma companhia com cnpj - (ok) (ok)
-12.2.2 - editar uma companhia - (ok) (ok)
-12.2.3 - excluir uma companhia - (ok) (ok)
+12.2.1.1 - criar uma companhia sem CNPJ - (ok) (ok) (ok)
+12.2.1.3 - criar uma companhia com cnpj - (ok) (ok) (ok)
+12.2.2 - editar uma companhia - (ok) (ok) (ok)
+12.2.3 - excluir uma companhia - (ok) (ok) (ok)
 
 12.3 - projetos
 12.3.1 - criar um projeto (ok) (ok)
-12.3.1.1 - criar um cliente dentro do projeto - (ok) (ok)
-12.3.1.2 - criar um cliente final a partir do projeto - (ok) (ok)
-12.3.1.3 - criar uma companhia a partir do projeto - (ok) (ok)
-12.3.2 - editar um projeto (ok) (ok)
-12.3.2.1 - avançar um projeto - (ok) (ok)
-12.3.2.2 - editar o cliente - (ok) (ok)
-12.3.2.3 - editar o cliente final - (ok) (ok)
-12.3.2.4 - editar a companhia - (ok) (ok)
-12.3.3 - excluir um projeto - (ok) (ok)
-12.3.4 - excluir o cliente associado a um projeto - (ok) (ok)
-12.3.5 - excluir a companhia associada a um projeto - (ok) (ok)
+12.3.1.1 - criar um cliente dentro do projeto - (ok) (ok) (ok)
+12.3.1.2 - criar um cliente final a partir do projeto - (ok) (ok) (ok)
+12.3.1.3 - criar uma companhia a partir do projeto - (ok) (ok) (ok)
+12.3.2 - editar um projeto (ok) (ok) (ok)
+12.3.2.1 - avançar um projeto - (ok) (ok) (ok)
+12.3.2.2 - editar o cliente - (ok) (ok) (ok)
+12.3.2.3 - editar o cliente final - (ok) (ok) (ok)
+12.3.2.4 - editar a companhia - (ok) (ok) (ok)
+12.3.3 - excluir um projeto - (ok) (ok) (ok)
+12.3.4 - excluir o cliente associado a um projeto - (ok) (ok) (ok)
+12.3.5 - excluir a companhia associada a um projeto - (ok) (ok) (ok)
 12.3.4 - testar os filtros
-12.3.5.1 - testar o filtro de texto - (ok) (ok)
-12.3.5.2 - testar o filtro por data - (ok) (ok)
-12.3.5.3 - testar o filtro de pago - (ok) (ok)
-12.3.6 - testar o botão próximo - (ok) (ok)
+12.3.5.1 - testar o filtro de texto - (ok) (ok) (ok)
+12.3.5.2 - testar o filtro por data - (ok) (ok) (ok)
+12.3.5.3 - testar o filtro de pago - (ok) (ok) (ok)
+12.3.6 - testar o botão próximo - (ok) (ok) (não tem mais)
 
 12.4 - prazos
-12.4.1 - criar um prazo - (ok) (ok)
+12.4.1 - criar um prazo - (ok) (ok) (ok) 
 12.4.2 - editar um prazo - (ok) (ok)
 12.4.3 - excluir um prazo - (ok) (ok)
 12.4.4 - criar um prazo geral em duplicidade
