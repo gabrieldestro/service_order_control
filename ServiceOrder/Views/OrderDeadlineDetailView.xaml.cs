@@ -186,6 +186,13 @@ namespace ServiceOrder
                     return;
                 }
 
+                var identifier = _orderDeadline.OrderIdentifier;
+                if (await _orderDeadlineService.HasDeadline(identifier))
+                {
+                    DialogUtils.ShowInfo("Erro", "Já existe um prazo cadastrado para essa condição!");
+                    return;
+                }
+
                 var success = false;
                 if (_orderDeadline.Id > 0)
                 {
