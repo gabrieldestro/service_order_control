@@ -44,17 +44,17 @@ Preciso dar uma estudada em como posso escrever testes unitários para essa apli
 
 12.4 - prazos
 12.4.1 - criar um prazo - (ok) (ok) (ok) 
-12.4.2 - editar um prazo - (ok) (ok)
-12.4.3 - excluir um prazo - (ok) (ok)
-12.4.4 - criar um prazo geral em duplicidade
-12.4.5 - criar um prazo especifico em duplicidade
+12.4.2 - editar um prazo - (ok) (ok) (ok) 
+12.4.3 - excluir um prazo - (ok) (ok) (ok) 
+12.4.4 - criar um prazo geral em duplicidade (ok) 
+12.4.5 - criar um prazo especifico em duplicidade (ok) 
 
 12.5 - projeto com prazo
-12.5.1 - cadastrar um prazo especifico para um projeto - (ok) (ok)
-12.5.2 - testar o filtro de atrasado - (ok) (ok)
+12.5.1 - cadastrar um prazo especifico para um projeto - (ok) (ok) (ok) 
+12.5.2 - testar o filtro de atrasado - (ok) (ok) (ok) 
 
 12.6 - opções
 12.6.1 - testar o backup - (ok) (ok)
-12.6.2 - testar a importação massiva a partir da planilha base - (ok) (ok)
+12.6.2 - testar a importação massiva a partir da planilha base - (ok) (ok) (ok)
 
-12.7 - testar a exportação de projetos - (ok) (ok)
+12.7 - testar a exportação de projetos - (ok) (ok) (ok)

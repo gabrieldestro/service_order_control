@@ -127,8 +127,10 @@ namespace ServiceOrder.Services.Services
                     }
 
                     var order = new Domain.Entities.Order();
+
+                    order.CreatedDate = DateTime.Now;
                     order.OrderName = row.Cell(1).GetString();
-                    order.ReceivedDate = ParseUtils.TryParseDate(row.Cell(11).GetString());//.GetDateTime(),
+                    order.ReceivedDate = ParseUtils.TryParseDate(row.Cell(11).GetString());
                     order.DocumentSentDate = ParseUtils.TryParseDate(row.Cell(15).GetString());
                     order.DocumentReceivedDate = ParseUtils.TryParseDate(row.Cell(16).GetString());
                     order.ProjectRegistrationDate = ParseUtils.TryParseDate(row.Cell(17).GetString());
