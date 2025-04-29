@@ -42,6 +42,19 @@ namespace ServiceOrder.Services.Services
             return await _repository.GetByIdAsync(id);
         }
 
+        public async Task<bool> HasDeadline(string orderName)
+        {
+            try
+            {
+                return await _repository.HasDeadlineForOrdername(orderName);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Erro ao buscar prazo para ordem (OrderId={orderName}): {ex.Message}", ex);
+                return false;
+            }
+        }
+
         public async Task<bool> AddAsync(OrderDeadline orderDeadline)
         {
             try

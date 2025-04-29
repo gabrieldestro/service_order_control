@@ -12,13 +12,13 @@
                  VerticalAlignment="Center" Visibility="Collapsed" Width="200" Height="20" Margin="10"/>
 
                 <!-- Backup -->
-                <DockPanel Visibility="Collapsed" Margin="0,5">
+                <DockPanel Margin="0,5">
                     <Label Content="Backup" VerticalAlignment="Center" Width="150" FontWeight="Bold"/>
                     <Button Content="Executar Backup" x:Name="BackupButton" Style="{StaticResource StandardButtonStyle}" 
                             Click="OnBackupClick" HorizontalAlignment="Right"/>
                 </DockPanel>
 
-                <Separator Visibility="Collapsed" Margin="0,5"/>
+                <Separator Margin="0,5"/>
 
                 <!-- Carga Massiva -->
                 <DockPanel Margin="0,5">

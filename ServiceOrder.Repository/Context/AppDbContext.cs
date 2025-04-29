@@ -39,20 +39,9 @@ namespace ServiceOrder.Repository.Context
                 entity.Property(e => e.FinalizationDate).HasColumnType("date");
                 entity.Property(e => e.PaymentDate).HasColumnType("date");
 
-                entity.HasOne(o => o.Client)
-                    .WithMany()
-                    .HasForeignKey("ClientId")
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-                entity.HasOne(o => o.ElectricCompany)
-                        .WithMany()
-                        .HasForeignKey("ElectricCompanyId")
-                        .OnDelete(DeleteBehavior.ClientSetNull);
-
-                entity.HasOne(o => o.FinalClient)
-                        .WithMany()
-                        .HasForeignKey("FinalClientId")
-                        .OnDelete(DeleteBehavior.ClientSetNull);
+                entity.Ignore(o => o.Client);
+                entity.Ignore(o => o.ElectricCompany);
+                entity.Ignore(o => o.FinalClient);
             });
 
             // Configuração de Client

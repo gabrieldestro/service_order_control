@@ -15,5 +15,6 @@ namespace ServiceOrder.Services.Interfaces
         Task<bool> AddAsync(OrderDeadline orderDeadline);
         Task<bool> UpdateAsync(OrderDeadline orderDeadline);
         Task<bool> DeleteAsync(int id);
+        Task<bool> HasDeadline(string orderName);
     }
 }

@@ -117,6 +117,11 @@ namespace ServiceOrder.Domain.DTOs
 
         private bool IsExpired(DateTime? current, DateTime? previous, int? days)
         {
+            if (!previous.HasValue)
+            {
+                return false;
+            }
+
             var expected = previous.Value.AddDays(days.Value);
 
             if (!current.HasValue)

@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DocumentFormat.OpenXml.Spreadsheet;
 using log4net;
+using Microsoft.Data.Sqlite;
 using Microsoft.Win32;
 using ServiceOrder.Domain.Entities;
 using ServiceOrder.Services.Interfaces;
@@ -191,15 +192,13 @@ namespace ServiceOrder
                 {
                     ChangeViewOnLoad(false);
 
-                    await Task.Run(() =>
+                    using (var source = new SqliteConnection($"Data Source=serviceorders.db"))
+                    using (var destination = new SqliteConnection($"Data Source={backupPath}"))
                     {
-                        string sourcePath = "serviceorders.db";
-
-                        if (!File.Exists(sourcePath))
-                            throw new FileNotFoundException("Arquivo de banco de dados original não encontrado.", sourcePath);
-
-                        File.Copy(sourcePath, backupPath, overwrite: true);
-                    });
+                        source.Open();
+                        destination.Open();
+                        source.BackupDatabase(destination);
+                    }
 
                     await Task.Delay(1000);
 
