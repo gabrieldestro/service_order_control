@@ -126,7 +126,7 @@ namespace ServiceOrder
         {
             if (sender is Button button && button.DataContext is OrderDTO selectedOrder)
             {
-                var result = DialogUtils.ShowConfirmation("Confirmação", $"Deseja excluir o projeto {selectedOrder?.Order?.Id}?");
+                var result = DialogUtils.ShowConfirmation("Confirmação", $"Deseja excluir o projeto {selectedOrder?.Order?.OrderName}?");
                 if (result)
                 {
                     var success = await _orderService.DeleteOrder(selectedOrder?.Order);
@@ -194,7 +194,7 @@ namespace ServiceOrder
                 ordersFiltered = 
                     ordersFiltered
                     .Where(order => (ExpiredCheckBox.IsChecked == false) || order.IsAnyExpired())
-                    .ToList();
+                    .OrderByDescending(o => o.Order.LastUpdated).ToList();
 
                 foreach (var order in ordersFiltered)
                     Orders.Add(order);

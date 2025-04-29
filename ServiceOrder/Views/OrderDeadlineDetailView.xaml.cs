@@ -169,6 +169,7 @@ namespace ServiceOrder
                 _orderDeadline = currentDeadline;
                 _orderDeadline.Description = DescriptionTextBox.Text.Trim();
                 _orderDeadline.LastUpdated = DateTime.Now;
+                _orderDeadline.CreatedDate = DateTime.Now;
 
                 _orderDeadline.DocumentSentDays = DocumentSentDaysTxt.Text.ToIntOrNull();
                 _orderDeadline.DocumentReceivedDays = DocumentReceivedDaysTxt.Text.ToIntOrNull();

@@ -266,6 +266,12 @@ namespace ServiceOrder
                     return;
                 }
 
+                if (_9_PaymentDtPicker.SelectedDate != null && String.IsNullOrEmpty(ProjectValueTxt.Text))
+                {
+                    DialogUtils.ShowInfo("Erro", "O projeto pago precisa ter valor definido!");
+                    return;
+                }
+
                 if (ClientComboBox.SelectedValue is int clientId && clientId != 0)
                     currentOrder.ClientId = clientId;
                 else
@@ -291,6 +297,7 @@ namespace ServiceOrder
                 }
 
                 currentOrder.LastUpdated = DateTime.Now;
+                currentOrder.CreatedDate = DateTime.Now;
 
                 currentOrder.Description = DescriptionTxt.Text;
                 currentOrder.ProjectValue = ProjectValueTxt.Text.ToDecimalFromCurrencyOrNull();

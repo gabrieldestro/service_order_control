@@ -52,7 +52,7 @@ namespace ServiceOrder
         // TODO: preciso adicionar um loading, need to imporve performance and organize the code
         private async void OnSeedClick(object sender, RoutedEventArgs e)
         {
-            var result = DialogUtils.ShowConfirmation("Confirmação", $"Deseja realmente fazer uma carga massiva? Atenção, isso pode gerar duplicidades.");
+            var result = DialogUtils.ShowConfirmation("Confirmação", $"Deseja realmente fazer uma carga massiva?");
             if (result)
             {
                 var openFileDialog = new OpenFileDialog
@@ -137,6 +137,9 @@ namespace ServiceOrder
                                 ordersImported++;
                                 await _orderService.AddOrder(row.Order);
                             }
+
+                            await Task.Delay(1000);
+
                             ChangeViewOnLoad(true);
 
                             // Aqui você pode inserir no banco ou atualizar a tela
@@ -197,6 +200,9 @@ namespace ServiceOrder
 
                         File.Copy(sourcePath, backupPath, overwrite: true);
                     });
+
+                    await Task.Delay(1000);
+
                     ChangeViewOnLoad(true);
 
                     DialogUtils.ShowInfo("Sucesso", $"Backup realizado com sucesso!\nArquivo salvo em:\n{backupPath}");

@@ -4,14 +4,14 @@
         Title="Cadastro/Visualização de Projeto" Height="650" Width="850" Background="#F9F9F9">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid Background="#F9F9F9">
-            <StackPanel HorizontalAlignment="Center" MaxWidth="900" Margin="20">
+            <StackPanel HorizontalAlignment="Center" Width="800" Margin="20">
 
                 <!-- Bloco geral -->
                 <Border Background="White" CornerRadius="5" Padding="15" BorderBrush="#D3D3D3" BorderThickness="1" Margin="0,0,0,15">
                     <StackPanel>
                         <TextBlock Text="Cadastro de Projeto" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
 
-                        <Label Content="Número do Projeto:"/>
+                        <Label Content="Código do Projeto:"/>
                         <TextBox x:Name="ServiceOrderName" Text="{Binding OrderName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
 
                         <!-- Bloco clientes em 3 colunas -->
@@ -43,7 +43,7 @@
                                 </StackPanel>
                             </StackPanel>
                         </UniformGrid>
-
+                        
                         <Label Content="Valor do Projeto:"/>
                         <TextBox Name="ProjectValueTxt" PreviewTextInput="MonetaryTextBox_PreviewTextInput" TextChanged="MonetaryTextBox_TextChanged" Margin="0,0,0,10"/>
 

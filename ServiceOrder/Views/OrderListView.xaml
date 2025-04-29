@@ -194,8 +194,8 @@
         <!-- Botões -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0">
             <Button Content="Exportar" x:Name="ExportButton" Style="{StaticResource StandardButtonStyle}" Click="OnExportClick"/>
-            <Button Content="Próximo" x:Name="NextButton" Style="{StaticResource StandardButtonStyle}" Click="OnNextClick"/>
-            <Button Content="Nova Ordem" x:Name="NewRegistrationButton" Style="{StaticResource StandardButtonStyle}" Click="OnNewRegistrationClick"/>
+            <Button Content="Próximo" Visibility="Collapsed" x:Name="NextButton" Style="{StaticResource StandardButtonStyle}" Click="OnNextClick"/>
+            <Button Content="Novo Projeto" x:Name="NewRegistrationButton" Style="{StaticResource StandardButtonStyle}" Click="OnNewRegistrationClick"/>
         </StackPanel>
     </Grid>
 </UserControl>

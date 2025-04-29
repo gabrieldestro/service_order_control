@@ -104,6 +104,7 @@ namespace ServiceOrder
                 _company.Cnpj = cnpj;
                 _company.Description = DescriptionTextBox.Text.Trim();
                 _company.LastUpdated = DateTime.Now;
+                _company.CreatedDate = DateTime.Now;
 
                 var success = false;
                 if (_company.Id > 0)

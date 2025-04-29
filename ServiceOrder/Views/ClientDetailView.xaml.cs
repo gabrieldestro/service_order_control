@@ -127,6 +127,7 @@ namespace ServiceOrder
                 _client.Name = name;
                 _client.Description = DescriptionTextBox.Text.Trim();
                 _client.LastUpdated = DateTime.Now;
+                _client.CreatedDate = DateTime.Now;
 
                 bool result;
                 if (_client.Id > 0)

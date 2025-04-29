@@ -10,7 +10,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid Background="#F9F9F9">
             <!-- Centralização com largura máxima -->
-            <StackPanel HorizontalAlignment="Center" MaxWidth="1000" Margin="20">
+            <StackPanel HorizontalAlignment="Center" Width="400" Margin="20">
 
                 <!-- Bloco de informações gerais -->
                 <Border Background="White" CornerRadius="5" Padding="15" BorderBrush="#D3D3D3" BorderThickness="1" Margin="0,0,0,15">
